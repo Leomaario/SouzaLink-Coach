@@ -1,0 +1,110 @@
+.edit-profile-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 14px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.06);
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 2rem;
+    animation: fadeIn 0.5s ease-in;
+  }
+  
+  .edit-profile-container h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #141414;
+    font-family:Arial, Helvetica, sans-serif;
+    font-weight: 2rem;
+  }
+  
+  .profile-card {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+  
+  .left-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .foto-preview {
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .foto-preview img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #03a5b7;
+  }
+  
+  .alterar-foto {
+    margin-top: 0.5rem;
+    display: block;
+    color: #0077cc;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+  
+  .right-section {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #333;
+  }
+  
+  .form-group input {
+    padding: 0.7rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+  }
+  
+  .btn-area {
+    margin-top: 1.5rem;
+  }
+  
+  .btn-salvar {
+    padding: 0.8rem 1.5rem;
+    background-color: #03339c;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-salvar:hover {
+    background-color: #022975;
+  }
+  
+  /* Responsivo */
+  @media (max-width: 768px) {
+    .profile-card {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .right-section {
+      width: 100%;
+    }
+  }
+  

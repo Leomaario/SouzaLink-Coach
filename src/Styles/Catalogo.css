@@ -1,0 +1,90 @@
+.catalogo {
+    animation: fadeIn 0.5s ease-in;
+    color: #222;
+    padding: 40px 20px;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f0f0f0;
+  }
+  
+  .titulo {
+    font-size: 2rem;
+    margin-bottom: 40px;
+    text-align: center;
+    color: #333;
+    font-weight: 600;
+  }
+  
+  .categoria {
+    margin-bottom: 50px;
+  }
+  
+  .categoria h2 {
+    margin-bottom: 16px;
+    color: #1a1a1a;
+    font-size: 1.4rem;
+    font-weight: 500;
+    border-left: 4px solid #007BFF;
+    padding-left: 10px;
+  }
+  
+  .cursos-row {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  
+  .cursos-row::-webkit-scrollbar {
+    display: none; /* Chrome */
+  }
+  
+  .curso-card {
+    min-width: 210px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: transform 0.3s, box-shadow 0.3s;
+    scroll-snap-align: start;
+    flex-shrink: 0;
+  }
+  
+  .curso-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+  }
+  
+  .curso-card img {
+    width: 100%;
+    height: 130px;
+    object-fit: cover;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .curso-card p {
+    margin: 12px;
+    font-size: 1rem;
+    color: #333;
+    font-weight: 500;
+  }
+
+  .status-message {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0 12px 12px;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .cursos-row {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .curso-card {
+      min-width: 90%;
+      margin-bottom: 20px;
+    }
+  }

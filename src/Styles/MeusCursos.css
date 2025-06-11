@@ -1,0 +1,139 @@
+/* Container principal */
+.container-meus-cursos {
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  animation: fadeIn 0.5s ease-in;
+}
+
+#title-curso {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  color: #2c3e50;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.filter-buttons button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  background: #f0f0f0;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.filter-buttons button.active {
+  background: #3498db;
+  color: white;
+}
+
+.filter-buttons button:hover {
+  background: #2980b9;
+  color: white;
+}
+
+/* -------------------------------cursos----------------------------- */
+.container-cursos {
+  padding: 20px;
+}
+
+/* Grid de cards */
+.cards-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+}
+
+/* Estilo do card */
+.curso-card {
+  border: 3px solid #d4d4d4;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.curso-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.curso-thumbnail {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  display: block;
+}
+
+.curso-info {
+  padding: 15px;
+}
+
+.curso-titulo {
+  margin: 0 0 8px 0;
+  font-size: 1.2rem;
+  color: #2c3e50;
+}
+
+.curso-aulas {
+  margin: 0 0 12px 0;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+/* Barra de progresso */
+.progresso-container {
+  height: 6px;
+  background-color: #ced4d5;
+  border-radius: 3px;
+  margin-bottom: 5px;
+  overflow: hidden;
+}
+
+.progresso-bar {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+.progresso-texto {
+  font-size: 0.8rem;
+  color: #3498db;
+  font-weight: 500;
+}
+
+/* Estilos para os status dos cursos */
+.curso-card.concluido {
+  background-color: #70AD47; /* Verde */
+  color: white;
+}
+
+.curso-card.em-andamento {
+  background-color: #fbfcea; /* Amarelo */
+  color: white;
+}
+
+.curso-card.nao-iniciado {
+  background-color: white;
+  color: #7f8c8d; /* Cor neutra para cursos não iniciados */
+}
+
+/* Links do curso */
+.curso-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  height: 100%;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  /* Adaptando layout em telas pequenas */
+}

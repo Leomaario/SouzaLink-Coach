@@ -1,0 +1,156 @@
+/* Estilo base do container principal */
+.dashboard-container {
+  padding: 2rem 3rem;
+  font-family: 'Inter', sans-serif;
+  color: #111827;
+  min-height: 100vh;
+  animation: fadeIn 0.5s ease-in;
+}
+
+.dashboard-container h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+
+/* Layout de grade */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Resumo do Progresso */
+.resumo-progresso p {
+  font-size: 1rem;
+  margin: 0.25rem 0;
+  color: #374151;
+}
+
+.resumo-progresso strong {
+  font-size: 1.5rem;
+  color: #111827;
+}
+
+/* Curso em Destaque */
+.curso-destaque .curso-info {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  align-items: center;
+}
+
+.curso-destaque img {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+}
+
+.progress-bar {
+  background-color: #e5e7eb;
+  height: 6px;
+  border-radius: 9999px;
+  width: 100%;
+  margin: 0.4rem 0;
+}
+
+.progress {
+  background-color: #3b82f6;
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.3s ease-in-out;
+}
+
+.botao-assistir {
+  margin-top: 1.2rem;
+  padding: 0.6rem 1.2rem;
+  background-color: #2563eb;
+  color: #fff;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+/* Lembretes */
+.lembretes ul {
+  list-style: disc;
+  padding-left: 1.2rem;
+}
+
+.lembretes li {
+  margin-bottom: 0.6rem;
+  color: #374151;
+  font-size: 0.95rem;
+}
+
+.lembretes a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* Certificados */
+.certificados-lista {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.certificado {
+  display: flex;
+  gap: 0.75rem;
+  background-color: #f3f4f6;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  align-items: center;
+  flex: 1 1 220px;
+}
+
+.certificado img {
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+}
+
+.certificado p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #111827;
+}
+
+.certificado a {
+  display: block;
+  margin-top: 0.25rem;
+  color: #2563eb;
+  font-weight: 500;
+  text-decoration: none;
+  font-size: 0.88rem;
+}
+
+.container-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.container-left{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+}

@@ -1,0 +1,12 @@
+.main-content {
+    margin-left: 260px; 
+    padding: 20px;
+    animation: fadeIn 0.5s ease-in;
+  }
+
+  @media (max-width: 768px) {
+    .main-content {
+      margin-left: 0; 
+      padding: 10px;
+    }
+  }

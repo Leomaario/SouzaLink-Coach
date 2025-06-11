@@ -1,0 +1,84 @@
+.admin-dashboard {
+    padding: 2rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2c3e50;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  .admin-titulo {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  
+  .admin-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+  
+  .admin-card {
+    background-color: #f4f9ff;
+    border-left: 6px solid #007bff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+  }
+  
+  .admin-card:hover {
+    background-color: #e0f0ff;
+    transform: scale(1.02);
+  }
+  
+  .admin-card .icon {
+    font-size: 2rem;
+    color: #007bff;
+    margin-bottom: 1rem;
+    display: block;
+  }
+  .admin-visao-geral {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-around;
+    background-color: #f4f9ff;
+  }
+  .visao-card {
+    background-color: #f4f9ff;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 0.5rem;
+    flex: 1;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    cursor: pointer;
+    border-bottom: 4px solid transparent; /* Aqui já reserva o espaço */
+    transition: background-color 0.3s ease, border-bottom 0.3s ease; /* suave */
+  }
+  
+  .visao-card:hover {
+    background-color: #e0f0ff;
+    border-bottom: 4px solid #007bff;
+  }
+  
+@media screen and (max-width: 768px) {
+    .admin-cards-container {
+      grid-template-columns: 1fr; /* Colunas únicas em telas menores */
+    }
+    .admin-titulo {
+      font-size: 2rem; /* Tamanho do título reduzido */
+    }
+    .admin-card {
+      padding: 1rem; /* Reduzindo o padding dos cards */
+    }
+    .admin-visao-geral {
+      flex-direction: column; /* Colocando os cards em coluna */
+      align-items: center; /* Centralizando os cards */
+    }
+  }
