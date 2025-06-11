@@ -19,8 +19,9 @@
     justify-content: space-between;
     align-items: center;
     height: 100%;
-    width: 100%;
+    padding: 20px;
     box-sizing: border-box;
+  
   }
   
   #logo {
@@ -37,12 +38,12 @@
     text-decoration: none;
     color: white;
     font-size: 1.3rem;
-    display: block;
+    display: flex;
+    align-items: center;
     padding: 10px 20px;
     border-radius: 5px;
     transition: background-color 0.3s ease;
-    margin-bottom: 1rem;
-    width: 100%;
+    margin-bottom: 1.1rem;
     text-align: left;
   }
   
