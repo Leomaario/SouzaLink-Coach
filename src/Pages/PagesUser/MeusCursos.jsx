@@ -61,13 +61,14 @@ export function MeusCursos() {
         const contentType = response.headers.get("content-type");
         if (response.status === 204 || !contentType || !contentType.includes("application/json")) {
           setCursos([]);
+          console.log("Nenhum curso encontrado ou resposta não é JSON.");
         } else {
           const data = await response.json();
           setCursos(data || []);
         }
       } catch (err) {
         console.error("Erro ao buscar cursos:", err);
-        setError("Não foi possível carregar os cursos. O backend está rodando?");
+        setError("Não foi possível carregar os cursos. Contate o administrador.");
       } finally {
         setLoading(false);
       }
@@ -78,7 +79,7 @@ export function MeusCursos() {
 
   // --- Renderização ---
   if (loading) {
-    return <div className="container-meus-cursos"><h1 id='title-curso'>Meus Cursos</h1><p className="status-message">Carregando...</p></div>;
+    return <div className="container-meus-cursos"><h1 id='title-curso'>Meus Cursos</h1><p className="status-message">Carregando Cursos...</p></div>;
   }
 
   if (error) {
