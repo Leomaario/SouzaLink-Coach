@@ -1,0 +1,14 @@
+/* src/components/layout/MainLayout.css */
+
+.app-container {
+  display: flex;
+}
+
+/* Aqui está a mágica! 
+  Este é o container principal do conteúdo da sua página.
+*/
+.main-content {
+  flex-grow: 2; /* Faz o conteúdo principal ocupar todo o espaço restante */
+  padding: 3rem; /* Um pouco de espaço interno para não colar nas bordas */
+  margin-left: 230px; /* A MARGIN QUE VOCÊ PEDIU! */
+}

@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
- import '@styles/MeusCursos.css';
+import '@styles/MeusCursos.css';
 import { Link } from 'react-router-dom';
+import { apiFetch } from '../../Services/api';
+
 // Componente para um card de curso individual
 const CursoCard = ({ curso }) => (
   <div className='curso-card'>
-    {/* O Link agora leva para a rota de visualização do curso/vídeo */}
     <Link to={`/curso/${curso.id}`} className="curso-link">
       <img 
-        // Para a miniatura (thumbnail), o ideal seria ter uma imagem específica.
-        // Como o backend nos dá um caminho de arquivo de vídeo, usamos um placeholder.
         src={`https://placehold.co/300x170/007bff/FFFFFF/png?text=${encodeURIComponent(curso.titulo)}`} 
         alt={`Capa do curso ${curso.titulo}`} 
         className='curso-thumbnail'
@@ -16,10 +15,7 @@ const CursoCard = ({ curso }) => (
       />
       <div className='curso-info'>
         <h3 className='curso-titulo'>{curso.titulo}</h3>
-        {/* Podemos mostrar a duração que vem do backend, se existir */}
         <p className='curso-aulas'>{curso.duracaoSegundos ? `${Math.ceil(curso.duracaoSegundos / 60)} min` : 'Duração N/A'}</p>
-        
-        {/* A barra de progresso, por enquanto, é visual e não funcional */}
         <div className='progresso-container'>
           <div 
             className='progresso-bar' 
@@ -51,8 +47,8 @@ export function MeusCursos() {
       try {
         setLoading(true);
         setError(null);
-        // Buscando os vídeos da nossa API
-        const response = await fetch('http://localhost:8080/api/videos'); 
+        // USA O apiFetch, QUE JÁ ENVIA O TOKEN!
+        const response = await apiFetch('http://localhost:8080/api/videos');
         
         if (!response.ok) {
           throw new Error(`Erro HTTP: ${response.status}`);
@@ -67,8 +63,10 @@ export function MeusCursos() {
           setCursos(data || []);
         }
       } catch (err) {
-        console.error("Erro ao buscar cursos:", err);
-        setError("Não foi possível carregar os cursos. Contate o administrador.");
+        if (err.message !== 'Não autorizado') { // Evita mostrar erro duplicado se o apiFetch já deslogou
+          console.error("Erro ao buscar cursos:", err);
+          setError("Não foi possível carregar os cursos.");
+        }
       } finally {
         setLoading(false);
       }
@@ -79,16 +77,16 @@ export function MeusCursos() {
 
   // --- Renderização ---
   if (loading) {
-    return <div className="container-meus-cursos"><h1 id='title-curso'>Meus Cursos</h1><p className="status-message">Carregando Cursos...</p></div>;
+    return <div className="container-meus-cursos"><h1 id='title-curso'>Capacitações</h1><p className="status-message">Carregando Cursos...</p></div>;
   }
 
   if (error) {
-    return <div className="container-meus-cursos"><h1 id='title-curso'>Meus Cursos</h1><p className="status-message error-message">{error}</p></div>;
+    return <div className="container-meus-cursos"><h1 id='title-curso'>Capacitações</h1><p className="status-message error-message">{error}</p></div>;
   }
 
   return (
     <div className="container-meus-cursos">
-      <h1 id='title-curso'>Meus Cursos</h1>
+      <h1 id='title-curso'>Capacitações</h1>
       <div className='filter-buttons'>
         {filterButtons.map((filtro) => (
           <button

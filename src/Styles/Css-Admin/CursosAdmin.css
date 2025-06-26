@@ -1,5 +1,7 @@
 .adicionar-curso-container {
-  margin-left: 260px;
+  margin-left: 15%;
+  display: flex;
+  flex-direction: column;
   padding: 3rem;
   background-color: #f9fafd;
   min-height: 100vh;
@@ -15,7 +17,7 @@
 
 .form-curso {
   background: #fff;
-  padding: 2rem;
+  padding: 3rem;
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.05);
   max-width: 600px;

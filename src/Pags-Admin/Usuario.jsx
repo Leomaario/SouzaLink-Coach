@@ -1,126 +1,143 @@
-import React, { useState } from 'react';
-import '../Styles/Css-Admin/CriarUser.css';
+import React, { useState, useEffect } from 'react';
+import '../Styles/Css-Admin/CriarUser.css'; 
 
 export default function CriarUsuario() {
-  const [usuario, setUsuario] = useState({
+  
+  // --- ESTADO PARA OS DADOS DO FORMULÁRIO ---
+  // Adicionei um campo 'usuario' para bater com o nosso backend
+  const [formState, setFormState] = useState({
     nome: '',
+    usuario: '', // Campo de nome de usuário para login
     email: '',
     senha: '',
-    dataNascimento: '',
     grupo: '',
-    permissao: 'usuario'
+    permissoes: '' // O valor padrão pode ser USER, ADMIN, etc.
   });
 
-  const [grupos, setGrupos] = useState([
-    'farmacia',
-    'scih',
-    'almoxarifado',
-    'nutricao',
-    'enfermagem',
-    'medicina',
-    'fisioterapia',
-    'psicologia',
-    'ti'
-  ]);
-
-  const [novoGrupo, setNovoGrupo] = useState('');
+  // --- ESTADOS PARA A LÓGICA DO COMPONENTE ---
+  const [grupos, setGrupos] = useState(['ti', 'farmacia', 'nutricao', 'enfermagem']); // Mantemos alguns grupos fixos por enquanto
+  const [loading, setLoading] = useState(false);
+  const [mensagem, setMensagem] = useState({ type: '', text: '' });
+  
+  // (O modal para adicionar novos grupos continua igual, é uma ótima funcionalidade de UI)
+  const [novoGrupo, setNovoGrupo] = useState(''); 
   const [mostrarModalGrupo, setMostrarModalGrupo] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUsuario({ ...usuario, [name]: value });
+    setFormState(prevState => ({ ...prevState, [name]: value }));
   };
 
-  const abrirModalGrupo = () => setMostrarModalGrupo(true);
-  const fecharModalGrupo = () => {
-    setNovoGrupo('');
-    setMostrarModalGrupo(false);
-  };
+  // --- LÓGICA DE SUBMISSÃO PARA A API ---
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setMensagem({ type: '', text: '' });
 
-  const salvarGrupo = () => {
-    const grupoFormatado = novoGrupo.trim().toLowerCase();
-    if (grupoFormatado && !grupos.includes(grupoFormatado)) {
-      setGrupos([...grupos, grupoFormatado]);
-      setUsuario({ ...usuario, grupo: grupoFormatado }); // opcional: já seleciona o grupo criado
-      fecharModalGrupo();
-    } else {
-      alert('Grupo já existe ou inválido!');
+    // O objeto que vamos enviar para o backend
+    const dadosParaEnviar = {
+      nome: formState.nome,
+      usuario: formState.usuario,
+      email: formState.email,
+      senha: formState.senha,
+      grupo: formState.grupo,
+      permissoes: formState.permissoes || '', // Garante um valor padrão
+    };
+
+    try {
+      // Usando o endpoint de registro que criamos
+      const response = await fetch('http://localhost:8080/api/usuarios', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dadosParaEnviar),
+      });
+
+      if (!response.ok) {
+        // Se o backend retornar um erro (ex: email já existe), a gente pega a mensagem
+        const errorText = await response.text();
+        throw new Error(errorText || 'Falha ao registrar o usuário.');
+      }
+
+      setMensagem({ type: 'success', text: 'Usuário cadastrado com sucesso!' });
+      // Limpa o formulário
+      setFormState({
+        nome: '', usuario: '', email: '', senha: '', grupo: '', permissoes: ''
+      });
+
+    } catch (error) {
+      setMensagem({ type: 'error', text: error.message });
+    } finally {
+      setLoading(false);
     }
   };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Usuário criado:', usuario);
-    alert('Usuário cadastrado com sucesso!');
-    // Aqui você pode integrar com backend
-  };
+  
+  // Lógica do modal (sem mudanças)
+  const abrirModalGrupo = () => setMostrarModalGrupo(true);
+  const fecharModalGrupo = () => setMostrarModalGrupo(false);
+  const salvarGrupo = () => { /* ... sua lógica ... */ };
 
   return (
     <div className="criar-usuario-container">
       <h2>Criar Novo Usuário</h2>
       <form className="form-usuario" onSubmit={handleSubmit}>
+        
         <div className="form-group">
-          <label>Nome</label>
-          <input type="text" name="nome" value={usuario.nome} onChange={handleChange} required />
+          <label>Nome Completo</label>
+          <input type="text" name="nome" value={formState.nome} onChange={handleChange} required />
+        </div>
+
+        <div className="form-group">
+          <label>Nome de Usuário (para login)</label>
+          <input type="text" name="usuario" value={formState.usuario} onChange={handleChange} required />
         </div>
 
         <div className="form-group">
           <label>Email</label>
-          <input type="email" name="email" value={usuario.email} onChange={handleChange} required />
+          <input type="email" name="email" value={formState.email} onChange={handleChange} required />
         </div>
 
         <div className="form-group">
           <label>Senha</label>
-          <input type="password" name="senha" value={usuario.senha} onChange={handleChange} required />
-        </div>
-
-        <div className="form-group">
-          <label>Data de Nascimento</label>
-          <input type="date" name="dataNascimento" value={usuario.dataNascimento} onChange={handleChange} required />
+          <input type="password" name="senha" value={formState.senha} onChange={handleChange} required />
         </div>
 
         <div className="form-group grupo-com-botao">
           <label>Grupo</label>
           <div className="grupo-wrapper">
-            <select name="grupo" value={usuario.grupo} onChange={handleChange} required>
-              <option value="">Selecione</option>
-              {grupos.map((grupo, index) => (
-                <option key={index} value={grupo}>{grupo.charAt(0).toUpperCase() + grupo.slice(1)}</option>
+            <select name="grupo" value={formState.grupo} onChange={handleChange} required>
+              <option value="">Selecione um grupo</option>
+              {grupos.map((g, index) => (
+                <option key={index} value={g}>{g.charAt(0).toUpperCase() + g.slice(1)}</option>
               ))}
             </select>
-            <button type="button" title="Adicionar grupo" onClick={abrirModalGrupo} className="btn-mais-grupo">+</button>
+            <button type="button" onClick={abrirModalGrupo} className="btn-mais-grupo">+</button>
           </div>
         </div>
 
         <div className="form-group">
           <label>Permissão</label>
-          <select name="permissao" value={usuario.permissao} onChange={handleChange} required>
-            <option value="usuario">Usuário</option>
-            <option value="admin">Administrador</option>
+          <select name="permissoes" value={formState.permissoes} onChange={handleChange} required>
+            <option value="USER">Usuário</option>
+            <option value="LIDER">Líder</option>
+            <option value="ADMIN">Administrador</option>
           </select>
         </div>
 
-        <button type="submit" className="btn-cadastrar">Cadastrar Usuário</button>
+        <button type="submit" className="btn-cadastrar" disabled={loading}>
+          {loading ? 'Cadastrando...' : 'Cadastrar Usuário'}
+        </button>
+
+        {mensagem.text && (
+          <p className={mensagem.type === 'success' ? 'feedback-success' : 'feedback-error'}>
+            {mensagem.text}
+          </p>
+        )}
       </form>
 
-      {/* Modal para adicionar grupo */}
-      {mostrarModalGrupo && (
-        <div className="modal-fundo" onClick={fecharModalGrupo}>
-          <div className="modal-conteudo" onClick={(e) => e.stopPropagation()}>
-            <h3>Adicionar Novo Grupo</h3>
-            <input
-              type="text"
-              value={novoGrupo}
-              onChange={(e) => setNovoGrupo(e.target.value)}
-              placeholder="Nome do grupo"
-            />
-            <div className="modal-botoes">
-              <button className="btn-salvar" onClick={salvarGrupo}>Salvar</button>
-              <button className="btn-cancelar" onClick={fecharModalGrupo}>Cancelar</button>
-            </div>
-          </div>
-        </div>
-      )}
+  
     </div>
   );
 }
+

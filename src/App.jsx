@@ -1,16 +1,22 @@
-import './App.css'
-import Sidebar from './Components/ComponentsUser/Sidebar'
-import MeusCursos from './Pages/PagesUser/MeusCursos'
-import { Routes, Route } from 'react-router-dom'
 import React from 'react';
-import './Styles/Global.css'
+// <<<--- IMPORT NOVO: Outlet é usado para renderizar as rotas filhas ---<<<
+import { Routes, Route, Outlet } from 'react-router-dom';
+import './app.css'; // Certifique-se de que o caminho está correto
+
+// --- Importe seu componente de Sidebar ---
+import Sidebar from './Components/ComponentsUser/Sidebar'; // Verifique se este caminho está certo
+
+// --- Importe suas páginas ---
+import Login from './Pages/PagesUser/Login';
 import Dashboard from './Pages/PagesUser/Dashboard';
+import MeusCursos from './Pages/PagesUser/MeusCursos';
 import Catalogo from './Pages/PagesUser/Catalogo';
 import Certificados from './Pages/PagesUser/Certificados';
 import PlayerCurso from './Pages/PagesUser/PlayerCurso';
 import EditProfile from './Pages/PagesUser/EditProfile';
-import './Pags-Admin/PainelAdmin.jsx';
-import PainelAdmin from './Pags-Admin/PainelAdmin.jsx';
+import CatalogoDetalhes from './Pages/PagesUser/CatalogoDetalhes';
+
+import PainelAdmin from './Pags-Admin/PainelAdmin';
 import CriarCatalogo from './Pags-Admin/CriarCatalogo';
 import CursosAdmin from './Pags-Admin/CursosAdmin';
 import CriarUsuario from './Pags-Admin/Usuario';
@@ -18,41 +24,64 @@ import EditarRelatorio from './Pags-Admin/EditarRelatorio';
 import EmitirRelatorios from './Pags-Admin/Relatorios';
 
 
-function App() {
-
+// --- Layout Principal (com Sidebar) ---
+// Este componente "envolve" todas as páginas que devem ter a sidebar.
+const MainLayout = () => {
   return (
-    <>
-    <Sidebar />
-    <main className='main-content'>
-      <Routes>
-          {/* Define as rotas do aplicativo */}
-          {/* A rota raiz ("/") renderiza o componente Dashboard */}
-          <Route path="/" element={<Dashboard />} />
-       
-          {/* Rotas para o usuário */}
-          <Route path="/MeusCursos" element={<MeusCursos />} />
-          <Route path="/MeusCertificados" element={<Certificados />} />
-          <Route path="/EditProfile" element={<EditProfile />} />
-          <Route path="/Catalogo" element={<h1><Catalogo /></h1>} />
-          <Route path="/Favoritos" element={<h1>Favoritos</h1>} />
+    <div className="app-container"> {/* Container para organizar o layout */}
+      <Sidebar />
+      <main className="main-content">
+        <Outlet /> {/* As rotas (Dashboard, etc.) serão renderizadas aqui dentro */}
+      </main>
+    </div>
+  );
+};
 
-          {/* Rota para o player de curso, onde o ID do curso é passado como parâmetro */}
-          <Route path="/curso/:id" element={<PlayerCurso />} />
+// --- Layout de Autenticação (sem Sidebar) ---
+// Este componente "envolve" as páginas que NÃO devem ter a sidebar.
+const AuthLayout = () => {
+  return (
+    <div className="auth-container"> {/* Container para a página de auth */}
+      <Outlet /> {/* A rota de Login será renderizada aqui dentro */}
+    </div>
+  );
+};
 
-          {/* Rotas para o painel de administração */}
-          <Route path="/PainelAdmin" element={<PainelAdmin />} />
-          <Route path="/CriarCatalogo" element={<CriarCatalogo />} />
-          <Route path="/CursosAdmin" element={<CursosAdmin/>} />
-          <Route path="/Usuario" element={<CriarUsuario/>}/>
-          <Route path="/EditarRelatorio" element={<EditarRelatorio/>} />
-          <Route path="/EmitirRelatorios" element={<EmitirRelatorios/>} />
-          {/* Rota de fallback para quando nenhuma rota acima for correspondida */}
-          <Route path="*" element={<h1>Página não encontrada, volte para pagina anterior</h1>} />
-          
-        </Routes>
-    </main>
-    </>
-  )
+
+function App() {
+  return (
+    <Routes>
+      {/* Grupo de rotas que NÃO TÊM a sidebar */}
+      <Route element={<AuthLayout />}>
+        <Route path="/login" element={<Login />} />
+        {/* Se tiver uma página de "Esqueci a Senha", ela entraria aqui também */}
+      </Route>
+
+      {/* Grupo de rotas que TÊM a sidebar */}
+      <Route element={<MainLayout />}>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/meuscursos" element={<MeusCursos />} />
+        <Route path="/meuscertificados" element={<Certificados />} />
+        <Route path="/editprofile" element={<EditProfile />} />
+        <Route path="/catalogo" element={<Catalogo />} />
+        <Route path="/catalogo-detalhes/:id" element={<CatalogoDetalhes />} />
+        <Route path="/favoritos" element={<h1>Favoritos</h1>} />
+        <Route path="/curso/:id" element={<PlayerCurso />} />
+
+        {/* Rotas do painel de administração */}
+        <Route path="/paineladmin" element={<PainelAdmin />} />
+        <Route path="/criarcatalogo" element={<CriarCatalogo />} />
+        <Route path="/cursosadmin" element={<CursosAdmin/>} />
+        <Route path="/usuario" element={<CriarUsuario/>}/>
+        <Route path="/editarrelatorio" element={<EditarRelatorio/>} />
+        <Route path="/emitirrelatorios" element={<EmitirRelatorios/>} />
+      </Route>
+      
+      {/* Rota de fallback para quando nenhuma rota acima for correspondida */}
+      <Route path="*" element={<h1>Página não encontrada, volte para a página anterior</h1>} />
+    </Routes>
+  );
 }
 
-export default App
+export default App;

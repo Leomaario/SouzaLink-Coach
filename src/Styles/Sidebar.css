@@ -13,6 +13,45 @@
     
   }
   
+.sidebar-footer {
+  margin-top: auto; /* A mágica que empurra o item para o final do container flex */
+  padding-top: 1rem; /* Um espaço acima do botão */
+  border-top: 1px solid #4e4e5e; /* Uma linha sutil de separação */
+}
+
+/* O botão de logout em si */
+.logout-button {
+  /* Reseta a aparência padrão de um botão */
+  background: none;
+  border: none;
+  font-family: inherit; /* Usa a mesma fonte do resto do site */
+  font-size: 1rem; /* Tamanho da fonte, ajuste se necessário */
+  text-align: left;
+  cursor: pointer;
+  
+  /* Layout para alinhar o ícone e o texto */
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 12px 20px; /* Espaçamento interno igual aos seus links */
+  
+  /* Cor do texto e transição suave */
+  color: #d1d1d6;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+/* Efeito ao passar o mouse por cima */
+.logout-button:hover {
+  background-color: #c42929; /* Uma cor de destaque para o logout */
+  color: #ffffff;
+}
+
+/* Espaçamento entre o ícone e o texto "Sair" */
+.logout-button i {
+  margin-right: 15px;
+  font-size: 1.2rem; /* Tamanho do ícone */
+}
+
   .menu {
     display: flex;
     flex-direction: column;

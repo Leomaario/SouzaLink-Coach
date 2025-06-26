@@ -1,94 +1,77 @@
 import React, { useState, useEffect } from 'react';
-import '../Styles/Css-Admin/CursosAdmin.css';
-
+import '../Styles/Css-Admin/CursosAdmin.css'; 
 
 export default function CursosAdmin() {
-  // --- ESTADOS PARA OS CAMPOS DO FORMULÁRIO ---
   const [titulo, setTitulo] = useState('');
   const [descricao, setDescricao] = useState('');
   const [catalogoId, setCatalogoId] = useState('');
   const [videoFile, setVideoFile] = useState(null);
-
-  // --- ESTADO PARA GUARDAR AS CATEGORIAS VINDAS DO BACKEND ---
   const [categorias, setCategorias] = useState([]);
-
-  // --- ESTADOS PARA DAR FEEDBACK AO USUÁRIO ---
   const [loading, setLoading] = useState(false);
   const [mensagem, setMensagem] = useState({ type: '', text: '' });
+  const [uploadProgress, setUploadProgress] = useState(0);
 
-  // --- LÓGICA PARA BUSCAR AS CATEGORIAS REAIS DO BACKEND ---
   useEffect(() => {
-    // Busca as categorias disponíveis assim que o componente carrega
     fetch('http://localhost:8080/api/catalogos')
-      .then(response => {
-        if (response.ok && response.status !== 204) {
-          return response.json();
-        }
-        return [];
-      })
-      .then(data => setCategorias(data))
-      .catch(() => {
-        setMensagem({ type: 'error', text: 'Não foi possível carregar as categorias do servidor.' });
-      });
-  }, []); // O array vazio [] garante que isso rode só uma vez
+      .then(res => res.ok && res.status !== 204 ? res.json() : [])
+      .then(data => Array.isArray(data) && setCategorias(data))
+      .catch(() => setMensagem({ type: 'error', text: 'Erro ao carregar categorias.' }));
+  }, []);
 
-  // Função para guardar o arquivo de vídeo selecionado
   const handleVideoUpload = (e) => {
-    const file = e.target.files[0];
-    if (file && file.type.startsWith('video/')) {
-      setVideoFile(file);
-    } else {
-      alert('Por favor, selecione um arquivo de vídeo válido.');
-      e.target.value = null; // Limpa o input se o arquivo for inválido
-    }
+    setVideoFile(e.target.files[0]);
+    setUploadProgress(0);
+    setMensagem({ type: '', text: '' });
   };
 
-  // --- LÓGICA PARA ENVIAR O FORMULÁRIO COMPLETO PARA A API ---
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Validação para garantir que tudo foi preenchido
     if (!titulo || !catalogoId || !videoFile) {
       setMensagem({ type: 'error', text: 'Todos os campos são obrigatórios!' });
       return;
     }
 
     setLoading(true);
-    setMensagem({ type: '', text: '' });
+    setMensagem({ type: 'info', text: 'Enviando...' });
 
-    // FormData é o jeito certo de enviar arquivos + dados de texto
     const formData = new FormData();
     formData.append('titulo', titulo);
     formData.append('descricao', descricao);
     formData.append('catalogoId', catalogoId);
-    formData.append('file', videoFile); // O nome 'file' tem que bater com o @RequestParam no backend
+    formData.append('file', videoFile);
 
-    try {
-      const response = await fetch('http://localhost:8080/api/videos', {
-        method: 'POST',
-        body: formData, // Para FormData, o navegador define o Content-Type automaticamente
-      });
+    const xhr = new XMLHttpRequest();
+    // A URL agora é a principal de vídeos, já que o controller sabe diferenciar o tipo de requisição
+    xhr.open('POST', 'http://localhost:8080/api/videos', true);
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(errorText || 'Falha ao cadastrar o curso.');
+    xhr.upload.onprogress = (event) => {
+      if (event.lengthComputable) {
+        const percentComplete = Math.round((event.loaded / event.total) * 100);
+        setUploadProgress(percentComplete);
       }
+    };
 
-      const resultado = await response.json();
-      setMensagem({ type: 'success', text: `Curso "${resultado.titulo}" cadastrado com sucesso!` });
-
-      // Limpa o formulário
-      setTitulo('');
-      setDescricao('');
-      setCatalogoId('');
-      setVideoFile(null);
-      e.target.reset();
-
-    } catch (error) {
-      setMensagem({ type: 'error', text: error.message || 'Ocorreu um erro inesperado.' });
-    } finally {
+    xhr.onload = () => {
       setLoading(false);
-    }
+      if (xhr.status === 201) {
+        const resultado = JSON.parse(xhr.responseText);
+        setMensagem({ type: 'success', text: `Curso "${resultado.titulo}" cadastrado!` });
+        e.target.reset();
+        setTitulo(''); setDescricao(''); setCatalogoId(''); setVideoFile(null);
+        setTimeout(() => setUploadProgress(0), 2000);
+      } else {
+        setMensagem({ type: 'error', text: `Erro: ${xhr.responseText || xhr.statusText}` });
+        setUploadProgress(0);
+      }
+    };
+
+    xhr.onerror = () => {
+      setLoading(false);
+      setMensagem({ type: 'error', text: 'Erro de rede ou CORS.' });
+      setUploadProgress(0);
+    };
+
+    xhr.send(formData);
   };
 
   return (
@@ -97,35 +80,16 @@ export default function CursosAdmin() {
       <form className="form-curso" onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Título do Curso</label>
-          <input
-            type="text"
-            name="titulo"
-            value={titulo}
-            onChange={(e) => setTitulo(e.target.value)}
-            placeholder="Ex: React Avançado"
-            required
-          />
+          <input type="text" value={titulo} onChange={(e) => setTitulo(e.target.value)} required />
         </div>
         <div className="form-group">
           <label>Descrição</label>
-          <textarea
-            name="descricao"
-            value={descricao}
-            onChange={(e) => setDescricao(e.target.value)}
-            placeholder="Insira uma descrição clara e objetiva"
-            rows="4"
-          />
+          <textarea value={descricao} onChange={(e) => setDescricao(e.target.value)} />
         </div>
         <div className="form-group">
           <label>Categoria</label>
-          <select
-            name="categoria"
-            value={catalogoId}
-            onChange={(e) => setCatalogoId(e.target.value)}
-            required
-          >
+          <select value={catalogoId} onChange={(e) => setCatalogoId(e.target.value)} required>
             <option value="" disabled>Selecione a categoria</option>
-            {/* O select agora é preenchido com as categorias reais do banco */}
             {categorias.map((cat) => (
               <option key={cat.id} value={cat.id}>{cat.nome}</option>
             ))}
@@ -133,18 +97,28 @@ export default function CursosAdmin() {
         </div>
         <div className="form-group">
           <label>Upload do Vídeo</label>
-          <input
-            type="file"
-            accept="video/*"
-            onChange={handleVideoUpload}
-            required
-          />
+          <input type="file" accept="video/*" onChange={handleVideoUpload} required />
         </div>
+        
+        {loading && (
+          <div className="upload-progress-container" style={{ margin: '15px 0' }}>
+            <p>Enviando: {uploadProgress}%</p>
+            <div style={{ width: '100%', backgroundColor: '#e9ecef', borderRadius: '5px' }}>
+              <div 
+                style={{ width: `${uploadProgress}%`, backgroundColor: '#0d6efd', height: '24px', borderRadius: '5px', transition: 'width 0.4s ease-in-out', color: 'white', textAlign: 'center' }}
+              >
+                {uploadProgress > 5 && `${uploadProgress}%`}
+              </div>
+            </div>
+          </div>
+        )}
+
         <button type="submit" className="btn-enviar" disabled={loading}>
           {loading ? 'Cadastrando...' : 'Cadastrar Curso'}
         </button>
-        {mensagem.text && (
-          <p className={`mensagem-feedback ${mensagem.type}`}>
+
+        {mensagem.text && !loading && (
+          <p className={mensagem.type === 'success' ? 'feedback-success' : 'feedback-error'}>
             {mensagem.text}
           </p>
         )}
