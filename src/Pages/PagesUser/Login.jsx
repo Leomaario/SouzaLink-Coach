@@ -61,8 +61,11 @@ const Login = () => {
 
     return (
         <div className="login-container">
+
             {error && <div className="error-message">{error}</div>}
+
             <form onSubmit={handleLogin}>
+                <img src="/imgs/logo.png" alt="Logo" className="logo" />
                 <input
                     type="text" 
                     placeholder="Usuário"

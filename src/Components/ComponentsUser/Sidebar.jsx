@@ -14,7 +14,7 @@ function Sidebar() {
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    navigate('/login');
+    navigate('/');
   };
 
   // Efeito para carregar os dados do usuário do localStorage UMA VEZ
@@ -52,7 +52,7 @@ function Sidebar() {
         <div className="menu">
           <nav>
             {/* Seus links de navegação aqui... */}
-            <Link to="/" onClick={closeSidebar}><i className="bi bi-cast"></i>Dashboard</Link>
+            <Link to="/dashboard" onClick={closeSidebar}><i className="bi bi-cast"></i>Dashboard</Link>
             <Link to="/MeusCursos" onClick={closeSidebar}><i className="bi bi-backpack3"></i>Meus Cursos</Link>
             <Link to="/Catalogo" onClick={closeSidebar}><i className="bi bi-funnel-fill"></i>Catálogo</Link>
             <Link to="/MeusCertificados" onClick={closeSidebar}><i className="bi bi-envelope-check"></i>Certificados</Link>
@@ -65,8 +65,7 @@ function Sidebar() {
           <Link to="/EditProfile" className="user-profile-link" onClick={closeSidebar}>
             <i className="bi bi-person-circle"></i>
             <div className="user-info">
-              {/* Usamos o estado para mostrar o nome. O '?.' evita erro se o usuário for nulo */}
-              <span className="user-name">{currentUser?.username || 'Carregando...'}</span>
+              <span className="user-name">{currentUser?.usuario || 'Carregando...'}</span>
               <span className="user-email">{currentUser?.email}</span>
             </div>
           </Link>
