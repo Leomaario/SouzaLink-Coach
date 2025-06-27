@@ -53,13 +53,12 @@ function App() {
     <Routes>
       {/* Grupo de rotas que NÃO TÊM a sidebar */}
       <Route element={<AuthLayout />}>
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Login />} />
         {/* Se tiver uma página de "Esqueci a Senha", ela entraria aqui também */}
       </Route>
 
       {/* Grupo de rotas que TÊM a sidebar */}
       <Route element={<MainLayout />}>
-        <Route path="/" element={<Dashboard />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/meuscursos" element={<MeusCursos />} />
         <Route path="/meuscertificados" element={<Certificados />} />

@@ -1,145 +1,177 @@
-/* Sidebar padrão */
-.sidebar {
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    left: 0;
-    height: 100vh;
-    background: linear-gradient(to top, #03a5b7, #03339c);
-    width: 290px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    z-index: 100;
-    transition: transform 0.3s ease;
-    
-  }
-  
-.sidebar-footer {
-  margin-top: auto; /* A mágica que empurra o item para o final do container flex */
-  padding-top: 1rem; /* Um espaço acima do botão */
-  border-top: 1px solid #4e4e5e; /* Uma linha sutil de separação */
+/* --- GERAL E VARIÁVEIS (Opcional, mas ajuda a manter consistência) --- */
+:root {
+  --sidebar-bg: linear-gradient(to top, #03a5b7, #03339c);
+  --sidebar-text-color: #e0e0e0;
+  --sidebar-text-hover: #ffffff;
+  --link-hover-bg: rgba(2, 69, 102, 0.7);
+  --logout-hover-bg: #c42929;
+  --separator-color: rgba(255, 255, 255, 0.1);
 }
 
-/* O botão de logout em si */
-.logout-button {
-  /* Reseta a aparência padrão de um botão */
-  background: none;
-  border: none;
-  font-family: inherit; /* Usa a mesma fonte do resto do site */
-  font-size: 1rem; /* Tamanho da fonte, ajuste se necessário */
-  text-align: left;
-  cursor: pointer;
-  
-  /* Layout para alinhar o ícone e o texto */
+/* --- CONTAINER PRINCIPAL DA SIDEBAR --- */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 290px;
+  background: var(--sidebar-bg);
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  transition: transform 0.3s ease-in-out;
+}
+
+/* --- LOGO NO TOPO --- */
+#logo {
+  display: block; /* Garante que a margem funcione corretamente */
+  height: auto;
+  width: 170px;
+  margin: 25px auto; /* Centraliza a logo com margens superior/inferior e automática nas laterais */
+}
+
+/* --- ÁREA PRINCIPAL DO MENU (LINKS DE NAVEGAÇÃO) --- */
+.menu {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Faz esta área crescer para ocupar o espaço disponível, empurrando o footer para baixo */
+  overflow-y: auto; /* Adiciona scroll se os itens do menu não couberem na tela */
+}
+
+nav {
+  display: flex;
+  flex-direction: column;
+  padding: 0 15px; /* Espaçamento lateral para os links */
+}
+
+/* Estilo padrão para todos os links de navegação */
+.sidebar nav a {
+  font-family: 'Inter', sans-serif;
+  text-decoration: none;
+  color: var(--sidebar-text-color);
+  font-size: 1.1rem; /* Ajuste fino no tamanho da fonte */
   display: flex;
   align-items: center;
-  width: 100%;
-  padding: 12px 20px; /* Espaçamento interno igual aos seus links */
-  
-  /* Cor do texto e transição suave */
-  color: #d1d1d6;
-  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  padding: 14px 20px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  margin-bottom: 0.8rem;
 }
 
-/* Efeito ao passar o mouse por cima */
-.logout-button:hover {
-  background-color: #c42929; /* Uma cor de destaque para o logout */
-  color: #ffffff;
+.sidebar nav a:hover {
+  background-color: var(--link-hover-bg);
+  color: var(--sidebar-text-hover);
 }
 
-/* Espaçamento entre o ícone e o texto "Sair" */
-.logout-button i {
+.sidebar nav a i {
   margin-right: 15px;
-  font-size: 1.2rem; /* Tamanho do ícone */
+  font-size: 1.3rem;
+  width: 25px; /* Alinha os textos mesmo com ícones de larguras diferentes */
+  text-align: center;
 }
 
-  .menu {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    height: 100%;
-    padding: 20px;
-    box-sizing: border-box;
-  
-  }
-  
-  #logo {
-    margin: 25px;
-    height: 50px;
-    width: 150px;
-  }img {
-    width: 100%;
-    height: auto;
-  }
-  
-  .sidebar a {
-    font-family: 'Inter', sans-serif;
-    text-decoration: none;
-    color: white;
-    font-size: 1.3rem;
-    display: flex;
-    align-items: center;
-    padding: 10px 20px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-    margin-bottom: 1.1rem;
-    text-align: left;
-  }
-  
-  .sidebar a:hover {
-    background-color: rgba(1, 90, 95, 0.619);
-    transform: scale(1.02);
-    transition: transform 0.2s ease;
-  }
-  
-  .sidebar i {
-    margin-right: 10px;
-    color: white;
-  }
-  
-  nav {
-    margin-top: 2rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  
-  /* Botão hamburguer */
-  .hamburger {
-    position: fixed;
-    top: 1rem;
-    left: 1rem;
-    z-index: 110;
-    background-color: transparent;
-    border: none;
-    font-size: 2rem;
-    color: #03339c;
-    display: none;
-  }
-  
-  /* Mobile adjustments */
-  @media (max-width: 768px) {
-    .sidebar {
-      transform: translateX(-100%);
-      width: 100%;
-      height: 100vh;
-      position: fixed;
-      top: 0;
-      bottom: 0;
-    }
-  
-    .sidebar.open {
-      transform: translateX(0);
-    }
-  
-    .hamburger {
-      display: block;
 
-    }
-    .hamburger.hidden {
-      display: none;
-      
-      
-    }
+/* --- RODAPÉ COM PERFIL E LOGOUT --- */
+.sidebar-footer {
+  padding: 15px;
+  border-top: 1px solid var(--separator-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-profile-link {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--sidebar-text-color);
+  overflow: hidden;
+  transition: opacity 0.2s;
+}
+
+.user-profile-link:hover {
+  opacity: 0.85;
+}
+
+.user-profile-link .bi-person-circle {
+  font-size: 2.5rem;
+  flex-shrink: 0;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+  overflow: hidden;
+}
+
+.user-name {
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--sidebar-text-hover);
+}
+
+.user-email {
+  font-size: 0.75rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.logout-icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  color: var(--sidebar-text-color);
+  font-size: 1.3rem;
+  line-height: 0;
+  flex-shrink: 0;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.logout-icon-button:hover {
+  background-color: var(--logout-hover-bg);
+  color: var(--sidebar-text-hover);
+}
+
+
+/* --- BOTÃO HAMBURGUER E LÓGICA MOBILE --- */
+.hamburger {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1100;
+  background-color: white;
+  border: none;
+  font-size: 2rem;
+  color: #03339c;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: none; /* Escondido no desktop */
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
   }
-  
+ 
+  .sidebar.open {
+    transform: translateX(0);
+  }
+ 
+  .hamburger {
+    display: flex; 
+  }
+}
