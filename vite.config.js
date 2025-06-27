@@ -10,6 +10,16 @@ import { fileURLToPath } from 'url';
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  server: {
+    port: 5173, // Define a porta do servidor de desenvolvimento
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8080', // Proxy para o backend
+        changeOrigin: true, // Muda a origem do host para o destino
+        secure: false, // Desativa a verificação de certificado SSL
+      },
+    },
+  },
   resolve:{
     alias: {
       '@styles': Path.resolve(__dirname, './src/Styles'),

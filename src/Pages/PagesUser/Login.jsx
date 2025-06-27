@@ -3,59 +3,59 @@ import { useNavigate } from 'react-router-dom';
 import '../../Styles/Login.css'; // Certifique-se de que o caminho está correto
 
 const Login = () => {
-    // --- MUDANÇA 1: O estado agora é 'usuario', não 'email' ---
     const [usuario, setUsuario] = useState('');
     const [senha, setSenha] = useState('');
     const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false); // Adicionado para feedback visual
+    const [loading, setLoading] = useState(false); 
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
         setError('');
         setLoading(true);
+        console.log('--- [FRONTEND] Iniciando tentativa de login...');
 
         try {
-            // --- MUDANÇA 2: O endpoint correto é /api/auth/login ---
+            const payload = { usuario, senha };
+            console.log('--- [FRONTEND] Enviando para o backend:', payload);
+
             const response = await fetch('http://localhost:8080/api/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                // --- MUDANÇA 3: Enviamos 'usuario', não 'email' ---
-                body: JSON.stringify({ usuario, senha }),
+                body: JSON.stringify(payload),
             });
 
-            const data = await response.json(); // Pega a resposta completa do backend
+            console.log('--- [FRONTEND] Resposta recebida do backend. Status:', response.status);
+            const data = await response.json();
 
             if (!response.ok) {
-                // Usa a mensagem de erro do backend, se houver, ou uma padrão
+                console.error('--- [FRONTEND] Resposta de erro do backend:', data);
                 throw new Error(data.message || 'Credenciais inválidas. Tente novamente.');
             }
 
-            // --- MUDANÇA 4 (CRÍTICA): Salvar o token e os dados do usuário! ---
+            console.log('--- [FRONTEND] Login bem-sucedido! Dados recebidos:', data);
             if (data.token) {
-                // Salva o token no localStorage do navegador
                 localStorage.setItem('token', data.token);
-
-                // Salva os dados do usuário (exceto o token) para uso na UI
                 const userData = {
                     id: data.id,
-                    username: data.username,
+                    usuario: data.usuario,
                     email: data.email
                 };
                 localStorage.setItem('user', JSON.stringify(userData));
-
-                // Agora sim, redireciona para a página principal
-                navigate('/');
+                console.log('--- [FRONTEND] Token e usuário salvos. Navegando para /');
+                navigate('/dashboard'); // Redireciona para o dashboard após login bem-sucedido
             } else {
-                 throw new Error('Token não recebido do servidor.');
+                throw new Error('Token não recebido do servidor.');
             }
 
         } catch (err) {
+            console.error('--- [FRONTEND] ERRO CAPTURADO NO BLOCO CATCH:', err);
             setError(err.message);
         } finally {
-            setLoading(false); // Para o indicador de loading
+            setLoading(false);
+            console.log('--- [FRONTEND] Finalizando tentativa de login.');
         }
     };
 
@@ -63,9 +63,8 @@ const Login = () => {
         <div className="login-container">
             {error && <div className="error-message">{error}</div>}
             <form onSubmit={handleLogin}>
-                {/* --- MUDANÇA 5: O input agora é para 'usuário' --- */}
                 <input
-                    type="text" // Tipo 'text' é mais apropriado para nome de usuário
+                    type="text" 
                     placeholder="Usuário"
                     value={usuario}
                     onChange={(e) => setUsuario(e.target.value)}
