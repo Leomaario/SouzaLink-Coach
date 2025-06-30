@@ -1,82 +1,57 @@
 import React, { useState, useEffect } from 'react';
 import '../Styles/Css-Admin/CriarUser.css'; 
+import { apiFetch } from '.././Services/api'; // <<< IMPORTA O NOSSO PADRÃO
 
 export default function CriarUsuario() {
-  
-  // --- ESTADO PARA OS DADOS DO FORMULÁRIO ---
-  // Adicionei um campo 'usuario' para bater com o nosso backend
+  // Os seus estados continuam os mesmos
   const [formState, setFormState] = useState({
     nome: '',
-    usuario: '', // Campo de nome de usuário para login
+    usuario: '',
     email: '',
     senha: '',
     grupo: '',
-    permissoes: '' // O valor padrão pode ser USER, ADMIN, etc.
+    permissoes: 'USER' // Definindo um valor padrão
   });
-
-  // --- ESTADOS PARA A LÓGICA DO COMPONENTE ---
-  const [grupos, setGrupos] = useState(['ti', 'farmacia', 'nutricao', 'enfermagem']); // Mantemos alguns grupos fixos por enquanto
+  const [grupos, setGrupos] = useState(['ti', 'farmacia', 'nutricao', 'enfermagem']);
   const [loading, setLoading] = useState(false);
   const [mensagem, setMensagem] = useState({ type: '', text: '' });
-  
-  // (O modal para adicionar novos grupos continua igual, é uma ótima funcionalidade de UI)
-  const [novoGrupo, setNovoGrupo] = useState(''); 
-  const [mostrarModalGrupo, setMostrarModalGrupo] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormState(prevState => ({ ...prevState, [name]: value }));
   };
 
-  // --- LÓGICA DE SUBMISSÃO PARA A API ---
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMensagem({ type: '', text: '' });
 
-    // O objeto que vamos enviar para o backend
-    const dadosParaEnviar = {
-      nome: formState.nome,
-      usuario: formState.usuario,
-      email: formState.email,
-      senha: formState.senha,
-      grupo: formState.grupo,
-      permissoes: formState.permissoes || '', // Garante um valor padrão
-    };
+    const dadosParaEnviar = { ...formState };
 
     try {
-      // Usando o endpoint de registro que criamos
-      const response = await fetch('http://localhost:8080/api/usuarios', {
+      // --- LÓGICA ATUALIZADA: USANDO apiFetch ---
+      const response = await apiFetch('http://localhost:8080/api/auth/registrar', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify(dadosParaEnviar),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        // Se o backend retornar um erro (ex: email já existe), a gente pega a mensagem
-        const errorText = await response.text();
-        throw new Error(errorText || 'Falha ao registrar o usuário.');
+        throw new Error(data.message || 'Falha ao registrar o usuário.');
       }
 
-      setMensagem({ type: 'success', text: 'Usuário cadastrado com sucesso!' });
-      // Limpa o formulário
-      setFormState({
-        nome: '', usuario: '', email: '', senha: '', grupo: '', permissoes: ''
-      });
+      setMensagem({ type: 'success', text: data.message });
+      setFormState({ nome: '', usuario: '', email: '', senha: '', grupo: '', permissoes: 'USER' });
 
     } catch (error) {
-      setMensagem({ type: 'error', text: error.message });
+      if (error.message !== 'Não autorizado') {
+        setMensagem({ type: 'error', text: error.message });
+      }
     } finally {
       setLoading(false);
     }
   };
-  
-  // Lógica do modal (sem mudanças)
-  const abrirModalGrupo = () => setMostrarModalGrupo(true);
-  const fecharModalGrupo = () => setMostrarModalGrupo(false);
-  const salvarGrupo = () => { /* ... sua lógica ... */ };
 
   return (
     <div className="criar-usuario-container">

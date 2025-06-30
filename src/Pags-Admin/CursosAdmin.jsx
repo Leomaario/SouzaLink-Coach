@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import '../Styles/Css-Admin/CursosAdmin.css'; 
+import { apiFetch } from '../Services/api' // <<< 1. IMPORTAMOS O NOSSO SERVIÇO PADRÃO
+
 
 export default function CursosAdmin() {
+  // Seus estados continuam os mesmos
   const [titulo, setTitulo] = useState('');
   const [descricao, setDescricao] = useState('');
   const [catalogoId, setCatalogoId] = useState('');
@@ -11,11 +14,26 @@ export default function CursosAdmin() {
   const [mensagem, setMensagem] = useState({ type: '', text: '' });
   const [uploadProgress, setUploadProgress] = useState(0);
 
+  // --- CORREÇÃO 1: USANDO apiFetch PARA BUSCAR OS CATÁLOGOS ---
   useEffect(() => {
-    fetch('http://localhost:8080/api/catalogos')
-      .then(res => res.ok && res.status !== 204 ? res.json() : [])
-      .then(data => Array.isArray(data) && setCategorias(data))
-      .catch(() => setMensagem({ type: 'error', text: 'Erro ao carregar categorias.' }));
+    const fetchCatalogos = async () => {
+        try {
+            // Usamos o nosso serviço que já envia o token
+            const response = await apiFetch('http://localhost:8080/api/catalogos');
+            if (response.ok && response.status !== 204) {
+                const data = await response.json();
+                if (Array.isArray(data)) {
+                    setCategorias(data);
+                }
+            }
+        } catch (error) {
+            // O apiFetch já trata o erro 401. Só precisamos tratar outros erros.
+            if (error.message !== 'Não autorizado') {
+                setMensagem({ type: 'error', text: 'Erro ao carregar categorias.' });
+            }
+        }
+    }
+    fetchCatalogos();
   }, []);
 
   const handleVideoUpload = (e) => {
@@ -41,8 +59,20 @@ export default function CursosAdmin() {
     formData.append('file', videoFile);
 
     const xhr = new XMLHttpRequest();
-    // A URL agora é a principal de vídeos, já que o controller sabe diferenciar o tipo de requisição
-    xhr.open('POST', 'http://localhost:8080/api/videos', true);
+    xhr.open('POST', 'http://localhost:8080/api/videos', true); // Sugestão: usar um endpoint específico para upload
+
+    // --- CORREÇÃO 2: ADICIONANDO O TOKEN À REQUISIÇÃO DE UPLOAD ---
+    const token = localStorage.getItem('token');
+    if (token) {
+        // Adicionamos o cabeçalho de autorização antes de enviar
+        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+    } else {
+        // Se não houver token, não faz sentido nem tentar enviar
+        setMensagem({ type: 'error', text: 'Erro de autenticação. Por favor, faça login novamente.' });
+        setLoading(false);
+        return;
+    }
+    // ----------------------------------------------------------------
 
     xhr.upload.onprogress = (event) => {
       if (event.lengthComputable) {
@@ -53,7 +83,7 @@ export default function CursosAdmin() {
 
     xhr.onload = () => {
       setLoading(false);
-      if (xhr.status === 201) {
+      if (xhr.status === 201 || xhr.status === 200) { // Aceita 200 OK também
         const resultado = JSON.parse(xhr.responseText);
         setMensagem({ type: 'success', text: `Curso "${resultado.titulo}" cadastrado!` });
         e.target.reset();
@@ -65,14 +95,19 @@ export default function CursosAdmin() {
       }
     };
 
-    xhr.onerror = () => {
-      setLoading(false);
-      setMensagem({ type: 'error', text: 'Erro de rede ou CORS.' });
-      setUploadProgress(0);
+     xhr.onerror = () => {
+        setLoading(false);
+        setMensagem({ type: 'error', text: 'Erro de rede ou CORS.' });
+        setUploadProgress(0);
+        
     };
+      xhr.send(formData);
+      
+  }
 
-    xhr.send(formData);
-  };
+
+
+
 
   return (
     <div className="adicionar-curso-container">
@@ -86,6 +121,7 @@ export default function CursosAdmin() {
           <label>Descrição</label>
           <textarea value={descricao} onChange={(e) => setDescricao(e.target.value)} />
         </div>
+
         <div className="form-group">
           <label>Categoria</label>
           <select value={catalogoId} onChange={(e) => setCatalogoId(e.target.value)} required>
@@ -94,6 +130,7 @@ export default function CursosAdmin() {
               <option key={cat.id} value={cat.id}>{cat.nome}</option>
             ))}
           </select>
+          
         </div>
         <div className="form-group">
           <label>Upload do Vídeo</label>
@@ -125,4 +162,5 @@ export default function CursosAdmin() {
       </form>
     </div>
   );
+  
 }

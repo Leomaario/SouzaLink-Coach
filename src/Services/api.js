@@ -38,7 +38,7 @@ export const apiFetch = async (url, options = {}) => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     // Redireciona para a página de login
-    window.location.href = '/login'; 
+    window.location.href = '/'; 
     // Lança um erro para interromper a execução do código que fez a chamada
     throw new Error('Não autorizado');
   }
