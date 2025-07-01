@@ -1,130 +1,134 @@
 import React, { useState, useEffect } from 'react';
 import '../../Styles/PlayerCurso.css'; 
 import { useParams, Link } from 'react-router-dom';
-import { apiFetch } from '../../Services/api'; 
+import { apiFetch } from '../../Services/api';
 
 const PlayerCurso = () => {
-  const { id } = useParams(); 
-  const [videoAtual, setVideoAtual] = useState(null);
-  const [playlist, setPlaylist] = useState([]);
-  const [videoSrc, setVideoSrc] = useState(''); // <<< NOVO ESTADO PARA O URL DO VÍDEO
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+    const { id } = useParams(); 
+    const [videoAtual, setVideoAtual] = useState(null);
+    const [playlist, setPlaylist] = useState([]);
+    const [videoSrc, setVideoSrc] = useState('');
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-  // Efeito para buscar os metadados do vídeo e a playlist
- useEffect(() => {
-    if (!id) return;
+    useEffect(() => {
+        if (!id) return;
 
-    const fetchDadosDoCurso = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        setVideoAtual(null);
-        setVideoSrc('');
+        const fetchDadosDoCurso = async () => {
+            setLoading(true); // Garante que o loading seja reativado ao navegar para um novo vídeo
+            setError(null);
+            
+            try {
+                const videoResponse = await apiFetch(`/api/videos/buscar/${id}`);
+                if (!videoResponse.ok) {
+                    throw new Error(`Vídeo com ID ${id} não encontrado.`);
+                }
+                const videoData = await videoResponse.json();
+                setVideoAtual(videoData);
 
-        // AQUI ESTÁ A CORREÇÃO CRÍTICA: USANDO O CAMINHO "/buscar/"
-        const videoResponse = await apiFetch(`http://localhost:8080/api/videos/buscar/${id}`);
-        
-        if (!videoResponse.ok) {
-          // O .json() aqui vai ler a mensagem de erro que o backend envia (ex: "Não encontrado")
-          const errorData = await videoResponse.json().catch(() => null); // Tenta ler o erro, mas não falha se estiver vazio
-          throw new Error(errorData?.message || `Vídeo com ID ${id} não encontrado.`);
+                if (videoData?.catalogoId) {
+                    const playlistResponse = await apiFetch(`/api/catalogos/${videoData.catalogoId}/videos`);
+                    if (playlistResponse.ok) {
+                        const playlistData = await playlistResponse.json();
+                        setPlaylist(playlistData || []);
+                    }
+                }
+            } catch (err) {
+                if (err.message !== 'Não autorizado') {
+                    setError(err.message);
+                }
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchDadosDoCurso();
+    }, [id]);
+
+    useEffect(() => {
+        if (videoAtual && videoAtual.id.toString() === id) { // Garante que estamos a carregar o vídeo certo
+            setVideoSrc(''); // Limpa o src antigo antes de carregar o novo
+            const fetchVideoFile = async () => {
+                try {
+                    const response = await apiFetch(`/api/videos/${videoAtual.id}/stream`);
+                    if (!response.ok) throw new Error('Falha ao carregar o arquivo de vídeo.');
+                    const videoBlob = await response.blob();
+                    const objectURL = URL.createObjectURL(videoBlob);
+                    setVideoSrc(objectURL);
+                } catch(err) {
+                    if (err.message !== 'Não autorizado') setError("Não foi possível carregar o vídeo.");
+                }
+            };
+            fetchVideoFile();
         }
-        
-        const videoData = await videoResponse.json();
-        setVideoAtual(videoData);
+    }, [videoAtual, id]); // Depende do vídeo principal e do ID da URL
 
-        // O resto da sua lógica para buscar a playlist continua igual...
-        if (videoData?.catalogo?.id) {
-          const catalogoId = videoData.catalogo.id;
-          const playlistResponse = await apiFetch(`http://localhost:8080/api/catalogos/${catalogoId}/videos`);
-          if (playlistResponse.ok) {
-            const playlistData = await playlistResponse.json();
-            setPlaylist(playlistData || []);
-          }
-        }
-      } catch (err) {
-        if (err.message !== 'Não autorizado') {
-            console.error("Erro ao buscar dados do curso:", err);
-            setError(err.message || "Ocorreu um erro ao carregar o curso.");
-        }
-      } finally {
-        setLoading(false);
-      }
+    const handleMarcarConcluido = () => {
+        alert("Funcionalidade de marcar como concluído será implementada em breve!");
     };
 
-    fetchDadosDoCurso();
-  }, [id]);
+    // --- NOVA ESTRUTURA DE RENDERIZAÇÃO ---
 
-  // --- LÓGICA NOVA PARA O STREAMING AUTENTICADO ---
-  // Efeito para buscar o VÍDEO em si (o arquivo) depois que os DADOS do vídeo foram carregados
-  useEffect(() => {
-    // Só roda se já tivermos os dados do vídeo e ainda não tivermos o src
-    if (videoAtual && !videoSrc) {
-      const fetchVideoFile = async () => {
-        try {
-          const streamUrl = `http://localhost:8080/api/videos/${videoAtual.id}/stream`;
-          // 3. Usa o apiFetch para buscar o arquivo de vídeo (ele envia o token)
-          const response = await apiFetch(streamUrl);
-
-          if (!response.ok) {
-            throw new Error('Falha ao carregar o arquivo de vídeo.');
-          }
-
-          // Converte a resposta em um Blob
-          const videoBlob = await response.blob();
-          // Cria um URL de objeto local para o Blob
-          const objectURL = URL.createObjectURL(videoBlob);
-          // Define este URL local como a fonte do vídeo
-          setVideoSrc(objectURL);
-
-        } catch(err) {
-            if (err.message !== 'Não autorizado') {
-                console.error("Erro ao carregar o streaming:", err);
-                setError("Não foi possível carregar o vídeo.");
-            }
-        }
-      };
-
-      fetchVideoFile();
+    // 1. Primeiro, verificamos se está a carregar
+    if (loading) {
+        return <div className="player-curso-wrapper"><p className="status-message">A carregar curso...</p></div>;
     }
-  }, [videoAtual, videoSrc]); // Depende do videoAtual e do videoSrc
 
+    // 2. Se não estiver a carregar, verificamos se há um erro
+    if (error) {
+        return <div className="player-curso-wrapper"><p className="status-message error-message">{error}</p></div>;
+    }
 
-  if (loading) {
-    return <div className="player-curso-wrapper"><p className="status-message">Carregando curso...</p></div>;
-  }
+    // 3. Se não está a carregar E não há erro, mas o videoAtual ainda não chegou, mostramos um último loading.
+    //    Isto é uma segurança extra.
+    if (!videoAtual) {
+        return <div className="player-curso-wrapper"><p className="status-message">A preparar o player...</p></div>;
+    }
+    
+    // 4. Se chegámos aqui, é 100% seguro desenhar a página
+    return (
+        <div className="player-curso-wrapper">
+            <div className="player-main">
+                <div className="video-box">
+                    {videoSrc ? (
+                        <video key={videoAtual.id} controls autoPlay className="video-player">
+                            <source src={videoSrc} type="video/mp4" />
+                            Seu navegador não suporta a reprodução de vídeo.
+                        </video>
+                    ) : (
+                        <div className="video-player-loading">A carregar vídeo...</div>
+                    )}
+                    <div className="video-details">
+                        <h2>{videoAtual.titulo}</h2>
+                        <p>{videoAtual.descricao}</p>
+                    </div>
+                </div>
 
-  if (error || !videoAtual) {
-    return <div className="player-curso-wrapper"><p className="status-message error-message">{error || "Curso não encontrado."}</p></div>;
-  }
-  
-  return (
-    <div className="player-curso-wrapper">
-      <div className="player-main">
-        <div className="video-box">
-          {/* Se o videoSrc estiver pronto, renderiza o player. Senão, mostra "Carregando vídeo..." */}
-          {videoSrc ? (
-            <video key={videoAtual.id} controls autoPlay className="video-player">
-                {/* O src agora usa nosso URL de Blob local e seguro */}
-                <source src={videoSrc} type="video/mp4" />
-                Seu navegador não suporta a reprodução de vídeo.
-            </video>
-          ) : (
-            <div className="video-player-loading">Carregando vídeo...</div>
-          )}
-          <div className="video-details">
-            <h2>{videoAtual.titulo}</h2>
-            <p>{videoAtual.descricao}</p>
-          </div>
+                <div className="curso-sidebar">
+                    <h3>Conteúdo do Catálogo</h3>
+                    <ul className="aulas-lista">
+                        <li className="active">
+                            <Link to={`/curso/${videoAtual.id}`}>
+                                ▶️ {videoAtual.titulo} (a assistir)
+                            </Link>
+                        </li>
+                        {playlist
+                            .filter(v => v.id !== videoAtual.id) // Garante que o vídeo atual não se repete na lista
+                            .map(videoDaLista => (
+                                <li key={videoDaLista.id}>
+                                    <Link to={`/curso/${videoDaLista.id}`}>
+                                        {videoDaLista.titulo}
+                                    </Link>
+                                </li>
+                        ))}
+                    </ul>
+                    <button onClick={handleMarcarConcluido} className="botao-concluir">
+                        Marcar como concluído
+                    </button>
+                </div>
+            </div>
         </div>
-
-        <div className="curso-sidebar">
-            {/* O resto do seu componente (playlist, etc) continua igual */}
-        </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default PlayerCurso;

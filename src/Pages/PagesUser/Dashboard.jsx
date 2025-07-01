@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '@styles/Dashboard.css';
 import { Link, useNavigate } from 'react-router-dom';
-import { apiFetch } from '../../services/api'; // O nosso serviço de API
+import { apiFetch } from '../../Services/api'; 
 
 export default function Dashboard() {
     const navigate = useNavigate();
