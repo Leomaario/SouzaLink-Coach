@@ -1,15 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import '@styles/Sidebar.css'; 
+import '@styles/Sidebar.css';
+import {  HouseDoorFill, BookFill, FunnelFill, EnvelopeCheck, PersonWorkspace, Cast, Backpack3, PersonPlusFill, FileEarmarkBarGraph, PersonCircle, BoxArrowRight} from 'react-bootstrap-icons';
+
 
 function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
-  // NOVO ESTADO: para guardar os dados do usuário logado
-  const [currentUser, setCurrentUser] = useState(null); 
   const navigate = useNavigate();
+  const [user, setUser] = useState(null);
 
-  const toggleSidebar = () => setIsOpen(!isOpen);
-  const closeSidebar = () => setIsOpen(false);
+  useEffect(() => {
+    const userDataString = localStorage.getItem('user');
+    if (userDataString) {
+      setUser(JSON.parse(userDataString));
+    }
+  }, []);
+
+  const isAdmin = user?.roles?.includes('ROLE_ADMIN');
+
+  const toggleSidebar = () => {
+    setIsOpen(!isOpen);
+  };
   
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -17,60 +28,47 @@ function Sidebar() {
     navigate('/');
   };
 
-  // Efeito para carregar os dados do usuário do localStorage UMA VEZ
-  useEffect(() => {
-    const userString = localStorage.getItem('user');
-    if (userString) {
-      // Parseia o JSON e guarda o objeto do usuário no estado
-      setCurrentUser(JSON.parse(userString));
-    }
-  }, []); // O array vazio [] garante que isso rode só na montagem do componente
-
-  // Efeito para fechar o menu ao clicar fora
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      const sidebar = document.querySelector('.sidebar');
-      const hamburger = document.querySelector('.hamburger');
-      if (sidebar && !sidebar.contains(event.target) && hamburger && !hamburger.contains(event.target)) {
-        closeSidebar();
-      }
-    };
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
-  }, []);
-
   return (
     <>
-      {!isOpen && (
-        <button className="hamburger" onClick={toggleSidebar}>
-          <i className="bi bi-list"></i>
-        </button>
-      )}
+      <button className="hamburger" onClick={toggleSidebar}>
+        <i className="bi bi-list"></i>
+      </button>
 
       <div className={`sidebar ${isOpen ? 'open' : ''}`}>
-        <img src="/imgs/logo.png" id="logo" alt="Logo" />
-        <div className="menu">
-          <nav>
-            {/* Seus links de navegação aqui... */}
-            <Link to="/dashboard" onClick={closeSidebar}><i className="bi bi-cast"></i>Dashboard</Link>
-            <Link to="/MeusCursos" onClick={closeSidebar}><i className="bi bi-backpack3"></i>Meus Cursos</Link>
-            <Link to="/Catalogo" onClick={closeSidebar}><i className="bi bi-funnel-fill"></i>Catálogo</Link>
-            <Link to="/MeusCertificados" onClick={closeSidebar}><i className="bi bi-envelope-check"></i>Certificados</Link>
-            <Link to="/PainelAdmin" onClick={closeSidebar}><i className="bi bi-heart-fill"></i>Painel Admin</Link>
-          </nav>
+        <div className="sidebar-content">
+          <img src="/imgs/logo.png" id="logo" alt="Logo" />
+          <div className="menu">
+            <nav>
+              <Link to="/dashboard" onClick={toggleSidebar}><HouseDoorFill /><span>Dashboard</span></Link>
+              <Link to="/MeusCursos" onClick={toggleSidebar}><BookFill /><span>Meus Cursos</span></Link>
+              <Link to="/Catalogo" onClick={toggleSidebar}><FunnelFill /><span>Catálogo</span></Link>
+              <Link to="/MeusCertificados" onClick={toggleSidebar}><EnvelopeCheck /><span>Certificados</span></Link>
+              
+              {isAdmin && (
+                <>
+                  <div className="admin-divider"></div>
+                  <h2 className='title-adm'>Atalhos Administrativos</h2>
+                  <Link to="/PainelAdmin" onClick={toggleSidebar}><PersonWorkspace /><span>Painel Admin</span></Link>
+                  <Link to="/CriarCatalogo" onClick={toggleSidebar}><Cast /><span>Criar Catálogo</span></Link>
+                  <Link to="/CursosAdmin" onClick={toggleSidebar}><Backpack3 /><span>Adicionar Curso</span></Link>
+                  <Link to="/Usuario" onClick={toggleSidebar}><PersonPlusFill /><span>Criar Utilizador</span></Link>
+                  <Link to="/EditarRelatorio" onClick={toggleSidebar}><FileEarmarkBarGraph /><span>Criar Relatório</span></Link>
+                </>
+              )}
+            </nav>
+          </div>
         </div>
-        
-        {/* --- NOVA SEÇÃO DE PERFIL E LOGOUT --- */}
+
         <div className="sidebar-footer">
-          <Link to="/EditProfile" className="user-profile-link" onClick={closeSidebar}>
-            <i className="bi bi-person-circle"></i>
+          <Link to="/EditProfile" className="user-profile-link">
+            <PersonCircle className="user-avatar" />
             <div className="user-info">
-              <span className="user-name">{currentUser?.usuario || 'Carregando...'}</span>
-              <span className="user-email">{currentUser?.email}</span>
+                <span className="user-name">{user?.usuario || 'Utilizador'}</span>
+                <span className="user-email">{user?.email || ''}</span>
             </div>
           </Link>
-          <button onClick={handleLogout} className="logout-icon-button" title="Sair">
-            <i className="bi bi-box-arrow-right"></i>
+          <button className="logout-icon-button" onClick={handleLogout} title="Sair">
+              <BoxArrowRight />
           </button>
         </div>
       </div>

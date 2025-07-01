@@ -19,6 +19,7 @@ const CursoCard = ({ curso }) => (
         <div className='progresso-container'>
           <div 
             className='progresso-bar' 
+            
             style={{ width: `0%` }} 
           ></div>
         </div>

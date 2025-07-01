@@ -1,67 +1,93 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom'; 
+import { apiFetch } from '../../Services/api'; 
 import '@styles/Certificados.css';
 
-const certificados = [
-  {
-    id: 1,
-    curso: "React Avançado",
-    data: "Janeiro/2025",
-    imagem: "https://placehold.co/300x200/4472C4/FFFFFF?text=React",
-  },
-  {
-    id: 2,
-    curso: "JavaScript Moderno",
-    data: "Dezembro/2024",
-    imagem: "https://placehold.co/300x200/F6820D/FFFFFF?text=JS",
-  },
-  {
-    id: 3,
-    curso: "GLPI Chamados",
-    data: "Março/2025",
-    imagem: "https://placehold.co/300x200/4472C4/FFFFFF?text=GLPI",
-  },
-];
-
 const Certificados = () => {
-  return (
-    <div className="certificados-container">
-      <div className="certificado-topo">
-        <img
-          src="https://placehold.co/800x300/EEEEEE/333333?text=Modelo+de+Certificado"
-          alt="Modelo de Certificado"
-          className="modelo-certificado"
-        />
-        <button className="botao-visualizar">Visualizar Modelo</button>
-      </div>
+    // 1. Estados para guardar os dados, o loading e possíveis erros
+    const [certificados, setCertificados] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-      <h1 className="titulo-certificados">Seus Certificados</h1>
-      <p className="subtitulo-certificados">Veja os cursos que você concluiu com sucesso</p>
+    // 2. useEffect para buscar os dados quando a página carrega
+    useEffect(() => {
+        const fetchMeusCertificados = async () => {
+            try {
+                const response = await apiFetch('/api/certificados/meus');
+                if (!response.ok) {
+                    throw new Error('Falha ao carregar seus certificados.');
+                }
+                const data = await response.json();
+                setCertificados(data);
+            } catch (err) {
+                if (err.message !== 'Não autorizado') {
+                    setError(err.message);
+                }
+            } finally {
+                setLoading(false);
+            }
+        };
 
-      <div className="filtros">
-        <input type="text" placeholder="Buscar curso..." />
-        <select>
-          <option>Todos os anos</option>
-          <option>2025</option>
-          <option>2024</option>
-        </select>
-      </div>
+        fetchMeusCertificados();
+    }, []); // O array vazio [] garante que roda só uma vez
 
-      <div className="lista-certificados">
-        {certificados.map((cert) => (
-          <div key={cert.id} className="card-certificado">
-            <img src={cert.imagem} alt={cert.curso} />
-            <h3>{cert.curso}</h3>
-            <p>Concluído: {cert.data}</p>
-            <div className="acoes">
-              <button>Visualizar</button>
-              <button>Baixar PDF</button>
-              <button>Compartilhar</button>
+    // Renderização para o estado de carregamento
+    if (loading) {
+        return <div className="certificados-container"><h1>Seus Certificados</h1><p>A carregar...</p></div>;
+    }
+
+    // Renderização para o estado de erro
+    if (error) {
+        return <div className="certificados-container"><h1>Seus Certificados</h1><p>Erro: {error}</p></div>;
+    }
+
+    return (
+        <div className="certificados-container">
+            <div className="certificado-topo">
+                <img
+                    src="https://placehold.co/800x300/EEEEEE/333333?text=Modelo+de+Certificado"
+                    alt="Modelo de Certificado"
+                    className="modelo-certificado"
+                />
+                <button className="botao-visualizar">Visualizar Modelo</button>
             </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+
+            <h1 className="titulo-certificados">Seus Certificados</h1>
+            <p className="subtitulo-certificados">Veja os cursos que você concluiu com sucesso</p>
+
+            {/* Os filtros continuam aqui, mas a lógica deles pode ser implementada no futuro */}
+            <div className="filtros">
+                <input type="text" placeholder="Buscar curso..." />
+                <select>
+                    <option>Todos os anos</option>
+                    <option>2025</option>
+                    <option>2024</option>
+                </select>
+            </div>
+
+            <div className="lista-certificados">
+                {certificados.length > 0 ? (
+                    // 3. O map agora usa a lista de certificados do nosso estado
+                    certificados.map((cert) => (
+                        <div key={cert.id} className="card-certificado">
+                            {/* A imagem agora é um placeholder dinâmico */}
+                            <img src={`https://placehold.co/300x200/4472C4/FFFFFF?text=${encodeURIComponent(cert.tituloCurso)}`} alt={cert.tituloCurso} />
+                            {/* Usando os nomes dos campos que vêm da API */}
+                            <h3>{cert.tituloCurso}</h3>
+                            <p>Concluído em: {new Date(cert.dataEmissao).toLocaleDateString('pt-BR')}</p>
+                            <div className="acoes">
+                                <button>Visualizar</button>
+                                <button>Baixar PDF</button>
+                                <button>Compartilhar</button>
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <p>Você ainda não possui certificados.</p>
+                )}
+            </div>
+        </div>
+    );
 };
 
 export default Certificados;

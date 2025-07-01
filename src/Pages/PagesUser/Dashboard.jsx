@@ -1,88 +1,111 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import '@styles/Dashboard.css';
 import { Link, useNavigate } from 'react-router-dom';
+import { apiFetch } from '../../services/api'; // O nosso serviço de API
 
 export default function Dashboard() {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const curso = {
-    id: 'css-avancado',
-    nome: 'CSS Avançado',
-    progresso: 75,
-    imagem: 'https://placehold.co/60x60/70AD47/FFFFFF/png?text=CSS',
-  };
+    // 1. Estados para guardar os dados que virão da API
+    const [dashboardData, setDashboardData] = useState({
+        cursoEmDestaque: null,
+        totalCursos: 0,
+    });
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-  const handleCursoClick = (id) => {
-    navigate(`/curso/${id}`);
-  };
+    // 2. useEffect para buscar os dados assim que o componente carrega
+    useEffect(() => {
+        const fetchDashboardData = async () => {
+            try {
+                // Chamada para o novo endpoint que criámos no backend
+                const response = await apiFetch('/api/user-dashboard/data');
+                if (!response.ok) {
+                    throw new Error('Falha ao carregar dados do dashboard.');
+                }
+                const data = await response.json();
+                setDashboardData(data);
+            } catch (err) {
+                if (err.message !== 'Não autorizado') {
+                    console.error("Erro no dashboard:", err);
+                    setError(err.message);
+                }
+            } finally {
+                setLoading(false);
+            }
+        };
 
-  return (
-    <div className="dashboard-container">
-      <h1>Dashboard</h1>
+        fetchDashboardData();
+    }, []); // O array vazio [] garante que roda só uma vez
 
-      <div className="dashboard-grid">
+    // Renderização para o estado de carregamento
+    if (loading) {
+        return <div className="dashboard-container"><h1>Dashboard</h1><p className="status-message">A carregar...</p></div>;
+    }
 
-        {/* Lado Esquerdo */}
-        <div className='container-left'>
-          <div className="card resumo-progresso">
-            <h2>Resumo do Progresso</h2>
-            <p><strong>5</strong> cursos</p>
-            <p><strong>67%</strong> média de conclusão</p>
-            <p><strong>2</strong> em andamento</p>
-          </div>
+    // Renderização para o estado de erro
+    if (error) {
+        return <div className="dashboard-container"><h1>Dashboard</h1><p className="status-message error-message">Erro: {error}</p></div>;
+    }
 
-          <div className="card lembretes">
-            <h2>Próximos prazos / Lembretes</h2>
-            <ul>
-              <li>
-                Você tem um quiz pendente no curso <Link to="/curso/js-moderno">JavaScript Moderno</Link>
-              </li>
-              <li>
-                O módulo 3 do curso <Link to="/curso/react">Introdução ao React</Link> vence amanhã
-              </li>
-            </ul>
-          </div>
-        </div>
+    return (
+        <div className="dashboard-container">
+            <h1>Dashboard</h1>
+            <div className="dashboard-grid">
+                {/* Lado Esquerdo */}
+                <div className='container-left'>
+                    <div className="card resumo-progresso">
+                        <h2>Resumo do Progresso</h2>
+                        {/* 3. Exibindo o total de cursos real */}
+                        <p><strong>{dashboardData.totalCursos}</strong> cursos disponíveis na plataforma</p>
+                        {/* As outras estatísticas precisam do sistema de progresso que vamos construir no futuro */}
+                        <p><strong>--%</strong> média de conclusão</p>
+                        <p><strong>--</strong> em andamento</p>
+                    </div>
 
-        {/* Lado Direito */}
-        <div className='container-right'> 
-          <div className="card curso-destaque">
-            <h2>Curso em Destaque</h2>
-            <div className="curso-info">
-              <img src={curso.imagem} alt={curso.nome} />
-              <div>
-                <strong>{curso.nome}</strong>
-                <div className="progress-bar">
-                  <div style={{ width: `${curso.progresso}%` }} className="progress" />
+                    <div className="card lembretes">
+                        <h2>Próximos prazos / Lembretes</h2>
+                        <ul>
+                            <li>Funcionalidade de lembretes em breve!</li>
+                        </ul>
+                    </div>
                 </div>
-                <p>{curso.progresso}% em andamento</p>
-              </div>
-            </div>
-            <button 
-              className="botao-assistir"
-              onClick={() => handleCursoClick(curso.id)}
-              style={{ cursor: 'pointer' }}
-            >
-              Continuar assistindo
-            </button>
-          </div>
 
-          <div className="card certificados">
-            <h2>Certificados conquistados recentemente</h2>
-            <div className="certificados-lista">
-              <div className="certificado">
-                <img src="https://placehold.co/40x40/007bff/fff?text=JS" alt="JS" />
-                <p>JavaScript Moderno<br /><Link to="/certificados/js">Visualizar certificado</Link></p>
-              </div>
-              <div className="certificado">
-                <img src="https://placehold.co/40x40/007bff/fff?text=RE" alt="React" />
-                <p>Introdução ao React<br /><Link to="/certificados/react">Visualizar certificado</Link></p>
-              </div>
+                {/* Lado Direito */}
+                <div className='container-right'>
+                    {/* 4. O "Curso em Destaque" agora é dinâmico */}
+                    {dashboardData.cursoEmDestaque ? (
+                        <div className="card curso-destaque">
+                            <h2>Curso em Destaque</h2>
+                            <div className="curso-info">
+                                <img src={`https://placehold.co/60x60/70AD47/FFFFFF/png?text=${dashboardData.cursoEmDestaque.titulo.substring(0, 2)}`} alt={dashboardData.cursoEmDestaque.titulo} />
+                                <div>
+                                    <strong>{dashboardData.cursoEmDestaque.titulo}</strong>
+                                    <p>Este é o curso mais recente na plataforma!</p>
+                                </div>
+                            </div>
+                            <button
+                                className="botao-assistir"
+                                onClick={() => navigate(`/curso/${dashboardData.cursoEmDestaque.id}`)}
+                            >
+                                Começar a assistir
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="card curso-destaque">
+                            <h2>Curso em Destaque</h2>
+                            <p>Nenhum curso para destacar no momento.</p>
+                        </div>
+                    )}
+                    
+                    <div className="card certificados">
+                        <h2>Certificados conquistados recentemente</h2>
+                        <div className="certificados-lista">
+                           <p>Veja seus certificados na página <Link to="/MeusCertificados">Meus Certificados</Link>.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-
-      </div>
-    </div>
-  );
+    );
 }

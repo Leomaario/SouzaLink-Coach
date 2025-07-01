@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../Styles/Login.css'; // Certifique-se de que o caminho está correto
+import { apiFetch } from '../../services/api'; // Certifique-se que o caminho para api.js está correto
 
 const Login = () => {
     const [usuario, setUsuario] = useState('');
@@ -13,57 +14,50 @@ const Login = () => {
         e.preventDefault();
         setError('');
         setLoading(true);
-        console.log('--- [FRONTEND] Iniciando tentativa de login...');
 
         try {
-            const payload = { usuario, senha };
-            console.log('--- [FRONTEND] Enviando para o backend:', payload);
-
-            const response = await fetch('http://localhost:8080/api/auth/login', {
+            const response = await apiFetch('http://localhost:8080/api/auth/login', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload),
+                body: JSON.stringify({ usuario, senha }),
             });
 
-            console.log('--- [FRONTEND] Resposta recebida do backend. Status:', response.status);
             const data = await response.json();
 
             if (!response.ok) {
-                console.error('--- [FRONTEND] Resposta de erro do backend:', data);
                 throw new Error(data.message || 'Credenciais inválidas. Tente novamente.');
             }
 
-            console.log('--- [FRONTEND] Login bem-sucedido! Dados recebidos:', data);
             if (data.token) {
+                // Guarda o token na sua própria chave
                 localStorage.setItem('token', data.token);
+
+                // --- AQUI ESTÁ A CORREÇÃO ---
+                // Cria o objeto do utilizador, garantindo que as 'roles' estão incluídas
                 const userData = {
                     id: data.id,
                     usuario: data.usuario,
-                    email: data.email
+                    email: data.email,
+                    roles: data.roles // <<< A LINHA QUE FALTAVA
                 };
+                // Guarda o objeto completo do utilizador
                 localStorage.setItem('user', JSON.stringify(userData));
-                console.log('--- [FRONTEND] Token e usuário salvos. Navegando para /');
-                navigate('/dashboard'); // Redireciona para o dashboard após login bem-sucedido
+
+                // Navega para o dashboard após o sucesso
+                navigate('/dashboard');
             } else {
                 throw new Error('Token não recebido do servidor.');
             }
 
         } catch (err) {
-            console.error('--- [FRONTEND] ERRO CAPTURADO NO BLOCO CATCH:', err);
             setError(err.message);
         } finally {
             setLoading(false);
-            console.log('--- [FRONTEND] Finalizando tentativa de login.');
         }
     };
 
     return (
         <div className="login-container">
-
             {error && <div className="error-message">{error}</div>}
-
             <form onSubmit={handleLogin}>
                 <img src="/imgs/logo.png" alt="Logo" className="logo" />
                 <input
