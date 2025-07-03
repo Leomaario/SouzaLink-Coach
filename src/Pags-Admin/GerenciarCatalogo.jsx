@@ -115,6 +115,41 @@ const GerenciarCatalogos = () => {
                     <form className="modal-content" onSubmit={handleSalvar} onClick={e => e.stopPropagation()}>
                         <h2>{catalogoEmEdicao.id ? 'Editar Catálogo' : 'Novo Catálogo'}</h2>
                         {/* ... inputs para nome, descrição, ícone e tag ... */}
+                        <div className="modal-inputs">
+                            <label>
+                                Nome:
+                                <input
+                                    type="text"
+                                    value={catalogoEmEdicao.nome}
+                                    onChange={(e) => setCatalogoEmEdicao({ ...catalogoEmEdicao, nome: e.target.value })}
+                                    required
+                                />
+                            </label>
+                            <label>
+                                Descrição:
+                                <textarea
+                                    value={catalogoEmEdicao.descricao}
+                                    onChange={(e) => setCatalogoEmEdicao({ ...catalogoEmEdicao, descricao: e.target.value })}
+                                    required
+                                />
+                            </label>
+                            <label>
+                                Ícone (URL):
+                                <input
+                                    type="text"
+                                    value={catalogoEmEdicao.icone}
+                                    onChange={(e) => setCatalogoEmEdicao({ ...catalogoEmEdicao, icone: e.target.value })}
+                                />
+                            </label>
+                            <label>
+                                Tag:
+                                <input
+                                    type="text"
+                                    value={catalogoEmEdicao.tag}
+                                    onChange={(e) => setCatalogoEmEdicao({ ...catalogoEmEdicao, tag: e.target.value })}
+                                />
+                            </label>
+                        </div>
                         <div className="modal-actions">
                             <button type="submit">Salvar</button>
                             <button type="button" onClick={handleFecharModal}>Cancelar</button>
