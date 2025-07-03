@@ -16,12 +16,17 @@ import PlayerCurso from './Pages/PagesUser/PlayerCurso';
 import EditProfile from './Pages/PagesUser/EditProfile';
 import CatalogoDetalhes from './Pages/PagesUser/CatalogoDetalhes';
 
+import NoteFoundPage from './Pages/NoteFoundPage'; // Página de erro 404
+
 import PainelAdmin from './Pags-Admin/PainelAdmin';
 import CriarCatalogo from './Pags-Admin/CriarCatalogo';
 import CursosAdmin from './Pags-Admin/CursosAdmin';
 import CriarUsuario from './Pags-Admin/Usuario';
 import EditarRelatorio from './Pags-Admin/EditarRelatorio';
 import EmitirRelatorios from './Pags-Admin/Relatorios';
+import GerenciarUsuarios from './Pags-Admin/GerenciarUsuarios';
+{/* import GerenciarCursos from './Pags-Admin/GerenciarCursos';*/}
+import GerenciarCatalogo from './Pags-Admin/GerenciarCatalogo';
 
 
 // --- Layout Principal (com Sidebar) ---
@@ -75,10 +80,13 @@ function App() {
         <Route path="/usuario" element={<CriarUsuario/>}/>
         <Route path="/editarrelatorio" element={<EditarRelatorio/>} />
         <Route path="/emitirrelatorios" element={<EmitirRelatorios/>} />
+        <Route path="/gerenciarusuarios" element={<GerenciarUsuarios />} />
+        {/* <Route path="/gerenciarcursos" element={<GerenciarCursos />}  /> */}
+        <Route path="/gerenciarcatalogo" element={<GerenciarCatalogo />} />
       </Route>
       
       {/* Rota de fallback para quando nenhuma rota acima for correspondida */}
-      <Route path="*" element={<h1>Página não encontrada, volte para a página anterior</h1>} />
+      <Route path="*" element={<NoteFoundPage />} />
     </Routes>
   );
 }

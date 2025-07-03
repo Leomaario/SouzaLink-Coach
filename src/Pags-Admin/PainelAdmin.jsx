@@ -60,7 +60,6 @@ function PainelAdmin() {
         <div className="admin-dashboard">
             <h1 className="admin-titulo">Painel do Administrador</h1>
 
-            {/* Visão Geral com dados dinâmicos */}
             <div className="admin-visao-geral">
                 <div className="visao-card">
                     <BsBookFill className="visao-icon" />
@@ -83,23 +82,24 @@ function PainelAdmin() {
                         <p>{stats.totalRelatorios} gerados</p>
                     </div>
                 </div>
+
             </div>
 
             {/* Ações do admin completas */}
             <div className="admin-cards-container">
-                <div className="admin-card" onClick={() => navigate('/AdicionarCurso')}>
+                <div className="admin-card" onClick={() => navigate('/CursosAdmin')}>
                     <i className="bi bi-plus-square-fill icon"></i>
                     <h2>Adicionar Curso</h2>
                     <p>Crie um novo curso com descrição, módulos e vídeos.</p>
                 </div>
 
-                <div className="admin-card" onClick={() => navigate('/CriarUsuario')}>
+                <div className="admin-card" onClick={() => navigate('/Usuario')}>
                     <i className="bi bi-person-plus-fill icon"></i>
                     <h2>Adicionar Usuário</h2>
                     <p>Cadastre colaboradores com permissões específicas.</p>
                 </div>
 
-                <div className="admin-card" onClick={() => navigate('/CriarRelatorio')}>
+                <div className="admin-card" onClick={() => navigate('/EditarRelatorio')}>
                     <i className="bi bi-bar-chart-line-fill icon"></i>
                     <h2>Criar Relatórios</h2>
                     <p>Gere relatórios personalizados de progresso e conclusão.</p>
@@ -116,7 +116,25 @@ function PainelAdmin() {
                     <h2>Criar Catálogo</h2>
                     <p>Organize cursos por categorias e publique no sistema.</p>
                 </div>
+
+                <div className='admin-card' onClick={() => navigate('/GerenciarUsuarios')}>
+                    <i className="bi bi-pencil-square icon"></i>
+                    <h2>Editar Usuário</h2>
+                    <p>Atualize informações de usuários existentes.</p>
+                </div>
+
+                <div className='admin-card' onClick={() => navigate('/GerenciarCursos')}>
+                    <i className="bi bi-gear-fill icon"></i>
+                    <h2>Gerenciar Cursos</h2>
+                    <p>Atualize, publique ou remova cursos do catálogo.</p>
+                    </div>
+                <div className='admin-card' onClick={() => navigate('/GerenciarCatalogo')}>
+                    <i className="bi bi-folder-fill icon"></i>
+                    <h2>Gerenciar Catálogo</h2>
+                    <p>Organize e edite os catálogos de cursos.</p>
+                    </div>
             </div>
+          
         </div>
     );
 }

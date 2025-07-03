@@ -1,0 +1,53 @@
+/* @styles/NotFoundPage.css */
+
+.not-found-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f4f7f9;
+    font-family: 'Inter', sans-serif;
+    text-align: center;
+    padding: 2rem;
+}
+
+.not-found-content {
+    max-width: 600px;
+}
+
+.error-code {
+    font-size: 10rem;
+    font-weight: 700;
+    color: #03a5b7;
+    line-height: 1;
+    margin: 0;
+}
+
+.error-title {
+    font-size: 2.5rem;
+    color: #2c3e50;
+    margin: 10px 0;
+}
+
+.error-message {
+    font-size: 1.1rem;
+    color: #5a6a7a;
+    margin-bottom: 2.5rem;
+}
+
+.botao-voltar {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: #03339c;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.botao-voltar:hover {
+    background-color: #022a81;
+    transform: translateY(-2px);
+}
