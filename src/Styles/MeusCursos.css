@@ -8,6 +8,7 @@
     flex-direction: column;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
     margin: 0 auto; /* Centraliza a página */
 }
 .title-meus-cursos{
@@ -33,10 +34,8 @@
 
 /* --- GRELHA DE CARDS --- */
 .cards-wrapper {
-    display: grid;
-    /* Cria colunas responsivas: elas tentam ter 320px, mas esticam para preencher o espaço */
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2rem;
+    display: flex;
+  
 }
 
 
@@ -49,6 +48,7 @@
     display: flex;
     flex-direction: column;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin: 10px;
 }
 
 .curso-card:hover {
@@ -109,4 +109,28 @@ a.curso-link {
     font-size: 0.9rem;
     font-weight: 600;
     color: #059669; /* A mesma cor da barra */
+}
+
+@media screen and (max-width: 768px) {
+    .container-meus-cursos {
+        padding: 3rem;
+        
+    }
+
+    .meus-cursos-title {
+        font-size: 1.8rem;
+    }
+
+    .status-message {
+        font-size: 1rem;
+    }
+
+    .cards-wrapper {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    .curso-card {
+        margin-bottom: 1.5rem; /* Espaço entre os cards */
+    }
+    
 }

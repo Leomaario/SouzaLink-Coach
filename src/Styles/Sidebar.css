@@ -134,44 +134,107 @@ nav {
 
 /* --- RODAPÉ --- */
 .sidebar-footer {
-    padding: 1.2rem;
+    padding: 1rem 1.25rem;
     border-top: 1px solid var(--separator-color);
     display: flex;
-    align-items: center;
+    justify-content: space-between;
+    align-items: center; /* Verticamente centra o bloco do perfil e o botão de logout */
     gap: 10px;
     flex-shrink: 0;
 }
+
 .user-profile-link {
-    /* ... o seu estilo de .user-profile-link continua bom ... */
+    flex-grow: 1;
+    display: flex;
+    align-items: center; /* Verticamente centra o avatar e as informações do utilizador */
+    gap: 12px;
+    text-decoration: none;
+    color: var(--sidebar-text-color);
+    min-width: 0; /* Impede que o texto empurre o botão de logout para fora */
+    transition: opacity 0.2s;
 }
-/* ... etc ... */
+
+.user-profile-link:hover {
+    opacity: 0.85;
+}
+
+.user-avatar {
+    font-size: 2.5rem;
+    flex-shrink: 0;
+    /* CORREÇÃO: Garante o alinhamento do ícone SVG interno */
+    display: flex;
+    align-items: center;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.3;
+    overflow: hidden;
+}
+
+.user-name {
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--sidebar-text-hover);
+}
+
+.user-email {
+    font-size: 0.75rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.logout-icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    color: var(--sidebar-text-color);
+    font-size: 1.5rem; /* Aumentei um pouco para equilibrar */
+    flex-shrink: 0;
+    transition: background-color 0.2s, color 0.2s;
+    
+    /* CORREÇÃO: Garante o alinhamento perfeito do ícone dentro do botão */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logout-icon-button:hover {
+    background-color: var(--logout-hover-bg);
+    color: var(--sidebar-text-hover);
+}
 
 
 /* --- LÓGICA MOBILE E HAMBURGUER --- */
 .hamburger {
+    display: none; /* Escondido por padrão */
     position: fixed;
-    top: 1rem;
-    left: 1rem;
-    z-index: 1100;
-    /* EFEITO FUTURISTA: Vidro fosco (Glassmorphism) */
-    background-color: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    font-size: 2rem;
-    color: #fff;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    display: none;
-    align-items: center;
+    top: 20px;
+    left: 20px;
+    z-index: 1100; /* Acima da sidebar */
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
     justify-content: center;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.3s ease
+    
 }
 
 @media (max-width: 1024px) {
     .sidebar {
         transform: translateX(-100%);
+            width: 100%;
     }
     .sidebar.open {
         transform: translateX(0);

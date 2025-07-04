@@ -1,45 +1,57 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '@styles/Sidebar.css';
 import { 
+    List, // Ícone para o hamburger
     HouseDoorFill, BookFill, FunnelFill, EnvelopeCheck, PersonWorkspace, 
     Cast, Backpack3, PersonPlusFill, FileEarmarkBarGraph, PersonCircle, BoxArrowRight 
 } from 'react-bootstrap-icons';
 
 function Sidebar() {
-    const [isOpen, setIsOpen] = useState(false);
+    // Estado para controlar se a sidebar está aberta ou fechada
+    const [isOpen, setIsOpen] = useState(window.innerWidth > 1024);
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
 
+    // Refs para "sentir" os cliques fora dos elementos
+    const sidebarRef = useRef(null);
+    const hamburgerRef = useRef(null);
+
+    // Efeito para buscar dados do utilizador e adicionar "ouvintes" de eventos
     useEffect(() => {
         const userDataString = localStorage.getItem('user');
         if (userDataString) {
             setUser(JSON.parse(userDataString));
         }
         
-        const handleResize = () => {
-            if (window.innerWidth > 768) {
-                setIsOpen(true);
-            } else {
+        // Função para fechar a sidebar se o clique for fora dela
+        const handleClickOutside = (event) => {
+            if (isOpen &&
+                sidebarRef.current && 
+                !sidebarRef.current.contains(event.target) &&
+                hamburgerRef.current &&
+                !hamburgerRef.current.contains(event.target)
+            ) {
+                // Só fecha se o clique for fora da sidebar E fora do botão hamburger
                 setIsOpen(false);
             }
         };
+
+        document.addEventListener('mousedown', handleClickOutside);
         
-        // Define o estado inicial da sidebar com base na largura da tela
-        handleResize(); 
-        
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isOpen]); // Depende do estado 'isOpen' para funcionar corretamente
 
     const isAdmin = user?.roles?.includes('ROLE_ADMIN');
 
+    // Função para abrir/fechar a sidebar
     const toggleSidebar = () => {
-        if (window.innerWidth < 768) {
-            setIsOpen(!isOpen);
-        }
+        setIsOpen(!isOpen);
     };
   
+    // Função para o logout
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
@@ -48,21 +60,27 @@ function Sidebar() {
 
     return (
         <>
-            <button className="hamburger" onClick={toggleSidebar}>
-                <i className="bi bi-list"></i>
-            </button>
+            {/* --- O BOTÃO HAMBURGER SÓ APARECE SE A SIDEBAR ESTIVER FECHADA --- */}
+            {!isOpen && (
+                <button className="hamburger" onClick={toggleSidebar} ref={hamburgerRef}>
+                    <List />
+                </button>
+            )}
 
-            <div className={`sidebar ${isOpen ? 'open' : ''}`}>
+            {/* A div da sidebar agora tem a nossa ref para detetar cliques */}
+            <div className={`sidebar ${isOpen ? 'open' : ''}`} ref={sidebarRef}>
                 <div className="sidebar-header">
                     <img src="/imgs/logo.png" id="logo" alt="Logo" />
                 </div>
                 <div className="menu">
                     <nav>
+                        {/* Links principais */}
                         <Link to="/dashboard" onClick={toggleSidebar}><HouseDoorFill /><span>Dashboard</span></Link>
                         <Link to="/MeusCursos" onClick={toggleSidebar}><BookFill /><span>Meus Cursos</span></Link>
                         <Link to="/Catalogo" onClick={toggleSidebar}><FunnelFill /><span>Catálogo</span></Link>
                         <Link to="/MeusCertificados" onClick={toggleSidebar}><EnvelopeCheck /><span>Certificados</span></Link>
                         
+                        {/* Links que só o Admin vê */}
                         {isAdmin && (
                             <>
                                 <div className="admin-divider"></div>

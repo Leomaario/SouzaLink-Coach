@@ -3,6 +3,8 @@
     padding: 2rem 3rem;
     background-color: #f0f2f5;
     font-family: 'Inter', sans-serif;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
 }
 
 .catalogo-header {

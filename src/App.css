@@ -10,5 +10,14 @@
 .main-content {
   flex-grow: 2; /* Faz o conteúdo principal ocupar todo o espaço restante */
   padding: 3rem; /* Um pouco de espaço interno para não colar nas bordas */
-  margin-left: 230px; /* A MARGIN QUE VOCÊ PEDIU! */
+  margin-left: 290px; /* A MARGIN QUE VOCÊ PEDIU! */
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    max-width: 100%; /* Garante que o conteúdo não ultrapasse a tela */
+    margin-left: 0; /* Remove a margem esquerda em telas menores */
+    padding: 0; /* Ajusta o padding para telas menores */
+    margin: 0 auto; /* Centraliza o conteúdo */
+  }
 }
