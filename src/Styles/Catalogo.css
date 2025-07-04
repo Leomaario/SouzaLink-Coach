@@ -1,104 +1,193 @@
-/* --- GERAL DA PÁGINA DO CATÁLOGO --- */
-.catalogo {
+/* --- GERAL E CABEÇALHO --- */
+.catalogo-container {
     padding: 2rem 3rem;
-    background-color: #f4f7f9; /* Fundo claro e suave */
-    min-height: 100vh;
+    background-color: #f0f2f5;
     font-family: 'Inter', sans-serif;
 }
 
-.titulo {
-    font-size: 2.5rem;
+.catalogo-header {
+    margin-bottom: 2.5rem;
+    text-align: center;
+}
+
+.catalogo-header h1 {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin: 0;
+}
+
+.catalogo-header p {
+    font-size: 1.1rem;
+    color: #64748b;
+    margin-top: 8px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* --- PRATELEIRA DE CATÁLOGO --- */
+.categoria-section {
+    margin-bottom: 3.5rem;
+}
+
+.categoria-title {
+    font-size: 1.8rem;
     font-weight: 700;
-    color: #2c3e50; /* Cor de texto escura para contraste */
-    margin: 0 0 2.5rem 0;
+    color: #334155;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 1rem;
 }
 
-.status-message {
-    color: #5a6a7a;
-    font-size: 1.2rem;
-}
-
-
-/* --- PRATELEIRA DE CATÁLOGO (CADA CATEGORIA) --- */
-.categoria {
-    margin-bottom: 3rem;
-}
-
-.categoria h2 {
-    font-size: 1.6rem;
-    font-weight: 600;
-    color: #34495e;
-    margin-bottom: 1.2rem;
-    border-left: 4px solid #03a5b7; /* Um detalhe de cor da sua paleta */
-    padding-left: 1rem;
+.categoria-title svg {
+    color: #03a5b7;
 }
 
 
-/* --- FILA DE CURSOS (A "PRATELEIRA" HORIZONTAL) --- */
+/* --- FILA DE CURSOS (CARROSSEL) --- */
 .cursos-row {
     display: flex;
-    overflow-x: auto;
-    overflow-y: hidden;
-    gap: 1.5rem; /* Aumenta o espaço entre os cards */
+    gap: 1.5rem;
     padding: 1rem 0;
+    overflow-x: auto;
     scrollbar-width: thin;
-    scrollbar-color: #d1d1d1 #f4f7f9;
+    scrollbar-color: #adb5bd #e9ecef;
 }
-
-.cursos-row::-webkit-scrollbar {
-    height: 8px;
-}
-.cursos-row::-webkit-scrollbar-track {
-    background: #e9ecef;
-    border-radius: 4px;
-}
-.cursos-row::-webkit-scrollbar-thumb {
-    background-color: #ced4da;
-    border-radius: 4px;
-}
-.cursos-row::-webkit-scrollbar-thumb:hover {
-    background-color: #adb5bd;
-}
+.cursos-row::-webkit-scrollbar { height: 10px; }
+.cursos-row::-webkit-scrollbar-track { background: #e9ecef; border-radius: 5px; }
+.cursos-row::-webkit-scrollbar-thumb { background-color: #adb5bd; border-radius: 5px; }
+.cursos-row::-webkit-scrollbar-thumb:hover { background-color: #6c757d; }
 
 
-/* --- CARD DO CURSO (O "POSTER") --- */
+/* --- CARD DO CURSO (O EFEITO FUTURISTA) --- */
 .curso-card {
-    flex: 0 0 280px;
-    width: 280px;
-    background-color: #ffffff; /* Fundo branco para o card */
-    border-radius: 12px; /* Bordas mais arredondadas */
-    overflow: hidden;
+    flex: 0 0 290px; /* Largura fixa para cada card */
+    width: 290px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     cursor: pointer;
-    border: 1px solid #e0e0e0; /* Borda subtil */
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05); /* Sombra mais suave */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    text-decoration: none;
+    transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+    display: flex;
+    flex-direction: column;
 }
 
-/* Efeito de "elevação" ao passar o rato */
 .curso-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
 }
 
-.curso-card img {
+.card-thumbnail {
+    position: relative;
     width: 100%;
     aspect-ratio: 16 / 9;
-    object-fit: cover;
+    overflow: hidden;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
 }
 
-.curso-card p {
-    color: #333;
-    padding: 1rem;
-    margin: 0;
-    font-weight: 600;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.card-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.35s ease;
+}
+.curso-card:hover .card-thumbnail img {
+    transform: scale(1.1);
+}
+
+.play-icon-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+}
+
+.curso-card:hover .play-icon-overlay {
+    opacity: 1;
+}
+
+.card-content {
+    padding: 1.25rem;
     border-top: 1px solid #f0f0f0;
+}
+
+.card-content h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1e293b;
 }
 
 .sem-videos-msg {
     color: #888;
     padding-left: 1rem;
+}
+
+@media (max-width: 992px) {
+    .catalogo-container {
+        padding: 2rem 1.5rem;
+    }
+
+    .catalogo-header h1 {
+        font-size: 2.2rem;
+    }
+
+    .categoria-title {
+        font-size: 1.4rem;
+    }
+
+    .curso-card {
+        flex-shrink: 0; /* Impede que os cards encolham demais */
+        flex-basis: 250px; /* Cards um pouco menores */
+        width: 250px;
+    }
+}
+
+/* Para telas de telemóvel */
+@media (max-width: 576px) {
+    .catalogo-container {
+        padding: 1.5rem 1rem;
+    }
+
+    .catalogo-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .catalogo-header p {
+        font-size: 1rem;
+    }
+
+    .categoria-title {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
+    }
+
+    /* Transforma a fila de scroll horizontal numa grelha vertical */
+    .cursos-row {
+        display: grid;
+        grid-template-columns: 1fr; /* Apenas uma coluna */
+        overflow-x: hidden; /* Remove o scroll horizontal */
+        padding-bottom: 0;
+        gap: 1.5rem;
+    }
+
+    /* Faz o card ocupar a largura disponível */
+    .curso-card {
+        width: 100%;
+    }
 }
