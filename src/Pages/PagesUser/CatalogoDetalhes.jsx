@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import '../../Styles/CatalogoDetalhes.css'; // Certifique-se de que o caminho está correto
+import { apiFetch } from '../../Services/api';
+import '../../Styles/CatalogoDetalhes.css';
 
 const CatalogoDetalhes = () => {
     const { idCatalogo } = useParams();
@@ -9,51 +10,54 @@ const CatalogoDetalhes = () => {
     const [catalogoInfo, setCatalogoInfo] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    
-   
-
 
     useEffect(() => {
         const fetchDetalhesCatalogo = async () => {
+            setLoading(true);
             try {
-                setLoading(true);
-                
-                const responseVideos = await fetch(`http://localhost:8080/api/catalogos/${idCatalogo}/videos`);
-                if (!responseVideos.ok) {
-                    throw new Error('Falha ao buscar os vídeos do catálogo.');
-                }
-                const videosData = await responseVideos.json();
-                setVideos(videosData || []);
+                // Fazemos as duas chamadas em paralelo
+                const [responseVideos, responseCatalogo] = await Promise.all([
+                    apiFetch(`http://localhost:8080/api/catalogos/${idCatalogo}/videos`),
+                    apiFetch(`http://localhost:8080/api/catalogos/${idCatalogo}`)
+                ]);
 
-                // (Opcional, mas recomendado) 2. Busca as informações do próprio catálogo
-                const responseCatalogo = await fetch(`http://localhost:8080/api/catalogos/${idCatalogo}`);
-                if (!responseCatalogo.ok) {
-                    throw new Error('Falha ao buscar informações do catálogo. contate o administrador.');
+                if (!responseVideos.ok || !responseCatalogo.ok) {
+                    throw new Error('Falha ao buscar os detalhes do catálogo.');
                 }
+
+                const videosData = await responseVideos.json();
                 const catalogoData = await responseCatalogo.json();
+
+                setVideos(videosData || []);
                 setCatalogoInfo(catalogoData);
 
             } catch (err) {
-                setError(err.message);
+                if (err.message !== 'Não autorizado') {
+                    setError(err.message);
+                }
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchDetalhesCatalogo();
-    }, [idCatalogo]); // A busca roda de novo se o ID do catálogo na URL mudar
+        if (idCatalogo) {
+            fetchDetalhesCatalogo();
+        }
+    }, [idCatalogo]);
 
     const handleVideoClick = (videoId) => {
-        // Navega para a página do player quando um vídeo é clicado
-        navigate(`/player/${videoId}`);
+        navigate(`/curso/${videoId}`);
     };
 
-    if (loading) return <div className="status-message">Carregando cursos...</div>;
+    if (loading) return <div className="status-message">A carregar detalhes do catálogo...</div>;
     if (error) return <div className="status-message error">{error}</div>;
+    console.log("CatalogoDetalhes - videos:", videos);
+    console.log("CatalogoDetalhes - catalogoInfo:", catalogoInfo);
+    
 
+    
     return (
         <div className="catalogo-detalhes-container">
-            {/* Mostra o nome e a descrição do catálogo */}
             {catalogoInfo && (
                 <div className="catalogo-header">
                     <h1>{catalogoInfo.nome}</h1>
@@ -61,9 +65,8 @@ const CatalogoDetalhes = () => {
                 </div>
             )}
             
-            {/* Lista os vídeos do catálogo em formato de cards */}
             <h2>Cursos Disponíveis</h2>
-            <div className="videos-grid"> {/* Use essa classe para fazer um grid no CSS */}
+            <div className="videos-grid">
                 {videos.length > 0 ? (
                     videos.map(video => (
                         <div key={video.id} className="video-card" onClick={() => handleVideoClick(video.id)}>
@@ -73,8 +76,6 @@ const CatalogoDetalhes = () => {
                             />
                             <div className="video-card-info">
                                 <h3>{video.titulo}</h3>
-                                {/* Você pode adicionar a descrição do vídeo aqui se quiser */}
-                                {/* <p>{video.descricao}</p> */}
                             </div>
                         </div>
                     ))
@@ -85,4 +86,5 @@ const CatalogoDetalhes = () => {
         </div>
     );
 };
+
 export default CatalogoDetalhes;

@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { apiFetch } from '../Services/api';
+import { apiFetch } from '../Services/api'; // Certifique-se de que o caminho está correto
 import { BsPencilSquare, BsTrashFill, BsPlusCircleFill } from 'react-icons/bs';
-import '../Styles/Css-Admin/GerenciarCatalogo.css'; // Usaremos um CSS dedicado
+import '../Styles/Css-Admin/GerenciarCatalogo.css'; // Certifique-se de que o caminho está correto
 
 const GerenciarCatalogos = () => {
     const [catalogos, setCatalogos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Estado para o modal de criação/edição
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [catalogoEmEdicao, setCatalogoEmEdicao] = useState(null); // null para criar, objeto para editar
+    const [catalogoEmEdicao, setCatalogoEmEdicao] = useState(null);
+
 
     useEffect(() => {
         const fetchCatalogos = async () => {
@@ -20,13 +20,14 @@ const GerenciarCatalogos = () => {
                 const data = await response.json();
                 setCatalogos(data);
             } catch (err) {
-                setError(err.message);
+                if (err.message !== 'Não autorizado') setError(err.message);
             } finally {
                 setLoading(false);
             }
         };
         fetchCatalogos();
     }, []);
+
 
     const handleDeletar = async (id, nome) => {
         if (window.confirm(`Tem a certeza que quer apagar o catálogo "${nome}"?`)) {
@@ -39,15 +40,21 @@ const GerenciarCatalogos = () => {
         }
     };
 
+
     const handleAbrirModal = (catalogo = null) => {
-        // Se nenhum catálogo for passado, é para criar um novo
-        setCatalogoEmEdicao(catalogo ? { ...catalogo } : { nome: '', descricao: '', icone: '', tag: '' });
+        setCatalogoEmEdicao(catalogo ? { ...catalogo } : { nome: '', descricao: '', icone: '', tag: '', caminhoPasta: '' });
         setIsModalOpen(true);
     };
 
     const handleFecharModal = () => {
         setIsModalOpen(false);
         setCatalogoEmEdicao(null);
+    };
+
+    // Função única para lidar com todas as mudanças nos inputs do modal
+    const handleModalInputChange = (e) => {
+        const { name, value } = e.target;
+        setCatalogoEmEdicao(prev => ({ ...prev, [name]: value }));
     };
 
     const handleSalvar = async (e) => {
@@ -114,42 +121,29 @@ const GerenciarCatalogos = () => {
                 <div className="modal-overlay" onClick={handleFecharModal}>
                     <form className="modal-content" onSubmit={handleSalvar} onClick={e => e.stopPropagation()}>
                         <h2>{catalogoEmEdicao.id ? 'Editar Catálogo' : 'Novo Catálogo'}</h2>
-                        {/* ... inputs para nome, descrição, ícone e tag ... */}
-                        <div className="modal-inputs">
-                            <label>
-                                Nome:
-                                <input
-                                    type="text"
-                                    value={catalogoEmEdicao.nome}
-                                    onChange={(e) => setCatalogoEmEdicao({ ...catalogoEmEdicao, nome: e.target.value })}
-                                    required
-                                />
-                            </label>
-                            <label>
-                                Descrição:
-                                <textarea
-                                    value={catalogoEmEdicao.descricao}
-                                    onChange={(e) => setCatalogoEmEdicao({ ...catalogoEmEdicao, descricao: e.target.value })}
-                                    required
-                                />
-                            </label>
-                            <label>
-                                Ícone (URL):
-                                <input
-                                    type="text"
-                                    value={catalogoEmEdicao.icone}
-                                    onChange={(e) => setCatalogoEmEdicao({ ...catalogoEmEdicao, icone: e.target.value })}
-                                />
-                            </label>
-                            <label>
-                                Tag:
-                                <input
-                                    type="text"
-                                    value={catalogoEmEdicao.tag}
-                                    onChange={(e) => setCatalogoEmEdicao({ ...catalogoEmEdicao, tag: e.target.value })}
-                                />
-                            </label>
+                        
+                        <div className="form-group">
+                            <label htmlFor="nome">Nome</label>
+                            <input id="nome" name="nome" type="text" value={catalogoEmEdicao.nome} onChange={handleModalInputChange} required />
                         </div>
+                        <div className="form-group">
+                            <label htmlFor="descricao">Descrição</label>
+                            <textarea id="descricao" name="descricao" value={catalogoEmEdicao.descricao} onChange={handleModalInputChange}></textarea>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="tag">Tag</label>
+                            <input id="tag" name="tag" type="text" value={catalogoEmEdicao.tag} onChange={handleModalInputChange} />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="caminhoPasta">Caminho da Pasta</label>
+                            <input id="caminhoPasta" 
+                            name="caminhoPasta" 
+                            type="text" 
+                            value={catalogoEmEdicao.caminhoPasta} 
+                            onChange={handleModalInputChange} 
+                            required placeholder="Ex: D:/videos/nome_catalogo"/>
+                        </div>
+                        
                         <div className="modal-actions">
                             <button type="submit">Salvar</button>
                             <button type="button" onClick={handleFecharModal}>Cancelar</button>

@@ -1,89 +1,96 @@
 import React, { useState, useEffect } from 'react';
 import '@styles/Catalogo.css'; 
-import { useNavigate } from 'react-router-dom';
-import { apiFetch } from '../../Services/api'; // IMPORTA NOSSO NOVO SERVIÇO
+import { useNavigate, Link } from 'react-router-dom'; // Adicionamos o Link
+import { apiFetch } from '../../Services/api';
 
 const Catalogo = () => {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const [catalogos, setCatalogos] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+    // O estado agora vai guardar os catálogos com os seus vídeos dentro
+    const [catalogosComVideos, setCatalogosComVideos] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchCatalogosDoBackend = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        // USA O apiFetch, QUE JÁ ENVIA O TOKEN!
-        const response = await apiFetch('http://localhost:8080/api/catalogos');
+    useEffect(() => {
+        const fetchTudo = async () => {
+            try {
+                setLoading(true);
+                setError(null);
 
-        if (!response.ok) {
-          throw new Error(`Erro HTTP: ${response.status} - ${response.statusText || 'Falha ao buscar catálogos'}`);
-        }
+                // 1. Busca a lista de todos os catálogos
+                const responseCatalogos = await apiFetch('http://localhost:8080/api/catalogos');
+                if (!responseCatalogos.ok) throw new Error('Falha ao buscar os catálogos.');
+                
+                const catalogosData = await responseCatalogos.json();
 
-        const contentType = response.headers.get("content-type");
-        if (response.status === 204 || !contentType || !contentType.includes("application/json")) {
-          setCatalogos([]);
-        } else {
-          const data = await response.json();
-          setCatalogos(data || []);
-        }
-      } catch (err) {
-        if (err.message !== 'Não autorizado') {
-          console.error("Erro ao buscar os catálogos:", err);
-          setError(err.message || 'Ocorreu um erro ao carregar os catálogos.');
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
+                // 2. Para cada catálogo, cria uma "promessa" de buscar os seus vídeos
+                const promises = catalogosData.map(catalogo =>
+                    apiFetch(`http://localhost:8080/api/catalogos/${catalogo.id}/videos`)
+                        .then(res => res.json())
+                );
+                
+                // 3. Executa todas as "promessas" em paralelo
+                const videosPorCatalogo = await Promise.all(promises);
 
-    fetchCatalogosDoBackend();
-  }, []); 
+                // 4. Junta os catálogos com as suas respetivas listas de vídeos
+                const dadosCompletos = catalogosData.map((catalogo, index) => ({
+                    ...catalogo, // Mantém os dados do catálogo (id, nome, etc.)
+                    videos: videosPorCatalogo[index] || [] // Adiciona a lista de vídeos correspondente
+                }));
 
+                setCatalogosComVideos(dadosCompletos);
 
-  const handleCatalogoClick = (idCatalogo) => {
-    navigate(`/catalogo-detalhes/${idCatalogo}`);
-    console.log("Clicou no catálogo com ID:", idCatalogo);
-  };
+            } catch (err) {
+                if (err.message !== 'Não autorizado') {
+                    setError(err.message || 'Ocorreu um erro ao carregar o catálogo.');
+                }
+            } finally {
+                setLoading(false);
+            }
+        };
 
-  if (loading) {
-    return <div className="catalogo"><h1 className="titulo">Catálogo de Capacitações</h1><p className="status-message">Carregando catálogos...</p></div>;
-  }
+        fetchTudo();
+    }, []); 
 
-  if (error) {
-    return <div className="catalogo"><h1 className="titulo">Catálogo de Capacitações</h1><p className="status-message error-message">Erro ao carregar: {error}</p></div>;
-  }
+    if (loading) {
+        return <div className="status-message">A carregar catálogos...</div>;
+    }
+    if (error) {
+        return <div className="status-message error">{error}</div>;
+    }
 
-  return (
-    <div className="catalogo">
-      <h1 className="titulo">Catálogo de Capacitações</h1>
-      {catalogos.length === 0 ? (
-        <p className="status-message">Nenhum catálogo disponível no momento.</p>
-      ) : (
-        catalogos.map((categoria) => (
-          <div key={categoria.id} className="categoria">
-            <h2>{categoria.nome}</h2>
-            <div className="cursos-row">
-              <div
-                className="curso-card"
-                onClick={() => handleCatalogoClick(categoria.id)}
-                style={{ cursor: 'pointer' }}
-              >
-                <img 
-                  src={`https://placehold.co/250x140/${Math.floor(Math.random()*16777215).toString(16)}/FFFFFF?text=${encodeURIComponent(categoria.icone || categoria.nome || 'Catálogo')}`} 
-                  alt={categoria.nome} 
-                  onError={(e) => { e.target.onerror = null; e.target.src='https://placehold.co/250x140/CCCCCC/FFFFFF/png?text=Erro'; }}
-                />
-                <p>{categoria.nome}</p>
-              </div>
-            </div>
-          </div>
-        ))
-      )}
-    </div>
-  );
+    return (
+        <div className="catalogo">
+            <h1 className="titulo">Catálogo de Capacitações</h1>
+            {catalogosComVideos.length === 0 && !loading ? (
+                <p className="status-message">Nenhum catálogo disponível no momento.</p>
+            ) : (
+                // O primeiro map percorre os catálogos
+                catalogosComVideos.map((categoria) => (
+                    <div key={categoria.id} className="categoria">
+                        <h2>{categoria.nome}</h2>
+                        <div className="cursos-row">
+                            {/* --- RENDERIZAÇÃO DOS VÍDEOS DENTRO DE CADA CATÁLOGO --- */}
+                            {categoria.videos && categoria.videos.length > 0 ? (
+                                // O segundo map percorre os vídeos daquele catálogo
+                                categoria.videos.map(video => (
+                                    <Link to={`/curso/${video.id}`} key={video.id} className="curso-card">
+                                        <img 
+                                            src={`https://placehold.co/250x140?text=${encodeURIComponent(video.titulo)}`} 
+                                            alt={video.titulo} 
+                                        />
+                                        <p>{video.titulo}</p>
+                                    </Link>
+                                ))
+                            ) : (
+                                <p className="sem-videos-msg">Nenhum curso neste catálogo ainda.</p>
+                            )}
+                        </div>
+                    </div>
+                ))
+            )}
+        </div>
+    );
 };
 
 export default Catalogo;
