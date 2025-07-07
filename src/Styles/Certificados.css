@@ -138,3 +138,79 @@
 .acoes button.primary-action:hover {
     background-color: #028a9a;
 }
+
+/* mobile */
+@media (max-width: 768px) {
+    .certificados-container {
+        padding: 1.5rem;
+    }
+    .titulo-certificados {
+        font-size: 1.8rem;
+    }
+    .subtitulo-certificados {
+        font-size: 1rem;
+    }
+    .filtros {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .filtros input[type="text"], .filtros select {
+        width: 100%;
+    }
+    .lista-certificados {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+    .card-certificado {
+        flex-direction: column;
+    }
+    .card-certificado img {
+        aspect-ratio: 16 / 10; /* Ajusta a proporção para telas menores */
+    }
+    .card-certificado .card-info {
+        padding: 1rem;
+    }
+    .card-certificado h3 {
+        font-size: 1.1rem;
+    }
+    .card-certificado p {
+        font-size: 0.9rem;
+    }
+    .acoes {
+        grid-template-columns: 1fr; /* Botões em coluna única */
+        gap: 0.5rem;
+    }
+    .acoes button {
+        width: 100%; /* Botões ocupam toda a largura */
+        font-size: 0.9rem; /* Ajusta o tamanho da fonte dos botões */
+    }
+    .acoes button.primary-action {
+        grid-column: 1; /* Botão principal ocupa a linha toda */
+    }
+    .botao-visualizar {
+        padding: 10px 20px; /* Ajusta o tamanho do botão */
+        font-size: 0.9rem; /* Ajusta o tamanho da fonte do botão */
+    }
+    .certificado-topo {
+        margin: 0 auto; /* Centraliza o bloco na página */
+        max-width: 100%; /* Garante que o bloco não ultrapasse a tela */
+        padding: 1rem; /* Ajusta o padding para telas menores */
+        box-shadow: none; /* Remove a sombra para telas menores */
+        border-radius: 0; /* Remove o arredondamento para telas menores */
+        overflow: visible; /* Remove a rolagem para telas menores */
+
+    }
+    .botao-visualizar {
+        position: static; /* Remove a posição absoluta */
+        margin-top: 1rem; /* Espaço acima do botão */
+        left: auto; /* Remove o deslocamento horizontal */
+        transform: none; /* Remove a transformação */
+        width: 100%; /* Botão ocupa toda a largura */
+        text-align: center; /* Centraliza o texto do botão */
+
+    }
+    .botao-visualizar:hover {
+        transform: none; /* Remove a transformação de hover */
+        box-shadow: none; /* Remove a sombra de hover */
+    }
+
+}

@@ -20,4 +20,18 @@
     padding: 0; /* Ajusta o padding para telas menores */
     margin: 0 auto; /* Centraliza o conteúdo */
   }
+  .app-container {
+    flex-direction: column; /* Muda a direção do layout para coluna em telas menores */
+  }
+  .main-content {
+    padding: 1rem; /* Ajusta o padding para telas menores */
+  }
+  .sidebar {
+    width: 100%; /* Sidebar ocupa toda a largura em telas menores */
+    position: relative; /* Garante que a sidebar se comporte corretamente */
+  }
+  .sidebar-header {
+    padding: 1rem; /* Ajusta o padding do cabeçalho da sidebar */
+  }
+  
 }

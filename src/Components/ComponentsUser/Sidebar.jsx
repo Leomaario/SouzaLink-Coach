@@ -86,7 +86,7 @@ function Sidebar() {
                                 <div className="admin-divider"></div>
                                 <h2 className='title-adm'>Atalhos Administrativos</h2>
                                 <Link to="/PainelAdmin" onClick={toggleSidebar}><PersonWorkspace /><span>Painel Admin</span></Link>
-                                <Link to="/GerenciarCatalogos" onClick={toggleSidebar}><Cast /><span>Gerir Catálogos</span></Link>
+                                <Link to="/GerenciarCatalogo" onClick={toggleSidebar}><Cast /><span>Gerir Catálogos</span></Link>
                                 <Link to="/CursosAdmin" onClick={toggleSidebar}><Backpack3 /><span>Adicionar Curso</span></Link>
                                 <Link to="/GerenciarUsuarios" onClick={toggleSidebar}><PersonPlusFill /><span>Gerir Utilizadores</span></Link>
                             </>

@@ -213,21 +213,29 @@ nav {
 
 /* --- LÓGICA MOBILE E HAMBURGUER --- */
 .hamburger {
-    display: none; /* Escondido por padrão */
+    display: none; /* Esconde o hambúrguer por padrão */
     position: fixed;
     top: 20px;
     left: 20px;
     z-index: 1100; /* Acima da sidebar */
-    cursor: pointer;
     width: 40px;
     height: 40px;
-    justify-content: center;
-    align-items: center;
     background-color: rgba(255, 255, 255, 0.8);
     border-radius: 50%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    display: flex; /* Flex para centralizar os divs internos */
+    z-index: 1200; /* Acima da sidebar */
+    margin-left: calc(var(--sidebar-width) + 20px); /* Espaço para o hambúrguer */
+    margin-top: 20px; /* Espaço do topo */
+    border: 1px solid rgba(0, 0, 0, 0.1); /* Borda sutil */
+    border-radius: 50%; /* Borda arredondada */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
 
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease, transform 0.3s ease
+
     
 }
 

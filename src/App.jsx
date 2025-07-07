@@ -25,7 +25,7 @@ import CriarUsuario from './Pags-Admin/Usuario';
 import EditarRelatorio from './Pags-Admin/EditarRelatorio';
 import EmitirRelatorios from './Pags-Admin/Relatorios';
 import GerenciarUsuarios from './Pags-Admin/GerenciarUsuarios';
-{/* import GerenciarCursos from './Pags-Admin/GerenciarCursos';*/}
+import GerenciarCursos from './Pags-Admin/GerenciarCurso';
 import GerenciarCatalogo from './Pags-Admin/GerenciarCatalogo';
 
 
@@ -81,7 +81,7 @@ function App() {
         <Route path="/editarrelatorio" element={<EditarRelatorio/>} />
         <Route path="/emitirrelatorios" element={<EmitirRelatorios/>} />
         <Route path="/gerenciarusuarios" element={<GerenciarUsuarios />} />
-        {/* <Route path="/gerenciarcursos" element={<GerenciarCursos />}  /> */}
+        <Route path="/gerenciarcursos" element={<GerenciarCursos />}  /> 
         <Route path="/gerenciarcatalogo" element={<GerenciarCatalogo />} />
       </Route>
       

@@ -140,6 +140,8 @@
 }
 
 @media (max-width: 992px) {
+
+    
     .catalogo-container {
         padding: 2rem 1.5rem;
     }
@@ -156,6 +158,35 @@
         flex-shrink: 0; /* Impede que os cards encolham demais */
         flex-basis: 250px; /* Cards um pouco menores */
         width: 250px;
+    }
+    .cursos-row {
+        gap: 1rem; /* Menor espaçamento entre os cards */
+    }
+    .card-thumbnail {
+        aspect-ratio: 16 / 10; /* Ajusta a proporção para telas menores */
+    }
+
+    /* OS VIDEOS DO CATALOGO VAI FICAR DE LADO COMO UM CARROSSEL */
+    .cursos-row {
+        display: flex;
+        /* Permite rolagem PAISAGEM */
+        overflow-x: auto;
+        scrollbar-width: thin; /* Barra de rolagem fina */
+        scrollbar-color: #adb5bd #e9ecef; /* Cor da barra de rolagem */
+        padding: 1rem 0;
+        gap: 1.5rem; /* Espaçamento entre os cards */
+        padding-left: 1rem; /* Espaço para o primeiro card */
+        padding-right: 1rem; /* Espaço para o último card */
+        padding-top: 1rem; /* Espaço para a barra de rolagem */
+        /* Espaço para a barra de rolagem */
+        padding-bottom: 1rem; /* Espaço para a barra de rolagem */
+    }
+    .cursos-row::-webkit-scrollbar {
+        height: 8px; /* Altura da barra de rolagem */
+    }
+    .cursos-row::-webkit-scrollbar-track {
+        background: #f0f2f5; /* Cor do fundo da barra de rolagem */
+        border-radius: 10px; /* Bordas arredondadas */
     }
 }
 

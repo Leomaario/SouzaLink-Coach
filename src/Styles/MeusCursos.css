@@ -132,5 +132,49 @@ a.curso-link {
     .curso-card {
         margin-bottom: 1.5rem; /* Espaço entre os cards */
     }
+    .curso-thumbnail {
+        height: 120px; /* Ajusta a altura da imagem para telas menores */
+    }
+    .curso-titulo {
+        font-size: 1.1rem; /* Ajusta o tamanho do título para telas menores */
+    }
+    .curso-aulas {
+        font-size: 0.9rem; /* Ajusta o tamanho do texto de aulas para telas menores */
+    }
+    .progresso-container {
+        height: 6px; /* Ajusta a altura da barra de progresso para telas menores */
+    }
+    .progresso-texto.concluido {
+        font-size: 0.8rem; /* Ajusta o tamanho do texto de progresso para telas menores */
+    }
+    .curso-info {
+        padding: 0.75rem; /* Reduz o padding do info do curso para telas menores */
+    }
+    .curso-card {
+        flex-direction: column; /* Garante que o card se empilhe verticalmente */
+        height: 100%; /* Faz o card ocupar toda a altura disponível */
+    }
+    .curso-link {
+        display: flex;
+        flex-direction: column;
+        height: 100%; /* Garante que o link ocupe toda a altura do card */
+    }
+    .cards-wrapper {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Grelha responsiva */
+        gap: 1rem; /* Espaçamento entre os cards */
+    }
+    .curso-card {
+        margin: 0; /* Remove a margem lateral para melhor responsividade */
+    }
+    .curso-thumbnail {
+        height: 150px; /* Ajusta a altura da imagem para telas menores */
+    }
+    .curso-info {
+        padding: 1rem; /* Ajusta o padding do info do curso para telas menores */
+    }
+    .progresso-container {
+        height: 6px; /* Ajusta a altura da barra de progresso para telas menores */
+    }
     
 }

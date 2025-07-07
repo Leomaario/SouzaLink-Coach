@@ -2,22 +2,28 @@ import React, { useState, useEffect } from 'react';
 import '@styles/Dashboard.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { apiFetch } from '../../Services/api';
-// --- IMPORTANDO OS ÍCONES ---
 import { Book, CheckCircleFill, ClockHistory, Award, ArrowRight } from 'react-bootstrap-icons';
 
 export default function Dashboard() {
     const navigate = useNavigate();
+
+    // --- ESTADO INICIAL ATUALIZADO ---
+    // O estado agora já espera os novos campos do backend
     const [dashboardData, setDashboardData] = useState({
         cursoEmDestaque: null,
         totalCursos: 0,
+        cursosEmAndamento: 0, // Valor padrão
+        mediaConclusao: 0     // Valor padrão
     });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    // O useEffect já está correto, buscando os dados da rota certa
     useEffect(() => {
         const fetchDashboardData = async () => {
             try {
-                const response = await apiFetch('/api/user-dashboard/data');
+                setLoading(true);
+                const response = await apiFetch('http://localhost:8080/api/user-dashboard/data');
                 if (!response.ok) {
                     throw new Error('Falha ao carregar dados do dashboard.');
                 }
@@ -25,7 +31,6 @@ export default function Dashboard() {
                 setDashboardData(data);
             } catch (err) {
                 if (err.message !== 'Não autorizado') {
-                    console.error("Erro no dashboard:", err);
                     setError(err.message);
                 }
             } finally {
@@ -35,13 +40,8 @@ export default function Dashboard() {
         fetchDashboardData();
     }, []);
 
-    if (loading) {
-        return <div className="dashboard-container"><h1>Dashboard</h1><p className="status-message">A carregar...</p></div>;
-    }
-
-    if (error) {
-        return <div className="dashboard-container"><h1>Dashboard</h1><p className="status-message error-message">Erro: {error}</p></div>;
-    }
+    if (loading) return <div className="dashboard-container"><h1>Dashboard</h1><p className="status-message">A carregar...</p></div>;
+    if (error) return <div className="dashboard-container"><h1>Dashboard</h1><p className="status-message error-message">Erro: {error}</p></div>;
 
     return (
         <div className="dashboard-container">
@@ -59,17 +59,19 @@ export default function Dashboard() {
                                     <span className="stat-label">Cursos Disponíveis</span>
                                 </div>
                             </div>
-                             <div className="stat-item">
+                            <div className="stat-item">
                                 <ClockHistory className="stat-icon" />
                                 <div>
-                                    <span className="stat-value">--</span>
+                                    {/* --- DADO DINÂMICO --- */}
+                                    <span className="stat-value">{dashboardData.cursosEmAndamento}</span>
                                     <span className="stat-label">Em Andamento</span>
                                 </div>
                             </div>
-                             <div className="stat-item">
+                            <div className="stat-item">
                                 <CheckCircleFill className="stat-icon" />
                                 <div>
-                                    <span className="stat-value">--%</span>
+                                    {/* --- DADO DINÂMICO --- */}
+                                    <span className="stat-value">{dashboardData.mediaConclusao}%</span>
                                     <span className="stat-label">Média de Conclusão</span>
                                 </div>
                             </div>

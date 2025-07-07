@@ -187,3 +187,146 @@
     background-color: #03a5b7;
     color: white;
 }
+
+.modal-actions button[type="submit"]:hover {
+    background-color: #028a9a;
+    transition: background-color 0.3s ease;
+}
+
+/* mobile */
+
+@media (max-width: 768px) {
+    .gerenciar-container {
+        padding: 1.5rem;
+    }
+    .header-container h1 {
+        font-size: 1.8rem;
+    }
+    .botao-novo {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+    }
+    .gerenciar-table th, .gerenciar-table td {
+        padding: 12px 15px;
+    }
+    .modal-content {
+        width: 95%;
+        padding: 1.5rem;
+    }
+    .modal-inputs input {
+        font-size: 0.9rem;
+    }
+    .modal-actions button {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+    .modal-actions button[type="submit"] {
+        width: 100%;
+        text-align: center;
+    }
+    .modal-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    .modal-actions button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .modal-actions button:last-child {
+        margin-bottom: 0;
+    }
+    .tag {
+        font-size: 0.7rem;
+        padding: 3px 8px;
+    }
+    .action-btn {
+        font-size: 1.0rem;
+        padding: 3px;
+    }
+    .action-btn:hover {
+        transform: scale(1.15);
+    }
+
+    .gerenciar-table th {
+        font-size: 0.8rem;
+    }
+    .gerenciar-table td {
+        font-size: 0.9rem;
+    }
+    .gerenciar-table {
+        font-size: 0.9rem;
+    }
+    .gerenciar-table tbody tr {
+        font-size: 0.9rem;
+    }
+    .gerenciar-table tbody tr:hover {
+        background-color: #f1f3f5;
+    }
+    .modal-inputs label {
+        font-size: 0.9rem;
+    }
+    .modal-inputs input {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+    .modal-actions button {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+    }
+    .modal-actions button[type="submit"] {
+        width: 100%;
+        text-align: center;
+    }
+    .modal-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    .modal-actions button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .modal-actions button:last-child {
+        margin-bottom: 0;
+    }
+    .tag {
+        font-size: 0.7rem;
+        padding: 3px 8px;
+    }
+    .action-btn {
+        font-size: 1.0rem;
+        padding: 3px;
+    }
+
+    .action-btn:hover {
+        transform: scale(1.15);
+    }
+    .gerenciar-table th {
+        font-size: 0.8rem;
+    }
+    .gerenciar-table td {
+        font-size: 0.9rem;
+    }
+    .gerenciar-table {
+        margin-left: -10px;
+        display: flex;
+        flex-direction: column;
+        max-width: 100%;
+        overflow-x: auto;
+        width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        background-color: white;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+
+    }
+    .gerenciar-table tbody tr {
+        font-size: 0.9rem;
+    }
+    .gerenciar-table tbody tr:hover {
+        background-color: #f1f3f5;
+    }
+  
+
+
+}

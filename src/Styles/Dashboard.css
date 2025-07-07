@@ -155,5 +155,86 @@
 @media (max-width: 992px) {
     .dashboard-grid {
         grid-template-columns: 1fr;
+
     }
+    .stats-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+    .stat-item {
+        margin-bottom: 1rem;
+    }
+    .curso-destaque {
+        flex-direction: column;
+    }
+    .destaque-img {
+        height: 190px; /* Ajusta a altura da imagem para telas menores */
+    }
+    .destaque-info {
+        padding: 1rem;
+    }
+    .certificados {
+        padding: 1rem;
+    }
+    .certificados h2 {
+        font-size: 1.5rem; /* Tamanho do título dos certificados */
+    }
+    .botao-ver-todos {
+        width: 100%; /* Botão ocupa toda a largura em telas menores */
+        padding: 12px; /* Aumenta o padding para melhor usabilidade */
+    }
+    .botao-assistir {
+        width: 100%; /* Botão ocupa toda a largura em telas menores */
+        padding: 12px; /* Aumenta o padding para melhor usabilidade */
+    }   
+    .card {
+        padding: 1rem; /* Reduz o padding dos cards para telas menores */
+    }
+    .dashboard-title {
+        display: flex;
+        justify-content: center;
+        font-size: 2.2rem; /* Reduz o tamanho do título em telas menores */
+        margin-bottom: 1rem; /* Ajusta a margem inferior */
+    }
+    .dashboard-container {
+        padding: 1.5rem; /* Reduz o padding do container em telas menores */
+        margin: 0 auto; /* Centraliza o container */
+        max-width: 100%; /* Garante que o container não ultrapasse a tela */
+    }
+
+    .card h2 {
+        font-size: 1.1rem; /* Reduz o tamanho do título dos cards */
+    }
+    .card {
+        margin: 5px; /* Reduz a margem dos cards */
+        padding: 1rem; /* Reduz o padding dos cards */
+    }
+    .card h2 {
+        font-size: 1.1rem; /* Reduz o tamanho do título dos cards */
+    }
+    .card p {
+        font-size: 0.9rem; /* Reduz o tamanho do texto dos cards */
+    }
+    .card {
+        padding: 1rem; /* Reduz o padding dos cards */
+        margin: 5px; /* Reduz a margem dos cards */
+    }
+    .card h2 {
+        font-size: 1.1rem; /* Reduz o tamanho do título dos cards */
+    }
+    .card p {
+        font-size: 0.9rem; /* Reduz o tamanho do texto dos cards */
+    }
+    .stats-grid {
+        flex-direction: column; /* Coloca os itens em coluna */
+        align-items: center; /* Centraliza os itens */
+    }
+    .stat-item {
+        margin-bottom: 1rem; /* Espaço entre os itens */
+    }
+
+    .stat-icon {
+        font-size: 2rem; /* Reduz o tamanho do ícone */
+    }
+
 }

@@ -116,3 +116,44 @@ textarea {
     transform: translateY(0);
   }
 }
+
+@media (max-width: 768px) {
+  .criar-catalogo-container {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+
+  .form-group input[type="text"],
+  .form-group textarea {
+    font-size: 0.9rem;
+  }
+
+  .botao-criar {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+  .cursos-lista {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .checkbox-item {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .checkbox-item input {
+    margin-right: 0.5rem;
+  }
+  .checkbox-item:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  .checkbox-item:hover {
+    background-color: #e0f2fe;
+    border-color: #3b82f6;
+  }
+  .checkbox-item:hover {
+    background-color: #e0f2fe;
+    border-color: #3b82f6;
+  }
+}
