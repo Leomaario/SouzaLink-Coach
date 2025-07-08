@@ -4,9 +4,11 @@
   flex-direction: column;
   padding: 3rem;
   background-color: #f9fafd;
-  min-height: 100vh;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  width: 45%;
   font-family: 'Inter', sans-serif;
   animation: fadeIn 0.5s ease-in;
+  border-radius: 15px;
 }
 
 .adicionar-curso-container h2 {

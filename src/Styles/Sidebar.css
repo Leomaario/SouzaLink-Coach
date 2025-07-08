@@ -1,7 +1,6 @@
-/* --- GERAL E VARIÁVEIS --- */
 :root {
-    --sidebar-bg: linear-gradient(180deg, #0d1a3c 0%, #03a5b7 150%);
-    --sidebar-width: 300px; /* <<<< Deixei ela maior, como você pediu */
+    --sidebar-bg: linear-gradient(180deg, #0d1a3c 0%, #03A5B7 150%);
+    --sidebar-width: 280px;
     --sidebar-text-color: #a7b3ce;
     --sidebar-text-hover: #ffffff;
     --link-active-bg: rgba(71, 195, 243, 0.1);
@@ -11,7 +10,6 @@
     --separator-color: rgba(71, 195, 243, 0.2);
 }
 
-/* --- CONTAINER PRINCIPAL --- */
 .sidebar {
     display: flex;
     flex-direction: column;
@@ -21,32 +19,32 @@
     height: 100vh;
     width: var(--sidebar-width);
     background: var(--sidebar-bg);
-    box-shadow: 4px 0 25px rgba(0, 0, 0, 0.3);
     z-index: 1000;
     transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .sidebar-header {
-    padding: 1.5rem;
+    padding: 1.5rem 1rem;
     flex-shrink: 0;
     text-align: center;
 }
 
 #logo {
-    width: 180px;
+    width: 170px;
     transition: transform 0.3s ease;
 }
+
 #logo:hover {
     transform: scale(1.05);
 }
 
-/* --- ÁREA DO MENU --- */
 .menu {
     flex-grow: 1;
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: rgba(71,195,243,0.2) transparent;
 }
+
 .menu::-webkit-scrollbar { width: 6px; }
 .menu::-webkit-scrollbar-thumb { background-color: rgba(71,195,243,0.2); border-radius: 3px; }
 
@@ -56,9 +54,8 @@ nav {
     padding: 0 1rem;
 }
 
-/* --- LINKS DE NAVEGAÇÃO --- */
 .sidebar nav a {
-    position: relative; /* Necessário para o efeito ::before */
+    position: relative;
     font-family: 'Inter', sans-serif;
     text-decoration: none;
     color: var(--sidebar-text-color);
@@ -66,13 +63,12 @@ nav {
     font-weight: 500;
     display: flex;
     align-items: center;
-    padding: 15px 20px;
+    padding: 14px 18px;
     border-radius: 8px;
     margin-bottom: 0.5rem;
     transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-/* Efeito de hover e de link ativo */
 .sidebar nav a:hover,
 .sidebar nav a.active {
     background-color: var(--link-active-bg);
@@ -80,7 +76,6 @@ nav {
     font-weight: 600;
 }
 
-/* EFEITO FUTURISTA: Indicador lateral que acende */
 .sidebar nav a::before {
     content: '';
     position: absolute;
@@ -99,46 +94,43 @@ nav {
     height: 70%;
 }
 
-
-/* --- ÍCONES --- */
 .sidebar nav a svg {
     margin-right: 18px;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     width: 28px;
     text-align: center;
     flex-shrink: 0;
     transition: all 0.3s ease;
 }
-/* EFEITO FUTURISTA: Ícone com brilho "neon" */
+
 .sidebar nav a:hover svg {
     color: var(--accent-color);
     transform: scale(1.1);
     filter: drop-shadow(0 0 8px var(--accent-color));
 }
 
-/* --- SEÇÃO ADMIN --- */
 .admin-divider {
     height: 1px;
     background: var(--separator-color);
     margin: 1.5rem 1rem;
 }
+
 .title-adm {
     font-size: 0.75rem;
     color: var(--sidebar-text-color);
     text-transform: uppercase;
     letter-spacing: 1.5px;
-    padding: 0 20px;
+    padding: 0 18px;
     margin-bottom: 1rem;
     opacity: 0.7;
 }
 
-/* --- RODAPÉ --- */
 .sidebar-footer {
     padding: 1rem 1.25rem;
     border-top: 1px solid var(--separator-color);
     display: flex;
     justify-content: space-between;
-    align-items: center; /* Verticamente centra o bloco do perfil e o botão de logout */
+    align-items: center;
     gap: 10px;
     flex-shrink: 0;
 }
@@ -146,11 +138,11 @@ nav {
 .user-profile-link {
     flex-grow: 1;
     display: flex;
-    align-items: center; /* Verticamente centra o avatar e as informações do utilizador */
+    align-items: center;
     gap: 12px;
     text-decoration: none;
     color: var(--sidebar-text-color);
-    min-width: 0; /* Impede que o texto empurre o botão de logout para fora */
+    min-width: 0;
     transition: opacity 0.2s;
 }
 
@@ -161,7 +153,6 @@ nav {
 .user-avatar {
     font-size: 2.5rem;
     flex-shrink: 0;
-    /* CORREÇÃO: Garante o alinhamento do ícone SVG interno */
     display: flex;
     align-items: center;
 }
@@ -195,11 +186,9 @@ nav {
     padding: 8px;
     border-radius: 50%;
     color: var(--sidebar-text-color);
-    font-size: 1.5rem; /* Aumentei um pouco para equilibrar */
+    font-size: 1.5rem;
     flex-shrink: 0;
     transition: background-color 0.2s, color 0.2s;
-    
-    /* CORREÇÃO: Garante o alinhamento perfeito do ícone dentro do botão */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -210,89 +199,56 @@ nav {
     color: var(--sidebar-text-hover);
 }
 
-
-/* --- LÓGICA MOBILE E HAMBURGUER --- */
 .hamburger {
-    display: none; /* Esconde o hambúrguer por padrão */
+    display: none;
     position: fixed;
-    top: 20px;
-    left: 20px;
-    z-index: 1100; /* Acima da sidebar */
-    width: 40px;
-    height: 40px;
-    background-color: rgba(255, 255, 255, 0.8);
+    top: 1rem;
+    left: 1rem;
+    z-index: 1100;
+    width: 50px;
+    height: 50px;
+    background: white;
+    border: 1px solid #eee;
     border-radius: 50%;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    justify-content: center;
-    align-items: center;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    display: flex; /* Flex para centralizar os divs internos */
-    z-index: 1200; /* Acima da sidebar */
-    margin-left: calc(var(--sidebar-width) + 20px); /* Espaço para o hambúrguer */
-    margin-top: 20px; /* Espaço do topo */
-    border: 1px solid rgba(0, 0, 0, 0.1); /* Borda sutil */
-    border-radius: 50%; /* Borda arredondada */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
-
-
-    
-}
-
-@media (max-width: 1024px) {
-    .sidebar {
-        transform: translateX(-100%);
-            width: 100%;
-    }
-    .sidebar.open {
-        transform: translateX(0);
-    }
-    .hamburger {
-        display: flex;
-    }
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 12px 10px;
+    transition: all 0.3s ease-in-out;
 }
 
 .hamburger:hover {
-    background-color: rgba(255, 255, 255, 0.9);
-    transform: scale(1.05);
+    transform: scale(1.1);
 }
 
-.hamburger div {
-    width: 30px;
+.hamburger .line {
+    width: 100%;
     height: 3px;
-    background-color: #333;
+    background-color: #03339c;
     border-radius: 2px;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease-in-out;
 }
 
-/* EFEITO DE ANIMAÇÃO DO HABURGUER */
-
-.hamburger.open div:nth-child(1) {
-    transform: rotate(45deg) translateY(8px);
+.hamburger.is-active .line:nth-child(1) {
+    transform: translateY(10px) rotate(45deg);
 }
-.hamburger.open div:nth-child(2) {
+.hamburger.is-active .line:nth-child(2) {
     opacity: 0;
 }
-.hamburger.open div:nth-child(3) {
-    transform: rotate(-45deg) translateY(-8px);
+.hamburger.is-active .line:nth-child(3) {
+    transform: translateY(-10px) rotate(-45deg);
 }
-/* --- ANIMAÇÃO DE TRANSIÇÃO --- */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
+
+@media (max-width: 1024px) {
+    .hamburger {
+        display: flex;
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    .sidebar {
+        transform: translateX(-100%);
+        box-shadow: 4px 0 25px rgba(0,0,0,0.3);
     }
-}
-/* --- ANIMAÇÃO DE TRANSIÇÃO PARA O CONTEÚDO PRINCIPAL --- */
-@keyframes slideIn {
-    from {
-        margin-left: -var(--sidebar-width);
-    }
-    to {
-        margin-left: 0;
+    .sidebar.open {
+        transform: translateX(0);
     }
 }

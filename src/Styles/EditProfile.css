@@ -1,110 +1,140 @@
+/* --- GERAL DA PÁGINA --- */
 .edit-profile-container {
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 2rem;
-    background-color: #fff;
-    border-radius: 14px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.06);
-    font-family: 'Segoe UI', sans-serif;
-    font-weight: 2rem;
-    animation: fadeIn 0.5s ease-in;
-  }
-  
-  .edit-profile-container h1 {
-    text-align: center;
+    padding: 2rem 3rem;
+    font-family: 'Inter', sans-serif;
+    background-color: #f4f7f9;
+}
+
+.edit-profile-container h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #1e293b;
     margin-bottom: 2rem;
-    color: #141414;
-    font-family:Arial, Helvetica, sans-serif;
-    font-weight: 2rem;
-  }
-  
-  .profile-card {
+}
+
+/* --- CARD PRINCIPAL --- */
+.profile-card {
     display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-  }
-  
-  .left-section {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .foto-preview {
-    cursor: pointer;
-    position: relative;
-  }
-  
-  .foto-preview img {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #03a5b7;
-  }
-  
-  .alterar-foto {
-    margin-top: 0.5rem;
-    display: block;
-    color: #0077cc;
+    gap: 3rem;
+    background-color: white;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+/* --- LADO ESQUERDO (FOTO) --- */
+.left-section {
+    flex-shrink: 0;
     text-align: center;
-    font-size: 0.9rem;
-  }
-  
-  .right-section {
-    flex: 2;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .form-group {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .form-group label {
+}
+
+.foto-preview {
+    position: relative;
+    display: block;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    border: 4px solid #e2e8f0;
+}
+
+.foto-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.alterar-foto {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0,0,0,0.5);
+    color: white;
+    padding: 8px 0;
+    font-size: 0.8rem;
     font-weight: 600;
-    margin-bottom: 5px;
-    color: #333;
-  }
-  
-  .form-group input {
-    padding: 0.7rem;
-    border: 1px solid #ccc;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.foto-preview:hover .alterar-foto {
+    opacity: 1;
+}
+
+/* --- LADO DIREITO (FORMULÁRIO) --- */
+.right-section {
+    flex-grow: 1;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #475569;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #d1d5db;
     border-radius: 8px;
     font-size: 1rem;
-  }
-  
-  .btn-area {
-    margin-top: 1.5rem;
-  }
-  
-  .btn-salvar {
-    padding: 0.8rem 1.5rem;
-    background-color: #03339c;
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #03a5b7;
+    box-shadow: 0 0 0 3px rgba(3, 165, 183, 0.2);
+}
+
+/* Estilo para o campo desabilitado */
+.form-group input:disabled {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+    color: #6c757d;
+}
+
+/* --- BOTÃO DE SALVAR --- */
+.btn-area {
+    text-align: right;
+    margin-top: 2rem;
+}
+
+.btn-salvar {
+    padding: 12px 30px;
+    background: linear-gradient(to right, #03a5b7, #03339c);
     color: white;
     border: none;
-    border-radius: 10px;
+    border-radius: 8px;
     font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .btn-salvar:hover {
-    background-color: #022975;
-  }
-  
-  /* Responsivo */
-  @media (max-width: 768px) {
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.btn-salvar:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 768px) {
     .profile-card {
-      flex-direction: column;
-      align-items: center;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        padding: 1.5rem;
     }
-  
-    .right-section {
-      width: 100%;
+    .btn-area {
+        text-align: center;
     }
-  }
-  
+}
