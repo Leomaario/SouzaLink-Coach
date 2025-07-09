@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../src/Styles/Css-Admin/CriarCatalogo.css';
-import { useEffect } from 'react';
-import { apiFetch } from '../Services/api'; // <<< IMPORTA O NOSSO PADRÃO
+import { apiFetch } from '../Services/api';
 
 const CriarCatalogo = () => {
-  // Seus estados continuam os mesmos
   const [nome, setNome] = useState('');
   const [descricao, setDescricao] = useState('');
   const [caminhoPasta, setCaminhoPasta] = useState('');
@@ -13,11 +11,9 @@ const CriarCatalogo = () => {
   const [mensagem, setMensagem] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // --- LÓGICA ATUALIZADA: BUSCANDO VÍDEOS COM O PADRÃO ---
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        // Substituímos o fetch padrão pelo nosso apiFetch
         const response = await apiFetch('http://localhost:8080/api/videos');
         if (response.ok && response.status !== 204) {
           const data = await response.json();
@@ -27,7 +23,7 @@ const CriarCatalogo = () => {
         }
       } catch (error) {
         if (error.message !== 'Não autorizado') {
-            console.error('Erro ao buscar vídeos:', error);
+          console.error('Erro ao buscar vídeos:', error);
         }
       }
     };
@@ -42,7 +38,6 @@ const CriarCatalogo = () => {
     );
   };
 
-  // --- LÓGICA ATUALIZADA: ENVIANDO O FORMULÁRIO COM O PADRÃO ---
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
@@ -55,7 +50,6 @@ const CriarCatalogo = () => {
     };
 
     try {
-      // Substituímos o fetch padrão pelo nosso apiFetch
       const response = await apiFetch('http://localhost:8080/api/catalogos', {
         method: 'POST',
         body: JSON.stringify(novoCatalogo),
@@ -66,27 +60,23 @@ const CriarCatalogo = () => {
       }
 
       setMensagem('Catálogo criado com sucesso!');
-      // Limpa os campos
       setNome('');
       setDescricao('');
       setCaminhoPasta('');
       setVideosSelecionados([]);
-
     } catch (error) {
-       if (error.message !== 'Não autorizado') {
-            console.error('Erro no submit:', error);
-            setMensagem(error.message || 'Ocorreu um erro. Por favor, tente novamente.');
-       }
+      if (error.message !== 'Não autorizado') {
+        console.error('Erro no submit:', error);
+        setMensagem(error.message || 'Ocorreu um erro. Por favor, tente novamente.');
+      }
     } finally {
       setLoading(false);
     }
   };
 
-  // --- O JSX AGORA É UM FORMULÁRIO COMPLETO E DINÂMICO ---
   return (
     <div className="criar-catalogo-container">
       <h2>Criar Novo Catálogo</h2>
-      
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="nome">Nome do Catálogo</label>
@@ -99,7 +89,6 @@ const CriarCatalogo = () => {
             required
           />
         </div>
-
         <div className="form-group">
           <label htmlFor="descricao">Descrição</label>
           <textarea
@@ -109,7 +98,6 @@ const CriarCatalogo = () => {
             placeholder="Descreva o que este catálogo aborda..."
           />
         </div>
-
         <div className="form-group">
           <label htmlFor="caminhoPasta">Caminho da Pasta no Servidor</label>
           <input
@@ -121,7 +109,6 @@ const CriarCatalogo = () => {
             required
           />
         </div>
-
         <div className="form-group">
           <label>Associar Vídeos (Funcionalidade Futura)</label>
           <div className="cursos-lista">
@@ -141,11 +128,9 @@ const CriarCatalogo = () => {
             )}
           </div>
         </div>
-
         <button type="submit" className="botao-criar" disabled={loading}>
           {loading ? 'Criando...' : 'Criar Catálogo'}
         </button>
-
         {mensagem && <p className="mensagem-feedback">{mensagem}</p>}
       </form>
     </div>

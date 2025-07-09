@@ -7,16 +7,13 @@ const EditarRelatorio = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const fileInputRef = useRef();
 
-  const toggleDropdown = () => {
-    setShowDropdown(prev => !prev);
-  };
+  const toggleDropdown = () => setShowDropdown(prev => !prev);
 
   const addElement = (type) => {
     if (type === "img") {
       fileInputRef.current.click();
       return;
     }
-
     let content = "";
     if (type === "titulo") content = "Título do Relatório";
     if (type === "paragrafo") content = "Parágrafo de exemplo.";
@@ -24,8 +21,7 @@ const EditarRelatorio = () => {
     if (type === "ultimoacesso") content = "Último Acesso: 01/01/2025";
     if (type === "totaldecursofeito") content = "Total de Cursos Concluídos: 5";
     if (type === "empresa") content = "Empresa XPTO";
-
-    setElements((prev) => [
+    setElements(prev => [
       ...prev,
       {
         id: Date.now(),
@@ -37,15 +33,14 @@ const EditarRelatorio = () => {
         height: 50,
       },
     ]);
-    setShowDropdown(false); // fecha o dropdown após adicionar
+    setShowDropdown(false);
   };
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
     const url = URL.createObjectURL(file);
-    setElements((prev) => [
+    setElements(prev => [
       ...prev,
       {
         id: Date.now(),
@@ -61,7 +56,6 @@ const EditarRelatorio = () => {
 
   const handleSave = () => {
     alert("Relatório salvo!");
-    // lógica para exportar ou salvar pode ser implementada aqui
   };
 
   return (
@@ -70,7 +64,6 @@ const EditarRelatorio = () => {
         <button className="dropdown-toggle" onClick={toggleDropdown}>
           Campos Adicionais
         </button>
-
         {showDropdown && (
           <div className="dropdown-menu">
             <button onClick={() => addElement("img")}>Adicionar Imagem</button>
@@ -82,10 +75,8 @@ const EditarRelatorio = () => {
             <button onClick={() => addElement("totaldecursofeito")}>Cursos Concluídos</button>
           </div>
         )}
-
         <button className="save-button" onClick={handleSave}>Salvar Relatório</button>
       </header>
-
       <input
         type="file"
         accept="image/*"
@@ -93,7 +84,6 @@ const EditarRelatorio = () => {
         onChange={handleImageUpload}
         style={{ display: "none" }}
       />
-
       <div className="report-page">
         {elements.map((el) => (
           <Rnd

@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { apiFetch } from '../Services/api';
 import { BsPencilSquare, BsTrashFill } from 'react-icons/bs';
-import '../Styles/Css-Admin/GerenciarCursos.css'; 
+import '../Styles/Css-Admin/GerenciarCursos.css';
 
 const GerenciarCursos = () => {
     const [videos, setVideos] = useState([]);
-    const [catalogos, setCatalogos] = useState([]); // Para o dropdown de edição
+    const [catalogos, setCatalogos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,7 +19,6 @@ const GerenciarCursos = () => {
                     apiFetch('http://localhost:8080/api/catalogos')
                 ]);
                 if (!videosResponse.ok || !catalogosResponse.ok) throw new Error('Falha ao carregar dados.');
-                
                 setVideos(await videosResponse.json());
                 setCatalogos(await catalogosResponse.json());
             } catch (err) {
@@ -57,9 +56,7 @@ const GerenciarCursos = () => {
                 method: 'PUT',
                 body: JSON.stringify({ titulo, descricao, catalogoId }),
             });
-
             if (!response.ok) throw new Error('Falha ao atualizar.');
-            
             const videoAtualizado = await response.json();
             setVideos(prev => prev.map(v => v.id === videoAtualizado.id ? videoAtualizado : v));
             handleFecharModal();
@@ -100,7 +97,6 @@ const GerenciarCursos = () => {
                     ))}
                 </tbody>
             </table>
-
             {isModalOpen && (
                 <div className="modal-overlay">
                     <form className="modal-content" onSubmit={handleSalvarEdicao}>

@@ -24,15 +24,16 @@ export default function RelatoriosEmitir() {
   };
 
   const gerarRelatorio = () => {
-    if (!relatorioSelecionado) return alert('Selecione um relatório');
+    if (!relatorioSelecionado) {
+      alert('Selecione um relatório');
+      return;
+    }
     alert(`Relatório "${relatorioSelecionado}" gerado!`);
-    // Aqui você pode acionar a geração em PDF
   };
 
   return (
     <div className="emitir-relatorios-container">
       <h2>Emitir Relatórios</h2>
-
       <div className="relatorio-header">
         <select onChange={handleSelecionar} value={relatorioSelecionado}>
           <option value="">Selecione um relatório</option>
@@ -42,7 +43,6 @@ export default function RelatoriosEmitir() {
         </select>
         <button className="btn-pdf" onClick={gerarRelatorio}>Gerar PDF</button>
       </div>
-
       <div className="relatorios-lista">
         {relatoriosRecentes.map((rel, index) => (
           <div className="card-relatorio" key={index}>

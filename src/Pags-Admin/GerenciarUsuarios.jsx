@@ -1,36 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { apiFetch } from '../Services/api'; // Certifique-se de que o caminho está correto
+import { apiFetch } from '../Services/api';
 import { BsPencilSquare, BsTrashFill } from 'react-icons/bs';
-import '../Styles/Css-Admin/GerenciarUsuarios.css'; // Certifique-se de que o caminho está correto
+import '../Styles/Css-Admin/GerenciarUsuarios.css';
 
 const GerenciarUsuarios = () => {
     const [usuarios, setUsuarios] = useState([]);
-    const [grupos, setGrupos] = useState([]); // Para o dropdown de edição
+    const [grupos, setGrupos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    
-
-
-    // Estado para o modal de edição
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [usuarioEmEdicao, setUsuarioEmEdicao] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Busca utilizadores e grupos em paralelo para otimizar
                 const [usersResponse, groupsResponse] = await Promise.all([
                     apiFetch('/api/usuarios'),
                     apiFetch('/api/grupos')
                 ]);
-
                 if (!usersResponse.ok || !groupsResponse.ok) {
                     throw new Error('Falha ao carregar dados da página.');
                 }
-                
                 const usersData = await usersResponse.json();
                 const groupsData = await groupsResponse.json();
-                
                 setUsuarios(usersData);
                 setGrupos(groupsData);
             } catch (err) {
@@ -53,9 +45,9 @@ const GerenciarUsuarios = () => {
             }
         }
     };
-    
+
     const handleAbrirModal = (usuario) => {
-        setUsuarioEmEdicao({ ...usuario }); // Cria uma cópia para edição
+        setUsuarioEmEdicao({ ...usuario });
         setIsModalOpen(true);
     };
 
@@ -63,7 +55,7 @@ const GerenciarUsuarios = () => {
         setIsModalOpen(false);
         setUsuarioEmEdicao(null);
     };
-    
+
     const handleSalvarEdicao = async (e) => {
         e.preventDefault();
         try {
@@ -72,13 +64,10 @@ const GerenciarUsuarios = () => {
                 method: 'PUT',
                 body: JSON.stringify({ nome, email, grupo, permissoes }),
             });
-
             if (!response.ok) throw new Error('Falha ao atualizar.');
-            
             const usuarioAtualizado = await response.json();
             setUsuarios(prev => prev.map(u => u.id === usuarioAtualizado.id ? usuarioAtualizado : u));
             handleFecharModal();
-
         } catch (err) {
             alert(err.message);
         }
@@ -91,7 +80,6 @@ const GerenciarUsuarios = () => {
 
     if (loading) return <div className="gerenciar-usuarios-container"><h1>Gestão de Utilizadores</h1><p>A carregar...</p></div>;
     if (error) return <div className="gerenciar-usuarios-container"><h1>Gestão de Utilizadores</h1><p>Erro: {error}</p></div>;
-    console.log("Dados recebidos para a tabela de utilizadores:", usuarios);
 
     return (
         <div className="gerenciar-usuarios-container">
@@ -125,7 +113,6 @@ const GerenciarUsuarios = () => {
                     ))}
                 </tbody>
             </table>
-
             {isModalOpen && (
                 <div className="modal-overlay" onClick={handleFecharModal}>
                     <form className="modal-content" onSubmit={handleSalvarEdicao} onClick={e => e.stopPropagation()}>
@@ -144,7 +131,7 @@ const GerenciarUsuarios = () => {
                                 {grupos.map(g => <option key={g.id} value={g.nome}>{g.nome}</option>)}
                             </select>
                         </div>
-                         <div className="form-group">
+                        <div className="form-group">
                             <label>Permissão</label>
                             <select name="permissoes" value={usuarioEmEdicao.permissoes} onChange={handleModalInputChange}>
                                 <option value="USER">Usuário</option>
