@@ -98,7 +98,7 @@ function PainelAdmin() {
                 </div>
                 <div className="admin-card" onClick={() => navigate('/GerenciarUsuarios')}>
                     <i className="bi bi-pencil-square icon"></i>
-                    <h2>Editar Usuário</h2>
+                    <h2>Gerenciar Usuário</h2>
                     <p>Atualize informações de usuários existentes.</p>
                 </div>
                 <div className="admin-card" onClick={() => navigate('/GerenciarCursos')}>

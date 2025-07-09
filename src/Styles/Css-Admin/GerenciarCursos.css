@@ -1,4 +1,3 @@
-
 .gerenciar-container {
     padding: 2rem 3rem;
     font-family: 'Inter', sans-serif;
@@ -8,7 +7,6 @@
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     animation: fadeIn 0.5s ease-in;
 }
-
 
 .header-container {
     display: flex;
@@ -44,8 +42,6 @@
     transform: translateY(-2px);
 }
 
-
-/* --- TABELA DE CATÁLOGOS --- */
 .gerenciar-table {
     width: 100%;
     border-collapse: collapse;
@@ -77,8 +73,6 @@
     background-color: #f1f5f9;
 }
 
-
-/* --- ESTILO ESPECÍFICO PARA A TAG --- */
 .tag {
     background-color: #e6f7ff;
     color: #007bff;
@@ -90,8 +84,6 @@
     display: inline-block;
 }
 
-
-/* --- BOTÕES DE AÇÃO NA TABELA --- */
 .action-btn {
     border: none;
     background: none;
@@ -107,8 +99,6 @@
 .edit-btn { color: #007bff; }
 .delete-btn { color: #dc3545; }
 
-
-/* --- ESTILOS DO MODAL (JANELA POPUP) --- */
 .modal-overlay {
     position: fixed;
     top: 0; left: 0;

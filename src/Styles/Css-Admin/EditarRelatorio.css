@@ -1,93 +1,93 @@
 .page-container {
-    margin-left: 220px;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-  }
-  
-  .top-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 0;
-  }
-  
-  .dropdown-toggle {
-    background-color: #3b82f6;
-    color: white;
-    border: none;
-    padding: 8px 14px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-  
-  .dropdown-toggle:hover {
-    background-color: #2563eb;
-  }
-  
-  .dropdown-menu {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-left: 10px;
-  }
-  
-  .dropdown-menu button {
-    padding: 6px 10px;
-    background-color: #e5e7eb;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: 0.2s;
-  }
-  
-  .dropdown-menu button:hover {
-    background-color: #d1d5db;
-  }
-  
-  .save-button {
-    margin-left: auto;
-    padding: 8px 14px;
-    background-color: #10b981;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-  
-  .save-button:hover {
-    background-color: #059669;
-  }
-  
-  .report-page {
-    width: 794px;
-    height: 1123px;
-    margin-top: 20px;
-    border: 1px solid #ccc;
-    background-color: white;
-    position: relative;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .report-element {
-    padding: 6px;
-    background-color: #f9fafb;
-    border: 1px dashed #9ca3af;
-    border-radius: 4px;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    font-size: 14px;
-  }
-  
+  margin-left: 220px;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.top-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+}
+
+.dropdown-toggle {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.dropdown-toggle:hover {
+  background-color: #2563eb;
+}
+
+.dropdown-menu {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-left: 10px;
+}
+
+.dropdown-menu button {
+  padding: 6px 10px;
+  background-color: #e5e7eb;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.dropdown-menu button:hover {
+  background-color: #d1d5db;
+}
+
+.save-button {
+  margin-left: auto;
+  padding: 8px 14px;
+  background-color: #10b981;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.save-button:hover {
+  background-color: #059669;
+}
+
+.report-page {
+  width: 794px;
+  height: 1123px;
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  background-color: white;
+  position: relative;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.report-element {
+  padding: 6px;
+  background-color: #f9fafb;
+  border: 1px dashed #9ca3af;
+  border-radius: 4px;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  font-size: 14px;
+}
+
 @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(15px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(15px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -3,22 +3,22 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: #2c3e50;
     animation: fadeIn 0.5s ease-in-out;
-  }
-  
-  .admin-titulo {
+}
+
+.admin-titulo {
     font-size: 2.5rem;
     font-weight: bold;
     margin-bottom: 2rem;
     text-align: center;
-  }
-  
-  .admin-cards-container {
+}
+
+.admin-cards-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2rem;
-  }
-  
-  .admin-card {
+}
+
+.admin-card {
     background-color: #f4f9ff;
     border-left: 6px solid #007bff;
     border-radius: 12px;
@@ -26,22 +26,21 @@
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     cursor: pointer;
     transition: transform 0.2s ease, background-color 0.3s ease;
-  }
-  
-  .admin-card:hover {
+}
+
+.admin-card:hover {
     background-color: #e0f0ff;
     transform: scale(1.02);
+}
 
-  }
-
-  
-  .admin-card .icon {
+.admin-card .icon {
     font-size: 2rem;
     color: #007bff;
     margin-bottom: 1rem;
     display: block;
-  }
-  .admin-visao-geral {
+}
+
+.admin-visao-geral {
     font-size: 1.5rem;
     font-weight: bold;
     margin-bottom: 2rem;
@@ -50,8 +49,9 @@
     display: flex;
     justify-content: space-around;
     background-color: #f4f9ff;
-  }
-  .visao-card {
+}
+
+.visao-card {
     background-color: #f4f9ff;
     border-radius: 8px;
     padding: 1rem;
@@ -60,34 +60,31 @@
     text-align: center;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     cursor: pointer;
-    border-bottom: 4px solid transparent; /* Aqui já reserva o espaço */
-    transition: background-color 0.3s ease, border-bottom 0.3s ease; /* suave */
-  }
-  
-  .visao-card:hover {
+    border-bottom: 4px solid transparent;
+    transition: background-color 0.3s ease, border-bottom 0.3s ease;
+}
+
+.visao-card:hover {
     background-color: #e0f0ff;
     border-bottom: 4px solid #007bff;
-  }
+}
 
-  
-  
 @media screen and (max-width: 768px) {
     .admin-cards-container {
-      grid-template-columns: 1fr; /* Colunas únicas em telas menores */
+        grid-template-columns: 1fr;
     }
     .admin-titulo {
-      font-size: 2rem; /* Tamanho do título reduzido */
+        font-size: 2rem;
     }
     .admin-card {
-      padding: 1rem; /* Reduzindo o padding dos cards */
+        padding: 1rem;
     }
     .admin-visao-geral {
-      flex-direction: column; /* Colocando os cards em coluna */
-      align-items: center; /* Centralizando os cards */
+        flex-direction: column;
+        align-items: center;
     }
     .visao-card {
-      width: 100%; /* Fazendo os cards ocuparem toda a largura */
-      margin: 0.5rem 0; /* Margem vertical para espaçamento */
+        width: 100%;
+        margin: 0.5rem 0;
     }
-
-  }
+}

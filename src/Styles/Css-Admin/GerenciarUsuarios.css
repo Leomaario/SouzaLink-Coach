@@ -1,4 +1,3 @@
-/* --- GERAL DA PÁGINA --- */
 .gerenciar-usuarios-container {
     padding: 2rem;
     font-family: 'Inter', sans-serif;
@@ -10,8 +9,6 @@
     color: #2c3e50;
     font-size: 2rem;
 }
-
-/* --- TABELA (VISUALIZAÇÃO DESKTOP) --- */
 .users-table {
     width: 100%;
     border-collapse: collapse;
@@ -37,8 +34,6 @@
 .users-table tbody tr:hover {
     background-color: #e9ecef;
 }
-
-/* --- BOTÕES DE AÇÃO --- */
 .action-btn {
     border: none;
     background: none;
@@ -51,8 +46,6 @@
 .action-btn:hover { transform: scale(1.25); }
 .edit-btn { color: #007bff; }
 .delete-btn { color: #dc3545; }
-
-/* --- ESTILOS DO MODAL --- */
 .modal-overlay {
     position: fixed;
     top: 0; left: 0;
@@ -74,9 +67,6 @@
     border-radius: 5px; cursor: pointer; font-weight: 600;
 }
 .modal-actions button[type="submit"] { background-color: #03a5b7; color: white; }
-
-
-/* --- RESPONSIVIDADE (A MÁGICA ACONTECE AQUI) --- */
 @media (max-width: 768px) {
     .gerenciar-usuarios-container {
         padding: 1rem;
@@ -85,34 +75,26 @@
         font-size: 1.8rem;
         margin-bottom: 1.5rem;
     }
-
-    /* Esconde o cabeçalho da tabela no mobile */
     .users-table thead {
         display: none;
     }
-    /* Faz a tabela se comportar como um container de blocos */
     .users-table, .users-table tbody, .users-table tr, .users-table td {
         display: block;
         width: 100%;
     }
-    /* Transforma cada linha num "card" */
     .users-table tr {
         display: flex;
         flex-direction: column;
-
-        /* centraliza tudo */
         align-items: flex-start;
         justify-content: left;
         padding: 1rem;
         text-align: left;
-                
         max-width: 100%;
         box-sizing: border-box;
         margin-bottom: 1rem;
         border: 1px solid #ddd;
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-
     }
     .users-table td {
         display: flex;
@@ -129,14 +111,12 @@
     .users-table td:last-child {
         border-bottom: none;
     }
-    /* Adiciona o "rótulo" do cabeçalho antes de cada dado */
     .users-table td::before {
         content: attr(data-label);
         font-weight: 600;
         margin-right: 10px;
         color: #333;
     }
-    /* A célula de ações fica com os botões alinhados à direita */
     .users-table td[data-label="Ações"] {
         justify-content: flex-end;
     }
