@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../../Styles/Login.css'; // Certifique-se de que o caminho está correto
-import { apiFetch } from '../../services/api'; // Certifique-se que o caminho para api.js está correto
+import '../../Styles/Login.css';
+import { apiFetch } from '../../Services/api';
 
 const Login = () => {
     const [usuario, setUsuario] = useState('');
     const [senha, setSenha] = useState('');
     const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false); 
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
@@ -28,26 +28,18 @@ const Login = () => {
             }
 
             if (data.token) {
-                // Guarda o token na sua própria chave
                 localStorage.setItem('token', data.token);
-
-                // --- AQUI ESTÁ A CORREÇÃO ---
-                // Cria o objeto do utilizador, garantindo que as 'roles' estão incluídas
                 const userData = {
                     id: data.id,
                     usuario: data.usuario,
                     email: data.email,
-                    roles: data.roles // <<< A LINHA QUE FALTAVA
+                    roles: data.roles
                 };
-                // Guarda o objeto completo do utilizador
                 localStorage.setItem('user', JSON.stringify(userData));
-
-                // Navega para o dashboard após o sucesso
                 navigate('/dashboard');
             } else {
                 throw new Error('Token não recebido do servidor.');
             }
-
         } catch (err) {
             setError(err.message);
         } finally {
@@ -61,7 +53,7 @@ const Login = () => {
             <form onSubmit={handleLogin}>
                 <img src="/imgs/logo.png" alt="Logo" className="logo" />
                 <input
-                    type="text" 
+                    type="text"
                     placeholder="Usuário"
                     value={usuario}
                     onChange={(e) => setUsuario(e.target.value)}
@@ -80,6 +72,6 @@ const Login = () => {
             </form>
         </div>
     );
-}
+};
 
 export default Login;

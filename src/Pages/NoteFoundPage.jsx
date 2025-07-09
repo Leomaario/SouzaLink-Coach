@@ -1,8 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../Styles/NoteFoundPage.css'; // Certifique-se de que o caminho está correto
-
+import '../Styles/NoteFoundPage.css'; 
 const NotFoundPage = () => {
     return (
         <div className="not-found-container">

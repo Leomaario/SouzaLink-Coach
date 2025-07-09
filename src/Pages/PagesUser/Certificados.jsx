@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { apiFetch } from '../../Services/api';
 import '@styles/Certificados.css';
-// --- IMPORTANDO OS ÍCONES ---
 import { EyeFill, CloudDownloadFill, ShareFill } from 'react-bootstrap-icons';
 
 const Certificados = () => {
@@ -28,8 +27,23 @@ const Certificados = () => {
         fetchMeusCertificados();
     }, []);
 
-    if (loading) return <div className="certificados-container"><h1>Seus Certificados</h1><p>A carregar...</p></div>;
-    if (error) return <div className="certificados-container"><h1>Seus Certificados</h1><p>Erro: {error}</p></div>;
+    if (loading) {
+        return (
+            <div className="certificados-container">
+                <h1>Seus Certificados</h1>
+                <p>A carregar...</p>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="certificados-container">
+                <h1>Seus Certificados</h1>
+                <p>Erro: {error}</p>
+            </div>
+        );
+    }
 
     return (
         <div className="certificados-container">

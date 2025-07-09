@@ -6,19 +6,15 @@ import { Book, CheckCircleFill, ClockHistory, Award, ArrowRight } from 'react-bo
 
 export default function Dashboard() {
     const navigate = useNavigate();
-
-    // --- ESTADO INICIAL ATUALIZADO ---
-    // O estado agora já espera os novos campos do backend
     const [dashboardData, setDashboardData] = useState({
         cursoEmDestaque: null,
         totalCursos: 0,
-        cursosEmAndamento: 0, // Valor padrão
-        mediaConclusao: 0     // Valor padrão
+        cursosEmAndamento: 0,
+        mediaConclusao: 0
     });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // O useEffect já está correto, buscando os dados da rota certa
     useEffect(() => {
         const fetchDashboardData = async () => {
             try {
@@ -46,7 +42,6 @@ export default function Dashboard() {
     return (
         <div className="dashboard-container">
             <h1 className="dashboard-title">Dashboard</h1>
-
             <div className="dashboard-grid">
                 <div className='container-left'>
                     <div className="card resumo-progresso">
@@ -62,7 +57,6 @@ export default function Dashboard() {
                             <div className="stat-item">
                                 <ClockHistory className="stat-icon" />
                                 <div>
-                                    {/* --- DADO DINÂMICO --- */}
                                     <span className="stat-value">{dashboardData.cursosEmAndamento}</span>
                                     <span className="stat-label">Em Andamento</span>
                                 </div>
@@ -70,14 +64,12 @@ export default function Dashboard() {
                             <div className="stat-item">
                                 <CheckCircleFill className="stat-icon" />
                                 <div>
-                                    {/* --- DADO DINÂMICO --- */}
                                     <span className="stat-value">{dashboardData.mediaConclusao}%</span>
                                     <span className="stat-label">Média de Conclusão</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                     <div className="card lembretes">
                         <h2>Lembretes / Próximos Passos</h2>
                         <ul>
@@ -87,11 +79,16 @@ export default function Dashboard() {
                         </ul>
                     </div>
                 </div>
-
-                <div className='container-right'> 
+                <div className='container-right'>
                     {dashboardData.cursoEmDestaque ? (
                         <div className="card curso-destaque">
-                            <img src={dashboardData.cursoEmDestaque.caminhoThumbnail ? `http://localhost:8080/media/${dashboardData.cursoEmDestaque.caminhoThumbnail}` : `https://placehold.co/600x340/03339c/FFFFFF?text=${encodeURIComponent(dashboardData.cursoEmDestaque.titulo)}`} alt={dashboardData.cursoEmDestaque.titulo} className="destaque-img"/>
+                            <img
+                                src={dashboardData.cursoEmDestaque.caminhoThumbnail
+                                    ? `http://localhost:8080/media/${dashboardData.cursoEmDestaque.caminhoThumbnail}`
+                                    : `https://placehold.co/600x340/03339c/FFFFFF?text=${encodeURIComponent(dashboardData.cursoEmDestaque.titulo)}`}
+                                alt={dashboardData.cursoEmDestaque.titulo}
+                                className="destaque-img"
+                            />
                             <div className="destaque-info">
                                 <h3>Curso em Destaque</h3>
                                 <h2>{dashboardData.cursoEmDestaque.titulo}</h2>
@@ -104,7 +101,6 @@ export default function Dashboard() {
                     ) : (
                         <div className="card curso-destaque"><h2>Nenhum curso em destaque.</h2></div>
                     )}
-                    
                     <div className="card certificados">
                         <h2><Award /> Certificados Recentes</h2>
                         <p>Os seus certificados aparecerão aqui assim que concluir os catálogos.</p>

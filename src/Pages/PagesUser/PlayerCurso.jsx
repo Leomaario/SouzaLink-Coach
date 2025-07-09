@@ -5,7 +5,6 @@ import { apiFetch } from '../../Services/api';
 
 const PlayerCurso = () => {
     const { id } = useParams();
-    // Juntamos todos os dados do curso num único estado
     const [cursoData, setCursoData] = useState({
         video: null,
         playlist: [],
@@ -18,19 +17,14 @@ const PlayerCurso = () => {
 
     useEffect(() => {
         if (!id) return;
-
-        // Função "mestra" que busca tudo em sequência
         const fetchTudo = async () => {
             setLoading(true);
             setError(null);
-
             try {
-                // --- ETAPA 1: BUSCAR OS METADADOS DO VÍDEO ---
                 const videoResponse = await apiFetch(`${apiBaseUrl}/api/videos/buscar/${id}`);
                 if (!videoResponse.ok) throw new Error(`Vídeo com ID ${id} não encontrado.`);
                 const videoInfo = await videoResponse.json();
-                
-                // --- ETAPA 2: BUSCAR A PLAYLIST ---
+
                 let playlistData = [];
                 if (videoInfo?.catalogoId) {
                     const playlistResponse = await apiFetch(`${apiBaseUrl}/api/catalogos/${videoInfo.catalogoId}/videos`);
@@ -38,8 +32,7 @@ const PlayerCurso = () => {
                         playlistData = await playlistResponse.json();
                     }
                 }
-                
-                // --- ETAPA 3: BUSCAR O STATUS DE CONCLUSÃO ---
+
                 let statusConcluido = false;
                 const statusResponse = await apiFetch(`${apiBaseUrl}/api/progresso/${id}/status`);
                 if (statusResponse.ok) {
@@ -47,43 +40,37 @@ const PlayerCurso = () => {
                     statusConcluido = statusData.concluido;
                 }
 
-                // --- ETAPA 4: BUSCAR O FICHEIRO DE VÍDEO (STREAM) ---
                 const streamResponse = await apiFetch(`${apiBaseUrl}/api/videos/${id}/stream`);
                 if (!streamResponse.ok) throw new Error('Falha ao carregar o arquivo de vídeo.');
                 const videoBlob = await streamResponse.blob();
                 const objectURL = URL.createObjectURL(videoBlob);
 
-                // --- ETAPA FINAL: ATUALIZAR O ESTADO COM TUDO DE UMA SÓ VEZ ---
                 setCursoData({
                     video: videoInfo,
                     playlist: playlistData,
                     videoSrc: objectURL,
                     concluido: statusConcluido
                 });
-
             } catch (err) {
                 if (err.message !== 'Não autorizado') setError(err.message);
             } finally {
                 setLoading(false);
             }
         };
-
         fetchTudo();
-    }, [id]); // Roda sempre que o ID na URL muda
+    }, [id]);
 
     const handleMarcarConcluido = async () => {
-        // Atualização otimista da UI
         setCursoData(prev => ({ ...prev, concluido: true }));
         try {
             const response = await apiFetch(`${apiBaseUrl}/api/progresso/${id}/marcar-concluido`, { method: 'POST' });
             if (!response.ok) {
                 alert('Ocorreu um erro ao marcar o vídeo como concluído.');
-                setCursoData(prev => ({ ...prev, concluido: false })); // Reverte se der erro
+                setCursoData(prev => ({ ...prev, concluido: false }));
             }
         } catch (error) {
-            console.error("Erro ao marcar como concluído:", error);
-            alert('Ocorreu um erro de rede.');
             setCursoData(prev => ({ ...prev, concluido: false }));
+            alert('Ocorreu um erro de rede.');
         }
     };
 

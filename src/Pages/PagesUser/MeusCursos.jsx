@@ -6,9 +6,11 @@ import { apiFetch } from '../../Services/api';
 const CursoCard = ({ curso }) => (
     <div className='curso-card'>
         <Link to={`/curso/${curso.id}`} className="curso-link">
-            <img 
-                src={curso.caminhoThumbnail ? `http://localhost:8080/media/${curso.caminhoThumbnail}` : `https://placehold.co/400x170/007bff/FFFFFF/png?text=${encodeURIComponent(curso.titulo)}`} 
-                alt={`Capa do curso ${curso.titulo}`} 
+            <img
+                src={curso.caminhoThumbnail
+                    ? `http://localhost:8080/media/${curso.caminhoThumbnail}`
+                    : `https://placehold.co/400x170/007bff/FFFFFF/png?text=${encodeURIComponent(curso.titulo)}`}
+                alt={`Capa do curso ${curso.titulo}`}
                 className='curso-thumbnail'
             />
             <div className='curso-info'>
@@ -51,19 +53,27 @@ export function MeusCursos() {
         fetchCursosConcluidos();
     }, []);
 
-    if (loading) return <div className="container-meus-cursos"><h1 className="meus-cursos-title">Meus Cursos Concluídos</h1><p className="status-message">A carregar...</p></div>;
-    if (error) return <div className="container-meus-cursos"><h1 className="meus-cursos-title">Meus Cursos Concluídos</h1><p className="status-message error-message">{error}</p></div>;
+    if (loading)
+        return (
+            <div className="container-meus-cursos">
+                <h1 className="meus-cursos-title">Meus Cursos Concluídos</h1>
+                <p className="status-message">A carregar...</p>
+            </div>
+        );
+    if (error)
+        return (
+            <div className="container-meus-cursos">
+                <h1 className="meus-cursos-title">Meus Cursos Concluídos</h1>
+                <p className="status-message error-message">{error}</p>
+            </div>
+        );
 
     return (
         <div className="container-meus-cursos">
-
             <div className='title-meus-cursos'>
-                 <h1 className="meus-cursos-title">Meus Cursos Concluídos</h1>
+                <h1 className="meus-cursos-title">Meus Cursos Concluídos</h1>
                 <p className="meus-cursos-subtitle">Aqui estão os cursos que você já concluiu.</p>
-            </div> 
-           
-
-             
+            </div>
             <div className='container-cursos'>
                 {cursosConcluidos.length === 0 ? (
                     <p className="status-message">Você ainda não concluiu nenhum curso.</p>

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import '@styles/Catalogo.css'; 
-import { useNavigate, Link } from 'react-router-dom';
-import { apiFetch } from '../../Services/api';
-import { CollectionPlay } from 'react-bootstrap-icons'; // Importando o ícone
+import '@styles/Catalogo.css';
+import { useNavigate } from 'react-router-dom';
+import { apiFetch } from '../../Services/api.js';
+import { CollectionPlay } from 'react-bootstrap-icons';
 
 const Catalogo = () => {
     const navigate = useNavigate();
@@ -11,7 +11,7 @@ const Catalogo = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const fetchTudo = async () => {
+        const fetchCatalogos = async () => {
             try {
                 setLoading(true);
                 const responseCatalogos = await apiFetch('http://localhost:8080/api/catalogos');
@@ -20,9 +20,9 @@ const Catalogo = () => {
 
                 const promises = catalogosData.map(catalogo =>
                     apiFetch(`http://localhost:8080/api/catalogos/${catalogo.id}/videos`)
-                        .then(res => res.ok ? res.json() : []) // Mais robusto, não quebra se um falhar
+                        .then(res => res.ok ? res.json() : [])
                 );
-                
+
                 const videosPorCatalogo = await Promise.all(promises);
 
                 const dadosCompletos = catalogosData.map((catalogo, index) => ({
@@ -39,15 +39,30 @@ const Catalogo = () => {
                 setLoading(false);
             }
         };
-        fetchTudo();
-    }, []); 
+        fetchCatalogos();
+    }, []);
 
     const handleVideoClick = (videoId) => {
         navigate(`/curso/${videoId}`);
     };
 
-    if (loading) return <div className="catalogo-container"><h1>Catálogo de Capacitações</h1><p className="status-message">A carregar...</p></div>;
-    if (error) return <div className="catalogo-container"><h1>Catálogo de Capacitações</h1><p className="status-message error-message">{error}</p></div>;
+    if (loading) {
+        return (
+            <div className="catalogo-container">
+                <h1>Catálogo de Capacitações</h1>
+                <p className="status-message">A carregar...</p>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="catalogo-container">
+                <h1>Catálogo de Capacitações</h1>
+                <p className="status-message error-message">{error}</p>
+            </div>
+        );
+    }
 
     return (
         <div className="catalogo-container">
@@ -55,24 +70,29 @@ const Catalogo = () => {
                 <h1>Catálogo de Capacitações</h1>
                 <p>Explore nossas trilhas de conhecimento e desenvolva novas habilidades.</p>
             </div>
-            
             {catalogosComVideos.length === 0 ? (
                 <p className="status-message">Nenhum catálogo disponível no momento.</p>
             ) : (
                 catalogosComVideos.map((categoria) => (
                     <div key={categoria.id} className="categoria-section">
                         <h2 className="categoria-title">
-                            <CollectionPlay /> 
+                            <CollectionPlay />
                             {categoria.nome}
                         </h2>
                         <div className="cursos-row">
                             {categoria.videos && categoria.videos.length > 0 ? (
                                 categoria.videos.map(video => (
-                                    <div key={video.id} className="curso-card" onClick={() => handleVideoClick(video.id)}>
+                                    <div
+                                        key={video.id}
+                                        className="curso-card"
+                                        onClick={() => handleVideoClick(video.id)}
+                                    >
                                         <div className="card-thumbnail">
-                                            <img 
-                                                src={video.caminhoThumbnail ? `http://localhost:8080/media/${video.caminhoThumbnail}` : `https://placehold.co/300x170/03339c/FFFFFF/png?text=${encodeURIComponent(video.titulo)}`}
-                                                alt={video.titulo} 
+                                            <img
+                                                src={video.caminhoThumbnail
+                                                    ? `http://localhost:8080/media/${video.caminhoThumbnail}`
+                                                    : `https://placehold.co/300x170/03339c/FFFFFF/png?text=${encodeURIComponent(video.titulo)}`}
+                                                alt={video.titulo}
                                             />
                                             <div className="play-icon-overlay">▶</div>
                                         </div>
@@ -84,8 +104,11 @@ const Catalogo = () => {
                             ) : (
                                 <p className="sem-videos-msg">Nenhum curso neste catálogo ainda.</p>
                             )}
+
                         </div>
+
                     </div>
+
                 ))
             )}
         </div>
