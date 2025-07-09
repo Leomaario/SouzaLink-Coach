@@ -1,37 +1,30 @@
-
-
 .app-container {
   display: flex;
 }
-
-/* Aqui está a mágica! 
-  Este é o container principal do conteúdo da sua página.
-*/
 .main-content {
-  flex-grow: 2; /* Faz o conteúdo principal ocupar todo o espaço restante */
-  padding: 3rem; /* Um pouco de espaço interno para não colar nas bordas */
-  margin-left: 290px; /* A MARGIN QUE VOCÊ PEDIU! */
+  flex-grow: 2; 
+  padding: 3rem;
+  margin-left: 290px;
 }
-
 @media (max-width: 768px) {
   .main-content {
-    max-width: 100%; /* Garante que o conteúdo não ultrapasse a tela */
-    margin-left: 0; /* Remove a margem esquerda em telas menores */
-    padding: 0; /* Ajusta o padding para telas menores */
-    margin: 0 auto; /* Centraliza o conteúdo */
+    max-width: 100%; 
+    margin-left: 0; 
+    padding: 0; 
+    margin: 0 auto;
   }
   .app-container {
-    flex-direction: column; /* Muda a direção do layout para coluna em telas menores */
+    flex-direction: column; 
   }
   .main-content {
-    padding: 1rem; /* Ajusta o padding para telas menores */
+    padding: 1rem;
   }
   .sidebar {
-    width: 100%; /* Sidebar ocupa toda a largura em telas menores */
-    position: relative; /* Garante que a sidebar se comporte corretamente */
+    width: 100%; 
+    position: relative; 
   }
   .sidebar-header {
-    padding: 1rem; /* Ajusta o padding do cabeçalho da sidebar */
+    padding: 1rem; 
   }
   
 }

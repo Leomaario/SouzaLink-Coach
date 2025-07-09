@@ -1,4 +1,3 @@
-/* --- GERAL DA PÁGINA --- */
 .container-meus-cursos {
     padding: 2rem 3rem;
     background-color: #f4f7f9;
@@ -8,14 +7,12 @@
     flex-direction: column;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    border-radius: 15px;
-    margin: 0 auto; /* Centraliza a página */
+    margin: 0 auto;
 }
-.title-meus-cursos{
+.title-meus-cursos {
     text-align: center;
     margin-bottom: 2rem;
 }
-
 .meus-cursos-title {
     font-size: 2.2rem;
     font-weight: 700;
@@ -24,38 +21,29 @@
     padding-bottom: 1rem;
     border-bottom: 1px solid #e2e8f0;
 }
-
 .status-message {
     color: #5a6a7a;
     font-size: 1.1rem;
     text-align: center;
     padding-top: 3rem;
 }
-
-/* --- GRELHA DE CARDS --- */
 .cards-wrapper {
     display: flex;
-  
 }
-
-
-/* --- CARD INDIVIDUAL DO CURSO --- */
 .curso-card {
     background-color: #ffffff;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.07);
-    overflow: hidden; /* Garante que a imagem não "vaze" das bordas arredondadas */
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     margin: 10px;
 }
-
 .curso-card:hover {
     transform: translateY(-8px);
     box-shadow: 0 12px 25px rgba(0,0,0,0.1);
 }
-
 a.curso-link {
     text-decoration: none;
     color: inherit;
@@ -63,118 +51,104 @@ a.curso-link {
     flex-direction: column;
     height: 100%;
 }
-
 .curso-thumbnail {
     width: 100%;
     height: 150px;
-    object-fit: cover; /* Garante que a imagem cubra a área sem distorcer */
+    object-fit: cover;
 }
-
 .curso-info {
     padding: 1.25rem;
     display: flex;
     flex-direction: column;
-    flex-grow: 1; /* Faz esta área crescer para ocupar o espaço */
+    flex-grow: 1;
 }
-
 .curso-titulo {
     font-size: 1.0rem;
     font-weight: 600;
     color: #1e293b;
     margin: 0 0 8px 0;
 }
-
 .curso-aulas {
     font-size: 0.9rem;
     color: #64748b;
     margin: 0 0 1rem 0;
 }
-
-/* --- BARRA DE PROGRESSO E TEXTO --- */
 .progresso-container {
     background-color: #e9ecef;
     border-radius: 10px;
     height: 8px;
-    margin-top: auto; /* Empurra a barra para o final do card */
+    margin-top: auto;
     margin-bottom: 8px;
 }
-
 .progresso-bar {
-    background: linear-gradient(to right, #10b981, #059669); /* Um gradiente verde de sucesso */
+    background: linear-gradient(to right, #10b981, #059669);
     height: 100%;
     border-radius: 10px;
 }
-
 .progresso-texto.concluido {
     font-size: 0.9rem;
     font-weight: 600;
-    color: #059669; /* A mesma cor da barra */
+    color: #059669;
 }
-
 @media screen and (max-width: 768px) {
     .container-meus-cursos {
         padding: 3rem;
-        
     }
-
     .meus-cursos-title {
         font-size: 1.8rem;
     }
-
     .status-message {
         font-size: 1rem;
     }
-
     .cards-wrapper {
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     }
-
     .curso-card {
-        margin-bottom: 1.5rem; /* Espaço entre os cards */
+        margin-bottom: 1.5rem;
     }
     .curso-thumbnail {
-        height: 120px; /* Ajusta a altura da imagem para telas menores */
+        height: 120px;
     }
     .curso-titulo {
-        font-size: 1.1rem; /* Ajusta o tamanho do título para telas menores */
+        font-size: 1.1rem;
     }
     .curso-aulas {
-        font-size: 0.9rem; /* Ajusta o tamanho do texto de aulas para telas menores */
+        font-size: 0.9rem;
     }
     .progresso-container {
-        height: 6px; /* Ajusta a altura da barra de progresso para telas menores */
+        height: 6px;
     }
     .progresso-texto.concluido {
-        font-size: 0.8rem; /* Ajusta o tamanho do texto de progresso para telas menores */
+        font-size: 0.8rem;
     }
     .curso-info {
-        padding: 0.75rem; /* Reduz o padding do info do curso para telas menores */
+        padding: 0.75rem;
     }
     .curso-card {
-        flex-direction: column; /* Garante que o card se empilhe verticalmente */
-        height: 100%; /* Faz o card ocupar toda a altura disponível */
+        flex-direction: column;
+        height: 100%;
+        margin: 0;
     }
     .curso-link {
         display: flex;
         flex-direction: column;
-        height: 100%; /* Garante que o link ocupe toda a altura do card */
+        height: 100%;
     }
     .cards-wrapper {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Grelha responsiva */
-        gap: 1rem; /* Espaçamento entre os cards */
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1rem;
     }
     .curso-card {
-        margin: 0; /* Remove a margem lateral para melhor responsividade */
+        margin: 0;
     }
     .curso-thumbnail {
-        height: 150px; /* Ajusta a altura da imagem para telas menores */
+        height: 150px;
     }
     .curso-info {
-        padding: 1rem; /* Ajusta o padding do info do curso para telas menores */
+        padding: 1rem;
     }
     .progresso-container {
-        height: 6px; /* Ajusta a altura da barra de progresso para telas menores */
+        height: 6px;
     }
-    
 }

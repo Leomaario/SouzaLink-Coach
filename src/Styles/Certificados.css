@@ -1,36 +1,42 @@
-/* --- GERAL E CABEÇALHO --- */
 .certificados-container {
     padding: 2rem 3rem;
     background-color: #f4f7f9;
     font-family: 'Inter', sans-serif;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     border-radius: 15px;
-    margin: 0 auto; /* Centraliza a página */
-    max-height: calc(100vh - 100px); /* Limita a altura para não ultrapassar a tela */
-    overflow-y: auto; /* Adiciona rolagem se necessário */
+    margin: 0 auto;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
 }
 .certificado-topo {
-  position: relative;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-  max-width: 900px; /* Define a largura máxima. Brinque com este valor! */
-  margin-left: auto;   /* Centra o bloco na página */
-  margin-right: auto;  /* Centra o bloco na página */
-  margin-bottom: 2.5rem; /* Mantém o espaço em baixo */
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 2.5rem;
 }
-
 .modelo-certificado {
-    display: block; width: 100%; height: auto;
+    display: block;
+    width: 100%;
+    height: auto;
 }
 .botao-visualizar {
-    position: absolute; bottom: 1.5rem; left: 50%;
+    position: absolute;
+    bottom: 1.5rem;
+    left: 50%;
     transform: translateX(-50%);
     padding: 12px 25px;
     background-color: rgba(255, 255, 255, 0.9);
-    color: #1e293b; border: 1px solid rgba(0,0,0,0.1);
-    border-radius: 8px; font-size: 1rem; font-weight: 600;
-    cursor: pointer; backdrop-filter: blur(5px);
+    color: #1e293b;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
     transition: all 0.3s ease;
 }
 .botao-visualizar:hover {
@@ -38,34 +44,38 @@
     background-color: #fff;
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
-
-/* --- TÍTULOS E FILTROS --- */
 .titulo-certificados {
-    font-size: 2.2rem; font-weight: 700;
-    color: #1e293b; margin: 0;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
 }
 .subtitulo-certificados {
-    font-size: 1.1rem; color: #64748b;
+    font-size: 1.1rem;
+    color: #64748b;
     margin: 8px 0 2rem 0;
 }
 .filtros {
-    display: flex; gap: 1rem; margin-bottom: 2.5rem;
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
 }
 .filtros input[type="text"], .filtros select {
-    padding: 12px 15px; border: 1px solid #d1d5db;
-    border-radius: 8px; font-size: 1rem;
-    font-family: 'Inter', sans-serif; background-color: #fff;
+    padding: 12px 15px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    background-color: #fff;
 }
-.filtros input[type="text"] { flex-grow: 1; }
-
-/* --- GRELHA DE CERTIFICADOS --- */
+.filtros input[type="text"] {
+    flex-grow: 1;
+}
 .lista-certificados {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 2rem;
 }
-
-/* --- CARD INDIVIDUAL --- */
 .card-certificado {
     background-color: #ffffff;
     border-radius: 12px;
@@ -89,7 +99,7 @@
     padding: 1.25rem;
     display: flex;
     flex-direction: column;
-    flex-grow: 1; /* Faz esta área crescer */
+    flex-grow: 1;
 }
 .card-certificado h3 {
     font-size: 1.2rem;
@@ -102,15 +112,12 @@
     color: #64748b;
     margin: 0 0 1.25rem 0;
 }
-
-/* --- BOTÕES DE AÇÃO --- */
 .acoes {
-    display: grid; /* Usando grid para os botões */
+    display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0.75rem;
-    margin-top: auto; /* Empurra os botões para o fundo do card */
+    margin-top: auto;
 }
-
 .acoes button {
     display: flex;
     align-items: center;
@@ -128,9 +135,8 @@
 .acoes button:hover {
     background-color: #f3f4f6;
 }
-
 .acoes button.primary-action {
-    grid-column: 1 / -1; /* Botão principal ocupa a linha toda */
+    grid-column: 1 / -1;
     background-color: #03a5b7;
     color: white;
     border-color: #03a5b7;
@@ -138,8 +144,6 @@
 .acoes button.primary-action:hover {
     background-color: #028a9a;
 }
-
-/* mobile */
 @media (max-width: 768px) {
     .certificados-container {
         padding: 1.5rem;
@@ -164,7 +168,7 @@
         flex-direction: column;
     }
     .card-certificado img {
-        aspect-ratio: 16 / 10; /* Ajusta a proporção para telas menores */
+        aspect-ratio: 16 / 10;
     }
     .card-certificado .card-info {
         padding: 1rem;
@@ -176,41 +180,38 @@
         font-size: 0.9rem;
     }
     .acoes {
-        grid-template-columns: 1fr; /* Botões em coluna única */
+        grid-template-columns: 1fr;
         gap: 0.5rem;
     }
     .acoes button {
-        width: 100%; /* Botões ocupam toda a largura */
-        font-size: 0.9rem; /* Ajusta o tamanho da fonte dos botões */
+        width: 100%;
+        font-size: 0.9rem;
     }
     .acoes button.primary-action {
-        grid-column: 1; /* Botão principal ocupa a linha toda */
+        grid-column: 1;
     }
     .botao-visualizar {
-        padding: 10px 20px; /* Ajusta o tamanho do botão */
-        font-size: 0.9rem; /* Ajusta o tamanho da fonte do botão */
+        padding: 10px 20px;
+        font-size: 0.9rem;
     }
     .certificado-topo {
-        margin: 0 auto; /* Centraliza o bloco na página */
-        max-width: 100%; /* Garante que o bloco não ultrapasse a tela */
-        padding: 1rem; /* Ajusta o padding para telas menores */
-        box-shadow: none; /* Remove a sombra para telas menores */
-        border-radius: 0; /* Remove o arredondamento para telas menores */
-        overflow: visible; /* Remove a rolagem para telas menores */
-
+        margin: 0 auto;
+        max-width: 100%;
+        padding: 1rem;
+        box-shadow: none;
+        border-radius: 0;
+        overflow: visible;
     }
     .botao-visualizar {
-        position: static; /* Remove a posição absoluta */
-        margin-top: 1rem; /* Espaço acima do botão */
-        left: auto; /* Remove o deslocamento horizontal */
-        transform: none; /* Remove a transformação */
-        width: 100%; /* Botão ocupa toda a largura */
-        text-align: center; /* Centraliza o texto do botão */
-
+        position: static;
+        margin-top: 1rem;
+        left: auto;
+        transform: none;
+        width: 100%;
+        text-align: center;
     }
     .botao-visualizar:hover {
-        transform: none; /* Remove a transformação de hover */
-        box-shadow: none; /* Remove a sombra de hover */
+        transform: none;
+        box-shadow: none;
     }
-
 }

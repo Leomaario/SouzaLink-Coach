@@ -2,7 +2,7 @@
     margin-left: 260px; 
     padding: 20px;
     animation: fadeIn 0.5s ease-in;
-    transition: margin-left 0.3s ease-in-out; /* << Adicione esta linha */
+    transition: margin-left 0.3s ease-in-out; 
 }
 
   @media (max-width: 968px) {
