@@ -1,118 +1,97 @@
-SouzaLink Coach - Plataforma de Capacitação Interna
-Bem-vindo ao repositório do SouzaLink Coach, uma plataforma de e-learning e streaming de vídeo full-stack desenvolvida para capacitação e treinamento de equipes.
+# SouzaLink Coach - Plataforma de E-Learning
 
-Status do Projeto: 🚧 Em Desenvolvimento Ativo 🚧
+![Dashboard](https://i.imgur.com/Qk2w4gV.png)
 
-🚀 Sobre o Projeto
-O SouzaLink Coach foi concebido para ser uma solução interna de treinamento, permitindo que líderes de setor criem catálogos de cursos e façam upload de vídeos de treinamento para seus subordinados. A plataforma gerencia usuários, grupos, catálogos e vídeos, com uma arquitetura robusta e escalável, construída com tecnologias modernas.
+## 🚀 Sobre o Projeto
 
-Este projeto é uma jornada de aprendizado e desenvolvimento, construindo do zero tanto o backend robusto quanto um frontend moderno e responsivo.
+O SouzaLink Coach é uma plataforma de e-learning completa e robusta, desenhada para gestão e distribuição de conteúdo de capacitação interna. A aplicação permite que administradores organizem cursos em catálogos, façam upload de vídeos, e que os utilizadores assistam ao conteúdo, acompanhem o seu progresso e emitam certificados.
 
-✨ Funcionalidades Implementadas
-Gestão de Conteúdo:
+Este projeto foi construído do zero como um sistema full-stack moderno, utilizando Java com Spring Boot no backend e React com Vite no frontend.
 
-CRUD completo de Catálogos: Crie, liste, atualize e delete catálogos de cursos.
+---
 
-Estrutura de Pastas Dinâmica: Cada catálogo é vinculado a uma pasta específica no servidor, organizando automaticamente os uploads de vídeo.
+## 🛠️ Tecnologias Utilizadas
 
-Módulo de Vídeo Avançado:
+O projeto é dividido em duas partes principais:
 
-CRUD completo de Vídeos: Gerenciamento completo dos metadados dos vídeos.
+### **Backend (API RESTful)**
+* **Linguagem:** Java 17
+* **Framework:** Spring Boot 3.3.1
+* **Segurança:** Spring Security com autenticação baseada em Token JWT.
+* **Base de Dados:** Spring Data JPA / Hibernate com PostgreSQL.
+* **Gestão de Dependências:** Maven
+* **Servidor:** Docker para a base de dados PostgreSQL.
 
-Upload de Arquivos com Barra de Progresso: Uma interface intuitiva permite o upload de vídeos (multipart/form-data), com uma barra de progresso em tempo real (0 a 100%) para o usuário.
+### **Frontend (Single Page Application)**
+* **Framework:** React 18 com Vite.
+* **Roteamento:** React Router DOM.
+* **Estilização:** CSS puro com foco em layouts modernos (Flexbox e Grid) e responsividade.
+* **UI/UX:** Componentes interativos, design "clean" e animações subtis para uma melhor experiência do utilizador.
+* **Ícones:** React Bootstrap Icons.
 
-Streaming de Vídeo: Um endpoint de streaming dedicado (/api/videos/{id}/stream) que serve os arquivos de vídeo do HD do servidor com suporte a byte-range, permitindo que o player do navegador avance e retorne no vídeo de forma eficiente.
+---
 
-Gestão de Acessos:
+## ✨ Funcionalidades Principais
 
-CRUD completo de Usuários e Grupos: APIs prontas para gerenciar usuários e seus respectivos grupos.
+O sistema possui dois lados: a visão do utilizador comum e a área de gestão do administrador.
 
-Estrutura de Segurança: Base para autenticação com Spring Security e JWT, incluindo criptografia de senhas (BCrypt) e endpoints de registro e login.
+### **Para Todos os Utilizadores:**
+* **Login Seguro:** Autenticação com utilizador/senha e validação por token JWT.
+* **Dashboard Personalizado:** Exibe estatísticas de progresso, cursos em destaque e certificados recentes.
+* **Catálogo de Cursos:** Navegação por catálogos que agrupam os vídeos por tema.
+* **Player de Vídeo:** Streaming de vídeo seguro e autenticado, com playlist de vídeos do catálogo.
+* **Sistema de Progresso:** Funcionalidade de "Marcar como Concluído" para cada vídeo.
+* **Página de Certificados:** Galeria para visualizar os certificados conquistados.
+* **Design Responsivo:** A experiência adapta-se a qualquer tamanho de tela, do desktop ao telemóvel.
 
-Interface Moderna (Frontend):
+### **Para Administradores:**
+* **Painel de Admin:** Dashboard com estatísticas gerais da plataforma (total de cursos, utilizadores) e uma lista dos últimos utilizadores registados.
+* **Gestão de Utilizadores:** Uma página dedicada para listar, editar e apagar utilizadores.
+* **Gestão de Catálogos:** Interface para criar, editar e apagar catálogos de cursos.
+* **Gestão de Cursos (Vídeos):** Ferramentas para fazer upload de novos vídeos (com thumbnail opcional), editar os seus detalhes e apagá-los.
+* **Controlo de Acesso Baseado em Permissões (RBAC):** Rotas do backend e links/botões do frontend são protegidos, aparecendo apenas para utilizadores com a permissão correta (`ADMIN`, `LIDER`, `USER`).
 
-Páginas Dinâmicas: Componentes React que consomem os dados da API em tempo real, eliminando dados estáticos.
+---
 
-Navegação e Layout: Estrutura de rotas com react-router-dom e layouts condicionais para páginas públicas (Login) e privadas (Dashboard).
+## ⚙️ Como Executar o Projeto Localmente
 
-Player de Vídeo Integrado: A página do player busca dinamicamente a "playlist" de vídeos do mesmo catálogo e reproduz o vídeo com sucesso via streaming do backend.
+Para rodar este projeto na sua máquina, você vai precisar de:
+* Java (JDK 17 ou superior)
+* Maven 3.8+
+* Node.js 18+ (com npm)
+* Docker e Docker Compose
 
-🛠️ Tecnologias Utilizadas
-Backend (Java / Spring Boot)
-Java 17
+### **Passos:**
 
-Spring Boot 3
+1.  **Clonar o Repositório:**
+    ```sh
+    git clone [https://github.com/seu-usuario/seu-repositorio.git](https://github.com/seu-usuario/seu-repositorio.git)
+    cd seu-repositorio
+    ```
 
-Spring Data JPA / Hibernate: Para persistência de dados.
+2.  **Configurar o Backend:**
+    * Navegue para a pasta `backend`.
+    * No ficheiro `application.properties`, ajuste as credenciais do banco de dados se necessário.
+    * Rode `mvn clean install` para compilar o projeto.
 
-Spring Security: Para a estrutura de segurança e autenticação.
+3.  **Configurar o Frontend:**
+    * Navegue para a pasta `frontend`.
+    * Rode `npm install` para instalar as dependências.
 
-PostgreSQL: Nosso banco de dados relacional.
+4.  **Iniciar o Ambiente com Docker:**
+    * Na pasta raiz do projeto (onde está o `docker-compose.yml`), rode:
+        ```sh
+        docker-compose up
+        ```
+    * Isto irá iniciar o banco de dados PostgreSQL.
 
-Docker: Para rodar o ambiente do PostgreSQL de forma isolada e consistente.
+5.  **Iniciar os Servidores:**
+    * Num terminal, na pasta `backend`, inicie a aplicação Spring: `mvn spring-boot:run` ou execute a classe principal na sua IDE.
+    * Noutro terminal, na pasta `frontend`, inicie o servidor de desenvolvimento: `npm run dev`.
 
-Maven: Gerenciador de dependências do projeto.
+6.  **Aceder à Aplicação:**
+    * Abra o seu navegador e vá para `http://localhost:5173`.
 
-Lombok: Para reduzir código boilerplate.
+---
 
-JWT (jsonwebtoken): Para a futura implementação de autenticação baseada em token.
-
-Frontend (React / Vite)
-React 18
-
-Vite: Ambiente de desenvolvimento rápido e moderno.
-
-React Router DOM v6: Para o roteamento e navegação entre páginas.
-
-Bootstrap & Bootstrap Icons: Para a base de estilos e iconografia.
-
-CSS Moderno: Estilização com Flexbox, Grid e animações.
-
-⚙️ Como Rodar o Projeto
-Para executar este projeto localmente, siga os passos abaixo.
-
-Pré-requisitos
-Java JDK 17+
-
-Maven 3.8+
-
-Node.js e npm
-
-Docker Desktop
-
-1. Backend
-Inicie o Banco de Dados: Use o Docker para subir um contêiner do PostgreSQL. Lembre-se de definir uma senha.
-
-docker run --name souzalink-db -e POSTGRES_PASSWORD=sua_senha_aqui -p 5432:5432 -v souzalink_database:/var/lib/postgresql/data -d postgres
-
-Crie as Tabelas: Use uma ferramenta como pgAdmin ou DBeaver para conectar ao seu contêiner e execute o script SQL para criar o banco reproducao e todas as tabelas.
-
-Configure a Conexão: No arquivo src/main/resources/application.properties, ajuste a URL, usuário e senha do banco de dados.
-
-Rode a Aplicação: Navegue até a pasta raiz do projeto backend e execute:
-
-./mvnw spring-boot:run
-
-2. Frontend
-Instale as Dependências: Navegue até a pasta raiz do projeto frontend e execute:
-
-npm install
-
-Rode o Servidor de Desenvolvimento:
-
-npm run dev
-
-Acesse a aplicação em http://localhost:5173 (ou a porta indicada pelo Vite).
-
-🚀 Próximos Passos
-O projeto tem uma base sólida e está pronto para evoluir! Os próximos grandes passos são:
-
-Implementar o fluxo de Login completo no Frontend.
-
-Proteger as rotas no Backend, exigindo um token JWT.
-
-Desenvolver o sistema de progresso de cursos.
-
-Criar o Dashboard dinâmico com dados do usuário logado.
-
-Construir as telas de gerenciamento do Painel Admin.
+Feito, meu parça! Este `README` dá uma visão geral completa e profissional do projeto que a gente construiu.

@@ -1,15 +1,10 @@
 export const apiFetch = async (url, options = {}) => {
-  // Pega o token do localStorage
   const token = localStorage.getItem('token');
-
-  // Configura os cabeçalhos padrão
   const headers = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
     ...options.headers,
     'X-Requested-With': 'XMLHttpRequest',
-     
-  
   };
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
@@ -27,7 +22,7 @@ export const apiFetch = async (url, options = {}) => {
     throw new Error('Não autorizado');
   }
   if (response.status === 204) {
-    return response; // Retorna vazio se não houver conteúdo
+    return response; 
   }
   return response;
 };
