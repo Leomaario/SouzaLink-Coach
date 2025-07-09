@@ -14,7 +14,7 @@ import Catalogo from './Pages/PagesUser/Catalogo';
 import Certificados from './Pages/PagesUser/Certificados';
 import PlayerCurso from './Pages/PagesUser/PlayerCurso';
 import EditProfile from './Pages/PagesUser/EditProfile';
-import CatalogoDetalhes from './Pages/PagesUser/CatalogoDetalhes';
+
 
 import NoteFoundPage from './Pages/NoteFoundPage'; // Página de erro 404
 
@@ -69,7 +69,6 @@ function App() {
         <Route path="/meuscertificados" element={<Certificados />} />
         <Route path="/editprofile" element={<EditProfile />} />
         <Route path="/catalogo" element={<Catalogo />} />
-        <Route path="/catalogo-detalhes/:id" element={<CatalogoDetalhes />} />
         <Route path="/favoritos" element={<h1>Favoritos</h1>} />
         <Route path="/curso/:id" element={<PlayerCurso />} />
 

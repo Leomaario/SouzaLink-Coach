@@ -7,6 +7,8 @@
 
   @media (max-width: 968px) {
     .main-content {
+      margin-top: 20px;
+      max-width: 100%;
       margin-left: 0; 
       padding: 10px;
     }

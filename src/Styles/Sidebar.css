@@ -252,3 +252,12 @@ nav {
         transform: translateX(0);
     }
 }
+ @media (max-width: 768px) {
+    .main-content {
+
+      margin-top: 60px;
+      margin-left: 0;
+      padding: 10px; 
+    }
+    
+  }

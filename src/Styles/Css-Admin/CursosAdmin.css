@@ -83,18 +83,25 @@
 
 /* mobile */
 @media (max-width: 768px) {
+
+  .main-content {
+    margin-left: 0;
+    padding: 1rem;
+    max-width: 100%;
+  }
   .adicionar-curso-container {
-    padding: 2rem;
-    margin-left: 0px;
+    width: 90%;
+    margin-left: 0;
+    padding: 1.5rem;
+    
   }
   .form-curso {
+    align-items: center;
     padding: 1.5rem;
-    max-width: 100%;
     border-radius: 8px;
     padding: 2rem;
-    width: 100%;
+
     margin-right: 0px;
-    margin-left: -40px;
   }
   .form-group label {
     font-size: 0.9rem;
