@@ -13,6 +13,12 @@ export default defineConfig({
         changeOrigin: true, 
         secure: false, 
       },
+      '/api/auth': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+        secure: false,
+      },
+      
     },
   },
   resolve:{
@@ -22,4 +28,5 @@ export default defineConfig({
       '@pages': Path.resolve(__dirname, './src/Pages')
     }
   }
+  
 });

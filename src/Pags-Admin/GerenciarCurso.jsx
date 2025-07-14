@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { apiFetch } from '../Services/api';
+import { apiFetch } from '../Services/api'; 
 import { BsPencilSquare, BsTrashFill } from 'react-icons/bs';
 import '../Styles/Css-Admin/GerenciarCursos.css';
+
 
 const GerenciarCursos = () => {
     const [videos, setVideos] = useState([]);
@@ -15,8 +16,8 @@ const GerenciarCursos = () => {
         const fetchData = async () => {
             try {
                 const [videosResponse, catalogosResponse] = await Promise.all([
-                    apiFetch('http://localhost:8080/api/videos'),
-                    apiFetch('http://localhost:8080/api/catalogos')
+                    apiFetch('/videos'),
+                    apiFetch('/catalogos')
                 ]);
                 if (!videosResponse.ok || !catalogosResponse.ok) throw new Error('Falha ao carregar dados.');
                 setVideos(await videosResponse.json());
@@ -33,7 +34,7 @@ const GerenciarCursos = () => {
     const handleDeletar = async (id, nome) => {
         if (window.confirm(`Tem a certeza que quer apagar o curso "${nome}"?`)) {
             try {
-                await apiFetch(`/api/videos/${id}`, { method: 'DELETE' });
+                await apiFetch(`/videos/${id}`, { method: 'DELETE' });
                 setVideos(prev => prev.filter(v => v.id !== id));
             } catch (err) {
                 alert('Falha ao apagar o curso.');
@@ -51,10 +52,10 @@ const GerenciarCursos = () => {
     const handleSalvarEdicao = async (e) => {
         e.preventDefault();
         try {
-            const { id, titulo, descricao, catalogoId } = videoEmEdicao;
-            const response = await apiFetch(`/api/videos/${id}`, {
+            const { id, titulo, descricao, catalogoId, urlDoVideo } = videoEmEdicao;
+            const response = await apiFetch(`/videos/${id}`, {
                 method: 'PUT',
-                body: JSON.stringify({ titulo, descricao, catalogoId }),
+                body: JSON.stringify({ titulo, descricao, catalogoId, urlDoVideo }),
             });
             if (!response.ok) throw new Error('Falha ao atualizar.');
             const videoAtualizado = await response.json();
@@ -105,6 +106,18 @@ const GerenciarCursos = () => {
                             <label>Título</label>
                             <input name="titulo" type="text" value={videoEmEdicao.titulo} onChange={handleModalInputChange} required />
                         </div>
+                        <div className="form-group">
+                            <label>URL do Vídeo</label>
+                            <input
+                                name="urlDoVideo"
+                                type="url"
+                                value={videoEmEdicao.urlDoVideo || ''}
+                                onChange={handleModalInputChange}
+                                required
+                                placeholder="https://www.youtube.com/watch?v=..."
+                            />
+                        </div>
+
                         <div className="form-group">
                             <label>Descrição</label>
                             <textarea name="descricao" value={videoEmEdicao.descricao} onChange={handleModalInputChange}></textarea>

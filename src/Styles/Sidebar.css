@@ -249,15 +249,26 @@ nav {
         box-shadow: 4px 0 25px rgba(0,0,0,0.3);
     }
     .sidebar.open {
+
         transform: translateX(0);
     }
 }
  @media (max-width: 768px) {
     .main-content {
-
       margin-top: 60px;
       margin-left: 0;
       padding: 10px; 
+    }
+    .sidebar {
+        width: 100%;
+        height: auto;
+        transform: translateX(-100%);
+        box-shadow: none;
+        height: 100%;
+        
+    }
+    .hamburger.is-active {
+        display:none;
     }
     
   }
