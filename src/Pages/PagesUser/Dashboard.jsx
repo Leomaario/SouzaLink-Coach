@@ -19,7 +19,7 @@ export default function Dashboard() {
         const fetchDashboardData = async () => {
             try {
                 setLoading(true);
-                const response = await apiFetch('http://localhost:8080/api/user-dashboard/data');
+                const response = await apiFetch('https://souzalink-coach.onrender.com/api/user-dashboard/data');
                 if (!response.ok) {
                     throw new Error('Falha ao carregar dados do dashboard.');
                 }
