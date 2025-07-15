@@ -21,30 +21,25 @@ const PlayerCurso = () => {
             setLoading(true);
             setError(null);
             try {
-
-                
-                const videoResponse = await apiFetch(`/videos/buscar/${id}`);
+                const videoResponse = await apiFetch(`/api/videos/buscar/${id}`);
                 if (!videoResponse.ok) throw new Error(`Vídeo com ID ${id} não encontrado.`);
                 const videoInfo = await videoResponse.json();
-
-                // 2. Busca a playlist (outros vídeos do mesmo catálogo)
+                
                 let playlistData = [];
                 if (videoInfo?.catalogoId) {
-                    const playlistResponse = await apiFetch(`/catalogos/${videoInfo.catalogoId}/videos`);
+                    const playlistResponse = await apiFetch(`/api/catalogos/${videoInfo.catalogoId}/videos`);
                     if (playlistResponse.ok) {
                         playlistData = await playlistResponse.json();
                     }
                 }
 
-                // 3. Busca o status de conclusão do vídeo
                 let statusConcluido = false;
-                const statusResponse = await apiFetch(`/progresso/${id}/status`);
+                const statusResponse = await apiFetch(`/api/progresso/${id}/status`);
                 if (statusResponse.ok) {
                     const statusData = await statusResponse.json();
                     statusConcluido = statusData.concluido;
                 }
                 
-                // 4. Atualiza o estado com todos os dados
                 setCursoData({
                     video: videoInfo,
                     playlist: playlistData,
@@ -59,12 +54,12 @@ const PlayerCurso = () => {
         };
 
         fetchTudo();
-    }, [id]); // Roda a busca sempre que o ID do vídeo na URL mudar
+    }, [id]);
 
     const handleMarcarConcluido = async () => {
         setCursoData(prev => ({ ...prev, concluido: true }));
         try {
-            const response = await apiFetch(`/progresso/${id}/marcar-concluido`, { method: 'POST' });
+            const response = await apiFetch(`/api/progresso/${id}/marcar-concluido`, { method: 'POST' });
             if (!response.ok) {
                 alert('Ocorreu um erro ao marcar o vídeo como concluído.');
                 setCursoData(prev => ({ ...prev, concluido: false }));
@@ -95,6 +90,27 @@ const PlayerCurso = () => {
                             height='100%'
                             controls={true}
                             playing={true}
+                            muted={true}
+                            playsinline={true}
+                            pip={false}
+                            light={false}
+                            loop={false}
+                            volume={1}
+                            playbackRate={1.0}
+                            style={{ maxWidth: '100%', maxHeight: '100%' }}
+                            // MUDANÇA: Adicionada configuração para evitar erros de CORS
+                            config={{
+                                file: {
+                                    attributes: {
+                                        crossOrigin: 'anonymous'
+                                    }
+                                }
+                            }}
+                            onError={() => alert('Erro ao carregar o vídeo. Verifique a URL ou tente novamente mais tarde.')}
+                            onPlay={() => console.log('Vídeo iniciado')}
+                            onPause={() => console.log('Vídeo pausado')}
+                            onEnded={() => console.log('Vídeo finalizado')}
+                            onProgress={(progress) => console.log('Progresso do vídeo:', progress)}
                         />
                     </div>
                     <div className="video-details">
