@@ -114,6 +114,13 @@ body {
 
   .login-container {
     background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=800&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
   }
   .login-container h2 {
     font-size: 2rem;
@@ -121,7 +128,7 @@ body {
 
   .login-container form {
     padding: 30px;
-    width: 90%;
+    width: 85%;
   }
 
   .login-container input {
