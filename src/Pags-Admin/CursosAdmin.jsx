@@ -11,25 +11,30 @@ export default function CursosAdmin() {
     const [loading, setLoading] = useState(false);
     const [mensagem, setMensagem] = useState({ type: '', text: '' });
 
-    useEffect(() => {
-        const fetchCatalogos = async () => {
-            try {
-                // ...dentro do useEffect
-                const videoResponse = await apiFetch(`/videos/buscar/${id}`);
-                if (response.ok && response.status !== 204) {
-                    const data = await response.json();
-                    if (Array.isArray(data)) {
-                        setCategorias(data);
-                    }
-                }
-            } catch (error) {
-                if (error.message !== 'Não autorizado') {
-                    setMensagem({ type: 'error', text: 'Erro ao carregar categorias.' });
-                }
+   useEffect(() => {
+    const fetchCatalogos = async () => {
+        try {
+            const response = await apiFetch('/catalogos');
+
+            if (!response.ok) {
+                throw new Error('Falha ao carregar categorias.');
             }
-        };
-        fetchCatalogos();
-    }, []);
+
+            const data = await response.json();
+            
+            if (Array.isArray(data)) {
+                setCategorias(data);
+            } else {
+                setCategorias([]);
+            }
+        } catch (error) {
+            setMensagem({ type: 'error', text: 'Erro ao carregar categorias.' });
+            console.error('Erro ao buscar catálogos:', error);
+        }
+    };
+
+    fetchCatalogos();
+}, [])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
