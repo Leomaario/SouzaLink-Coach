@@ -59,7 +59,7 @@ const GerenciarCatalogos = () => {
     const handleSalvar = async (e) => {
         e.preventDefault();
         const isEdit = !!catalogoEmEdicao.id;
-        const url = isEdit ? `/api/catalogos/${catalogoEmEdicao.id}` : '/api/catalogos';
+        const url = isEdit ? `/catalogos/${catalogoEmEdicao.id}` : '/catalogos';
         const method = isEdit ? 'PUT' : 'POST';
 
         try {
