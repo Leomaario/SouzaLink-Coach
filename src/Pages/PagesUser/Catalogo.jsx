@@ -14,12 +14,12 @@ const Catalogo = () => {
         const fetchCatalogos = async () => {
             try {
                 setLoading(true);
-                const responseCatalogos = await apiFetch('http://localhost:8080/api/catalogos');
+                const responseCatalogos = await apiFetch('/catalogos');
                 if (!responseCatalogos.ok) throw new Error('Falha ao buscar os catálogos.');
                 const catalogosData = await responseCatalogos.json();
 
                 const promises = catalogosData.map(catalogo =>
-                    apiFetch(`http://localhost:8080/api/catalogos/${catalogo.id}/videos`)
+                    apiFetch(`/catalogos/${catalogo.id}/videos`)
                         .then(res => res.ok ? res.json() : [])
                 );
 

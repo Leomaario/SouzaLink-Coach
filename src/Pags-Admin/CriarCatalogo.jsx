@@ -14,7 +14,7 @@ const CriarCatalogo = () => {
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const response = await apiFetch('http://localhost:8080/api/videos');
+        const response = await apiFetch('/videos');
         if (response.ok && response.status !== 204) {
           const data = await response.json();
           setVideosDisponiveis(data);
@@ -50,7 +50,7 @@ const CriarCatalogo = () => {
     };
 
     try {
-      const response = await apiFetch('http://localhost:8080/api/catalogos', {
+      const response = await apiFetch('/catalogos', {
         method: 'POST',
         body: JSON.stringify(novoCatalogo),
       });

@@ -15,7 +15,7 @@ export default function CursosAdmin() {
         const fetchCatalogos = async () => {
             try {
                 // ...dentro do useEffect
-                const videoResponse = await apiFetch(`/api/videos/buscar/${id}`);
+                const videoResponse = await apiFetch(`/videos/buscar/${id}`);
                 if (response.ok && response.status !== 204) {
                     const data = await response.json();
                     if (Array.isArray(data)) {
@@ -49,7 +49,7 @@ export default function CursosAdmin() {
         };
 
         try {
-            const response = await apiFetch('http://localhost:8080/api/videos', {
+            const response = await apiFetch('/videos', {
                 method: 'POST',
                 body: JSON.stringify(novoCursoData),
             });

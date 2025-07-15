@@ -13,7 +13,7 @@ function PainelAdmin() {
     useEffect(() => {
         const fetchStats = async () => {
             try {
-                const response = await apiFetch('http://localhost:8080/api/dashboard/stats');
+                const response = await apiFetch('/dashboard/stats');
                 if (!response.ok) throw new Error('Falha ao carregar estatísticas do painel.');
                 const data = await response.json();
                 setStats(data);

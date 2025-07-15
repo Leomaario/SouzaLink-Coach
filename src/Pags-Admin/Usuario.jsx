@@ -20,7 +20,7 @@ export default function CriarUsuario() {
   useEffect(() => {
     const fetchGrupos = async () => {
       try {
-        const response = await apiFetch('http://localhost:8080/api/grupos');
+        const response = await apiFetch('/grupos');
         if (response.ok) {
           const data = await response.json();
           setGrupos(data);
@@ -47,7 +47,7 @@ export default function CriarUsuario() {
     setMensagem({ type: '', text: '' });
 
     try {
-      const response = await apiFetch('http://localhost:8080/api/auth/registrar', {
+      const response = await apiFetch('/auth/registrar', {
         method: 'POST',
         body: JSON.stringify(formState),
       });

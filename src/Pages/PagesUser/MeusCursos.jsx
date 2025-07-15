@@ -36,7 +36,7 @@ export function MeusCursos() {
         const fetchCursosConcluidos = async () => {
             try {
                 setLoading(true);
-                const response = await apiFetch('http://localhost:8080/api/progresso/meus-concluidos');
+                const response = await apiFetch('/progresso/meus-concluidos');
                 if (!response.ok) {
                     throw new Error('Falha ao carregar os cursos concluídos.');
                 }

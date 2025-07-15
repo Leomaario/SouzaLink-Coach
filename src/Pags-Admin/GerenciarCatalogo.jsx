@@ -13,7 +13,7 @@ const GerenciarCatalogos = () => {
     useEffect(() => {
         const fetchCatalogos = async () => {
             try {
-                const response = await apiFetch('/api/catalogos');
+                const response = await apiFetch('/catalogos');
                 if (!response.ok) throw new Error('Falha ao carregar catálogos.');
                 const data = await response.json();
                 setCatalogos(data);
@@ -29,7 +29,7 @@ const GerenciarCatalogos = () => {
     const handleDeletar = async (id, nome) => {
         if (window.confirm(`Tem a certeza que quer apagar o catálogo "${nome}"?`)) {
             try {
-                await apiFetch(`/api/catalogos/${id}`, { method: 'DELETE' });
+                await apiFetch(`/catalogos/${id}`, { method: 'DELETE' });
                 setCatalogos(prev => prev.filter(c => c.id !== id));
             } catch (err) {
                 alert('Falha ao apagar o catálogo.');
