@@ -4,12 +4,29 @@
     animation: fadeIn 0.5s ease-in;
     transition: margin-left 0.3s ease-in-out; 
 }
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0; 
+        padding: 10px;
+    }
+}
 
   @media (max-width: 968px) {
     .main-content {
       margin-top: 20px;
-      max-width: 100%;
       margin-left: 0; 
       padding: 10px;
+      max-width: calc(100% - 260px);
+      max-height: 100vh;
+      overflow-y: auto;
     }
+
   }
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
