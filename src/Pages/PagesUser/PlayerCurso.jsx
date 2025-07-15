@@ -21,20 +21,20 @@ const PlayerCurso = () => {
             setLoading(true);
             setError(null);
             try {
-                const videoResponse = await apiFetch(`/api/videos/buscar/${id}`);
+                const videoResponse = await apiFetch(`/videos/buscar/${id}`);
                 if (!videoResponse.ok) throw new Error(`Vídeo com ID ${id} não encontrado.`);
                 const videoInfo = await videoResponse.json();
                 
                 let playlistData = [];
                 if (videoInfo?.catalogoId) {
-                    const playlistResponse = await apiFetch(`/api/catalogos/${videoInfo.catalogoId}/videos`);
+                    const playlistResponse = await apiFetch(`/catalogos/${videoInfo.catalogoId}/videos`);
                     if (playlistResponse.ok) {
                         playlistData = await playlistResponse.json();
                     }
                 }
 
                 let statusConcluido = false;
-                const statusResponse = await apiFetch(`/api/progresso/${id}/status`);
+                const statusResponse = await apiFetch(`/progresso/${id}/status`);
                 if (statusResponse.ok) {
                     const statusData = await statusResponse.json();
                     statusConcluido = statusData.concluido;
@@ -59,7 +59,7 @@ const PlayerCurso = () => {
     const handleMarcarConcluido = async () => {
         setCursoData(prev => ({ ...prev, concluido: true }));
         try {
-            const response = await apiFetch(`/api/progresso/${id}/marcar-concluido`, { method: 'POST' });
+            const response = await apiFetch(`/progresso/${id}/marcar-concluido`, { method: 'POST' });
             if (!response.ok) {
                 alert('Ocorreu um erro ao marcar o vídeo como concluído.');
                 setCursoData(prev => ({ ...prev, concluido: false }));
