@@ -12,7 +12,7 @@ const Certificados = () => {
     useEffect(() => {
         const fetchMeusCertificados = async () => {
             try {
-                const response = await apiFetch('/api/certificados/meus');
+                const response = await apiFetch('/certificados/meus');
                 if (!response.ok) {
                     throw new Error('Falha ao carregar seus certificados.');
                 }
