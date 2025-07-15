@@ -16,7 +16,7 @@ const Login = () => {
         setLoading(true);
 
         try {
-            const response = await apiFetch('http://localhost:8080/api/auth/login', {
+            const response = await apiFetch('/auth/login', {
                 method: 'POST',
                 body: JSON.stringify({ usuario, senha }),
             });
