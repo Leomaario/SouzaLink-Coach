@@ -13,7 +13,7 @@ const GerenciarCatalogos = () => {
     useEffect(() => {
         const fetchCatalogos = async () => {
             try {
-                const response = await apiFetch('/catalogos');
+                const response = await apiFetch('/api/catalogos');
                 if (!response.ok) throw new Error('Falha ao carregar catálogos.');
                 const data = await response.json();
                 setCatalogos(data);
@@ -29,7 +29,8 @@ const GerenciarCatalogos = () => {
     const handleDeletar = async (id, nome) => {
         if (window.confirm(`Tem a certeza que quer apagar o catálogo "${nome}"?`)) {
             try {
-                await apiFetch(`/catalogos/${id}`, { method: 'DELETE' });
+                await apiFetch(`/api/catalogos/${id}`, { method: 'DELETE' });
+                // CORREÇÃO: Garante que está a usar setCatalogos
                 setCatalogos(prev => prev.filter(c => c.id !== id));
             } catch (err) {
                 alert('Falha ao apagar o catálogo.');
@@ -38,10 +39,11 @@ const GerenciarCatalogos = () => {
     };
 
     const handleAbrirModal = (catalogo = null) => {
+        // MUDANÇA: Simplificado para não incluir mais o caminhoPasta
         setCatalogoEmEdicao(
             catalogo
                 ? { ...catalogo }
-                : { nome: '', descricao: '', icone: '', tag: '', caminhoPasta: '' }
+                : { nome: '', descricao: '' } // Apenas os campos necessários para um novo catálogo
         );
         setIsModalOpen(true);
     };
@@ -59,16 +61,21 @@ const GerenciarCatalogos = () => {
     const handleSalvar = async (e) => {
         e.preventDefault();
         const isEdit = !!catalogoEmEdicao.id;
-        const url = isEdit ? `/catalogos/${catalogoEmEdicao.id}` : '/catalogos';
+        const url = isEdit ? `/api/catalogos/${catalogoEmEdicao.id}` : '/api/catalogos';
         const method = isEdit ? 'PUT' : 'POST';
+
+        // MUDANÇA: Envia apenas os dados relevantes (sem caminhoPasta)
+        const { nome, descricao } = catalogoEmEdicao;
 
         try {
             const response = await apiFetch(url, {
                 method: method,
-                body: JSON.stringify(catalogoEmEdicao),
+                body: JSON.stringify({ nome, descricao }),
             });
             if (!response.ok) throw new Error('Falha ao salvar o catálogo.');
+            
             const catalogoSalvo = await response.json();
+            
             if (isEdit) {
                 setCatalogos(prev => prev.map(c => c.id === catalogoSalvo.id ? catalogoSalvo : c));
             } else {
@@ -96,7 +103,6 @@ const GerenciarCatalogos = () => {
                     <tr>
                         <th>Nome</th>
                         <th>Descrição</th>
-                        <th>Tag</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -105,7 +111,6 @@ const GerenciarCatalogos = () => {
                         <tr key={cat.id}>
                             <td>{cat.nome}</td>
                             <td>{cat.descricao}</td>
-                            <td><span className="tag">{cat.tag}</span></td>
                             <td>
                                 <button className="action-btn edit-btn" onClick={() => handleAbrirModal(cat)} title="Editar"><BsPencilSquare /></button>
                                 <button className="action-btn delete-btn" onClick={() => handleDeletar(cat.id, cat.nome)} title="Apagar"><BsTrashFill /></button>
@@ -126,22 +131,9 @@ const GerenciarCatalogos = () => {
                             <label htmlFor="descricao">Descrição</label>
                             <textarea id="descricao" name="descricao" value={catalogoEmEdicao.descricao} onChange={handleModalInputChange}></textarea>
                         </div>
-                        <div className="form-group">
-                            <label htmlFor="tag">Tag</label>
-                            <input id="tag" name="tag" type="text" value={catalogoEmEdicao.tag} onChange={handleModalInputChange} />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="caminhoPasta">Caminho da Pasta</label>
-                            <input
-                                id="caminhoPasta"
-                                name="caminhoPasta"
-                                type="text"
-                                value={catalogoEmEdicao.caminhoPasta}
-                                onChange={handleModalInputChange}
-                                required
-                                placeholder="Ex: D:/videos/nome_catalogo"
-                            />
-                        </div>
+                        
+                        {/* REMOVIDO: O campo 'Caminho da Pasta' e outros desnecessários foram removidos do formulário */}
+
                         <div className="modal-actions">
                             <button type="submit">Salvar</button>
                             <button type="button" onClick={handleFecharModal}>Cancelar</button>
