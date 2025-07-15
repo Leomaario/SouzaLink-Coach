@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import '../../Styles/PlayerCurso.css';
+import ReactPlayer from 'react-player/youtube'; // Importa o player especializado
+import '../../Styles/PlayerCurso.css'; 
 import { useParams, Link } from 'react-router-dom';
 import { apiFetch } from '../../Services/api';
 
 const PlayerCurso = () => {
     const { id } = useParams();
-    // MUDANÇA: Simplificamos o estado. Não precisamos mais de 'videoSrc'.
     const [cursoData, setCursoData] = useState({
         video: null,
         playlist: [],
@@ -13,41 +13,37 @@ const PlayerCurso = () => {
     });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    
-    // REMOVIDO: A URL base agora deve ser gerenciada pelo seu serviço 'api.js'.
-    // const apiBaseUrl = 'http://localhost:8080';
 
     useEffect(() => {
         if (!id) return;
+
         const fetchTudo = async () => {
             setLoading(true);
             setError(null);
             try {
-                // MUDANÇA: Usando caminhos relativos na API.
-                const videoResponse = await apiFetch(`/videos/buscar/${id}`);
+                // 1. Busca os detalhes do vídeo principal
+                const videoResponse = await apiFetch(`/api/videos/buscar/${id}`);
                 if (!videoResponse.ok) throw new Error(`Vídeo com ID ${id} não encontrado.`);
                 const videoInfo = await videoResponse.json();
 
-                // O 'videoInfo' que chega da API agora já tem o campo 'urlDoVideo'.
-                
+                // 2. Busca a playlist (outros vídeos do mesmo catálogo)
                 let playlistData = [];
                 if (videoInfo?.catalogoId) {
-                    const playlistResponse = await apiFetch(`/catalogos/${videoInfo.catalogoId}/videos`);
+                    const playlistResponse = await apiFetch(`/api/catalogos/${videoInfo.catalogoId}/videos`);
                     if (playlistResponse.ok) {
                         playlistData = await playlistResponse.json();
                     }
                 }
 
+                // 3. Busca o status de conclusão do vídeo
                 let statusConcluido = false;
-                const statusResponse = await apiFetch(`/progresso/${id}/status`);
+                const statusResponse = await apiFetch(`/api/progresso/${id}/status`);
                 if (statusResponse.ok) {
                     const statusData = await statusResponse.json();
                     statusConcluido = statusData.concluido;
                 }
-
-                // REMOVIDO: Toda a lógica de chamar o endpoint /stream, criar blob e objectURL foi apagada.
                 
-                // MUDANÇA: O estado é definido com as informações diretas.
+                // 4. Atualiza o estado com todos os dados
                 setCursoData({
                     video: videoInfo,
                     playlist: playlistData,
@@ -55,19 +51,19 @@ const PlayerCurso = () => {
                 });
 
             } catch (err) {
-                if (err.message !== 'Não autorizado') setError(err.message);
+                setError(err.message);
             } finally {
                 setLoading(false);
             }
         };
+
         fetchTudo();
-    }, [id]);
+    }, [id]); // Roda a busca sempre que o ID do vídeo na URL mudar
 
     const handleMarcarConcluido = async () => {
         setCursoData(prev => ({ ...prev, concluido: true }));
         try {
-            // MUDANÇA: Usando caminhos relativos na API.
-            const response = await apiFetch(`/progresso/${id}/marcar-concluido`, { method: 'POST' });
+            const response = await apiFetch(`/api/progresso/${id}/marcar-concluido`, { method: 'POST' });
             if (!response.ok) {
                 alert('Ocorreu um erro ao marcar o vídeo como concluído.');
                 setCursoData(prev => ({ ...prev, concluido: false }));
@@ -82,7 +78,7 @@ const PlayerCurso = () => {
         return <div className="player-curso-wrapper"><p className="status-message">A carregar curso...</p></div>;
     }
 
-    if (error || !cursoData.video) { // Adicionado um check para garantir que 'video' não é nulo
+    if (error || !cursoData.video) {
         return <div className="player-curso-wrapper"><p className="status-message error-message">{error || "Vídeo não encontrado."}</p></div>;
     }
 
@@ -90,11 +86,16 @@ const PlayerCurso = () => {
         <div className="player-curso-wrapper">
             <div className="player-main">
                 <div className="video-box">
-                    {/* MUDANÇA: A tag <video> agora usa a URL direta do objeto 'video' */}
-                    <video key={cursoData.video.id} src={cursoData.video.urlDoVideo} controls autoPlay className="video-player">
-                        {/* A tag <source> pode ser removida se o src for direto na tag <video> */}
-                        Seu navegador não suporta a reprodução de vídeo.
-                    </video>
+                    <div className='player-wrapper-responsive'>
+                        <ReactPlayer
+                            className='react-player'
+                            url={cursoData.video.urlDoVideo}
+                            width='100%'
+                            height='100%'
+                            controls={true}
+                            playing={true}
+                        />
+                    </div>
                     <div className="video-details">
                         <h2>{cursoData.video.titulo}</h2>
                         <p>{cursoData.video.descricao}</p>
@@ -104,13 +105,11 @@ const PlayerCurso = () => {
                 <div className="curso-sidebar">
                     <h3>Conteúdo do Catálogo</h3>
                     <ul className="aulas-lista">
-                        {/* A lógica da playlist continua a mesma, mas agora está mais segura */}
                         {cursoData.playlist.map(videoDaLista => (
                             <li key={videoDaLista.id} className={videoDaLista.id === cursoData.video.id ? 'active' : ''}>
                                 <Link to={`/curso/${videoDaLista.id}`}>
-                                    {videoDaLista.id === cursoData.video.id && ' '}
+                                    {videoDaLista.id === cursoData.video.id && '▶️ '}
                                     {videoDaLista.titulo}
-                                    {videoDaLista.id === cursoData.video.id && ' (a assistir)'}
                                 </Link>
                             </li>
                         ))}

@@ -20,6 +20,17 @@
     box-shadow: 0 2px 12px rgba(0, 115, 230, 0.1);
   }
   
+  .player-wrapper-responsive {
+  position: relative;
+  padding-top: 56.25%; /* Proporção 16:9, padrão de vídeos */
+}
+
+.react-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+  
   .video-player {
     width: 100%;
     border-radius: 10px;
@@ -96,3 +107,39 @@
     transform: translateY(-4px);
   }
   
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @media (max-width: 768px) {
+    .player-curso-wrapper {
+      padding: 1rem;
+    }
+  
+    .player-main {
+      flex-direction: column;
+    }
+  
+    .video-box, .curso-sidebar {
+      width: 100%;
+    }
+  
+    .video-player {
+      height: 200px; /* Ajuste para telas menores */
+    }
+  
+    .aulas-lista li {
+      font-size: 0.9rem;
+    }
+  
+    .botao-concluir {
+      width: 100%;
+      padding: 0.8rem;
+    }
+  }
