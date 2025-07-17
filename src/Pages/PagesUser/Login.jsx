@@ -41,7 +41,8 @@ const Login = () => {
                 throw new Error('Token não recebido do servidor.');
             }
         } catch (err) {
-            setError("Erro no Backend, Contate o Administrador" , err.message);
+            setError(`Erro no Backend: ${err.message}. Contate o Administrador.`);
+            console.error('Login error:', err);
         } finally {
             setLoading(false);
         }
