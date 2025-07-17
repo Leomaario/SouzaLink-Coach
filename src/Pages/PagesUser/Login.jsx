@@ -43,8 +43,11 @@ const Login = () => {
         } catch (err) {
             setError(`Erro no Backend: ${err.message}. Contate o Administrador.`);
             console.error('Login error:', err);
+
         } finally {
             setLoading(false);
+            setUsuario('');
+            setSenha('');
         }
     };
 
@@ -67,9 +70,11 @@ const Login = () => {
                     onChange={(e) => setSenha(e.target.value)}
                     required
                 />
+
                 <button type="submit" disabled={loading}>
                     {loading ? 'Entrando...' : 'Entrar'}
                 </button>
+                
             </form>
         </div>
     );
