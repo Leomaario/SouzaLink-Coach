@@ -17,20 +17,49 @@ export const apiFetch = async (endpoint, options = {}) => {
     ...options,
     headers,
   };
-  
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
+
+  let response;
+  try {
+    response = await fetch(`${API_BASE_URL}${endpoint}`, config);
+  } catch (err) {
+    console.error("Erro de conexão com o backend:", err);
+    throw new Error('Erro de conexão com o servidor. Tente novamente mais tarde.');
+  }
 
   if (response.status === 401 || response.status === 403) {
-    console.error("Erro de autorização. Deslogando...");
+    let errorMsg = 'Não autorizado';
+    try {
+      const errorData = await response.json();
+      errorMsg = errorData.message || errorMsg;
+      if (errorMsg.toLowerCase().includes('senha')) {
+        console.warn("Senha incorreta:", errorMsg);
+      } else {
+        console.warn("Erro de autorização:", errorMsg);
+      }
+    } catch {
+      console.warn("Erro de autorização (sem mensagem detalhada).");
+    }
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    window.location.href = '/'; 
-    throw new Error('Não autorizado');
+    window.location.href = '/';
+    throw new Error(errorMsg);
+  }
+
+  if (!response.ok) {
+    let errorMsg = 'Erro ao fazer a requisição';
+    try {
+      const errorData = await response.json();
+      errorMsg = errorData.message || errorMsg;
+      console.error("Erro do backend:", errorMsg);
+    } catch {
+      console.error("Erro desconhecido do backend.");
+    }
+    throw new Error(errorMsg);
   }
 
   if (response.status === 204) {
-    return response; 
+    return response;
   }
-  
+
   return response;
 };
