@@ -1,8 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
-
 export const apiFetch = async (endpoint, options = {}) => {
-
- 
   const token = localStorage.getItem('token');
   const isAuthEndpoint = endpoint.includes('/auth/login') || endpoint.includes('/auth/register');
 
@@ -22,8 +18,6 @@ export const apiFetch = async (endpoint, options = {}) => {
     headers,
   };
 
-  const url = `{API_BASE_URL}${endpoint}`;
-
   let response;
   try {
     response = await fetch(`${API_BASE_URL}${endpoint}`, config);
@@ -32,21 +26,12 @@ export const apiFetch = async (endpoint, options = {}) => {
     throw new Error('Erro de conexão com o servidor. Tente novamente mais tarde.');
   }
 
-
-
   if (response.status === 401 || response.status === 403) {
     let errorMsg = 'Não autorizado';
     try {
       const errorData = await response.json();
       errorMsg = errorData.message || errorMsg;
-      if (errorMsg.toLowerCase().includes('senha')) {
-        console.warn("Senha incorreta:", errorMsg);
-      } else {
-        console.warn("Erro de autorização:", errorMsg);
-      }
-    } catch {
-      console.warn("Erro de autorização (sem mensagem detalhada).");
-    }
+    } catch {}
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     throw new Error(errorMsg);
@@ -57,10 +42,7 @@ export const apiFetch = async (endpoint, options = {}) => {
     try {
       const errorData = await response.json();
       errorMsg = errorData.message || errorMsg;
-      console.error("Erro do backend:", errorMsg);
-    } catch {
-      console.error("Erro desconhecido do backend.");
-    }
+    } catch {}
     throw new Error(errorMsg);
   }
 
