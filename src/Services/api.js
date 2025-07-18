@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api-e-learning-gjnd.onrender.com';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api-e-learning-gjnd.onrender.com/api' || 'http://localhost:8080/api';
 
 
 export const apiFetch = async (endpoint, options = {}) => {
@@ -15,7 +15,7 @@ export const apiFetch = async (endpoint, options = {}) => {
   if (token && !isAuthEndpoint) {
     headers['Authorization'] = `Bearer ${token}`;
   }
-  
+
   const config = {
     ...options,
     headers,
