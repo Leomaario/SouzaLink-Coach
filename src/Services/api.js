@@ -3,8 +3,8 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api-e-learnin
 
 export const apiFetch = async (endpoint, options = {}) => {
   const token = localStorage.getItem('token');
-  const isAuthEndpoint = endpoint.includes('/auth/login') || endpoint.includes('/auth/register');
-
+  const isAuthEndpoint = endpoint.includes('api/auth/login') || endpoint.includes('api/auth/register');
+  
   const headers = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
@@ -14,11 +14,13 @@ export const apiFetch = async (endpoint, options = {}) => {
 
   if (token && !isAuthEndpoint) {
     headers['Authorization'] = `Bearer ${token}`;
+
   }
 
   const config = {
     ...options,
     headers,
+    
   };
 
   let response;
