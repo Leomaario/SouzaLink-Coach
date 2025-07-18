@@ -1,7 +1,11 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
 
 export const apiFetch = async (endpoint, options = {}) => {
+
+ 
   const token = localStorage.getItem('token');
+  const isAuthEndpoint = endpoint.includes('/auth/login') || endpoint.includes('/auth/register');
+
   const headers = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
@@ -9,7 +13,7 @@ export const apiFetch = async (endpoint, options = {}) => {
     'X-Requested-With': 'XMLHttpRequest',
   };
 
-  if (token) {
+  if (token && !isAuthEndpoint) {
     headers['Authorization'] = `Bearer ${token}`;
   }
 
@@ -18,6 +22,8 @@ export const apiFetch = async (endpoint, options = {}) => {
     headers,
   };
 
+  const url = `{API_BASE_URL}${endpoint}`;
+
   let response;
   try {
     response = await fetch(`${API_BASE_URL}${endpoint}`, config);
@@ -25,6 +31,8 @@ export const apiFetch = async (endpoint, options = {}) => {
     console.error("Erro de conexão com o backend:", err);
     throw new Error('Erro de conexão com o servidor. Tente novamente mais tarde.');
   }
+
+
 
   if (response.status === 401 || response.status === 403) {
     let errorMsg = 'Não autorizado';
