@@ -9,7 +9,7 @@ console.log('API_BASE_URL:', API_BASE_URL);
 
 export const apiFetch = async (endpoint, options = {}) => {
   const token = localStorage.getItem('token');
-  const isAuthEndpoint = endpoint.startsWith('/auth/');
+  const isAuthEndpoint = endpoint.startsWith('/api/auth/');
 
   const headers = {
     'Content-Type': 'application/json',
