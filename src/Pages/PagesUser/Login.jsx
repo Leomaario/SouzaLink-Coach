@@ -22,7 +22,7 @@ const Login = () => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ usuario, senha }),
-            
+
         });
 
         const data = await response.json();
@@ -47,7 +47,7 @@ const Login = () => {
             throw new Error('Token não recebido do servidor.');
         }
     } catch (err) {
-        setError(`Erro no Backend: ${err.message}. Contate o Administrador.`);
+        setError(`Usuario ou senha incorreto, Entre em contato com o administrador: erro 401.`);
         console.error('Login error:', err);
     } finally {
         setLoading(false);
