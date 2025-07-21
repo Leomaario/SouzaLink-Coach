@@ -11,46 +11,45 @@ const Login = () => {
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
-        e.preventDefault();
-        setError('');
-        setLoading(true);
+    e.preventDefault();
+    setError('');
+    setLoading(true);
 
-        try {
-            const response = await apiFetch('/api/auth/login', {
-                method: 'POST',
-                
-                body: JSON.stringify({ usuario, senha }),
-            });
+    try {
+        const response = await apiFetch('/auth/login', {
+            method: 'POST',
+            body: JSON.stringify({ usuario, senha }),
+        });
 
-            const data = await response.json();
+        const data = await response.json();
 
-            if (!response.ok) {
-                throw new Error(data.message || 'Credenciais inválidas. Tente novamente.');
-            }
+        if (!response.ok) {
+            throw new Error(data.message || 'Credenciais inválidas. Tente novamente.');
+        }
 
-            if (data.token) {
-                localStorage.setItem('token', data.token);
-                const userData = {
-                    id: data.id,
-                    usuario: data.usuario,
-                    email: data.email,
-                    roles: data.roles
-                };
-                localStorage.setItem('user', JSON.stringify(userData));
-                navigate('/dashboard');
-            } else {
-                throw new Error('Token não recebido do servidor.');
-            }
-        } catch (err) {
-            setError(`Erro no Backend: ${err.message}. Contate o Administrador.`);
-            console.error('Login error:', err);
-
-        } finally {
-            setLoading(false);
+        if (data.token) {
+            localStorage.setItem('token', data.token);
+            const userData = {
+                id: data.id,
+                usuario: data.usuario,
+                email: data.email,
+                roles: data.roles
+            };
+            localStorage.setItem('user', JSON.stringify(userData));
             setUsuario('');
             setSenha('');
+            navigate('/dashboard');
+        } else {
+            throw new Error('Token não recebido do servidor.');
         }
-    };
+    } catch (err) {
+        setError(`Erro no Backend: ${err.message}. Contate o Administrador.`);
+        console.error('Login error:', err);
+    } finally {
+        setLoading(false);
+    }
+};
+
 
     return (
         <div className="login-container">
