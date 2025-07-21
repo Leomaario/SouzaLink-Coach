@@ -18,6 +18,7 @@ const Login = () => {
         try {
             const response = await apiFetch('/api/auth/login', {
                 method: 'POST',
+                
                 body: JSON.stringify({ usuario, senha }),
             });
 
