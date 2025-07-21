@@ -1,4 +1,3 @@
-// src/services/api.js
 
 const isProduction = import.meta.env.MODE === 'production';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
@@ -34,7 +33,7 @@ export const apiFetch = async (endpoint, options = {}) => {
   try {
     response = await fetch(url, config);
   } catch (err) {
-    console.error("Erro de conexão com o backend:", err);
+    console.error("Usuario ou senha incorreto; Codigo: 401, Contate o Administrador");
     throw new Error('Erro de conexão com o servidor. Tente novamente mais tarde.');
   }
 
