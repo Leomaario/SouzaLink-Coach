@@ -14,7 +14,7 @@ export default function CursosAdmin() {
    useEffect(() => {
     const fetchCatalogos = async () => {
         try {
-            const response = await apiFetch('/catalogos');
+            const response = await apiFetch('/api/catalogos');
 
             if (!response.ok) {
                 throw new Error('Falha ao carregar categorias.');

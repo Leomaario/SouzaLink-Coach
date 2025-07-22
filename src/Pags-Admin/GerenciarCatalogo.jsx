@@ -13,7 +13,7 @@ const GerenciarCatalogos = () => {
     useEffect(() => {
         const fetchCatalogos = async () => {
             try {
-                const response = await apiFetch('/catalogos');
+                const response = await apiFetch('/api/catalogos');
                 if (!response.ok) throw new Error('Falha ao carregar catálogos.');
                 const data = await response.json();
                 setCatalogos(data);
@@ -29,8 +29,7 @@ const GerenciarCatalogos = () => {
     const handleDeletar = async (id, nome) => {
         if (window.confirm(`Tem a certeza que quer apagar o catálogo "${nome}"?`)) {
             try {
-                await apiFetch(`/catalogos/${id}`, { method: 'DELETE' });
-                // CORREÇÃO: Garante que está a usar setCatalogos
+                await apiFetch(`/api/catalogos/${id}`, { method: 'DELETE' });
                 setCatalogos(prev => prev.filter(c => c.id !== id));
             } catch (err) {
                 alert('Falha ao apagar o catálogo.');
@@ -39,11 +38,10 @@ const GerenciarCatalogos = () => {
     };
 
     const handleAbrirModal = (catalogo = null) => {
-        // MUDANÇA: Simplificado para não incluir mais o caminhoPasta
         setCatalogoEmEdicao(
             catalogo
                 ? { ...catalogo }
-                : { nome: '', descricao: '' } // Apenas os campos necessários para um novo catálogo
+                : { nome: '', descricao: '' } 
         );
         setIsModalOpen(true);
     };
@@ -61,7 +59,7 @@ const GerenciarCatalogos = () => {
     const handleSalvar = async (e) => {
         e.preventDefault();
         const isEdit = !!catalogoEmEdicao.id;
-        const url = isEdit ? `/catalogos/${catalogoEmEdicao.id}` : '/catalogos';
+        const url = isEdit ? `/api/catalogos/${catalogoEmEdicao.id}` : '/catalogos';
         const method = isEdit ? 'PUT' : 'POST';
 
         // MUDANÇA: Envia apenas os dados relevantes (sem caminhoPasta)
@@ -131,8 +129,6 @@ const GerenciarCatalogos = () => {
                             <label htmlFor="descricao">Descrição</label>
                             <textarea id="descricao" name="descricao" value={catalogoEmEdicao.descricao} onChange={handleModalInputChange}></textarea>
                         </div>
-                        
-                        {/* REMOVIDO: O campo 'Caminho da Pasta' e outros desnecessários foram removidos do formulário */}
 
                         <div className="modal-actions">
                             <button type="submit">Salvar</button>

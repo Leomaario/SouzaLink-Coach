@@ -18,7 +18,7 @@ const CriarCatalogo = () => {
         };
 
         try {
-            const response = await apiFetch('/catalogos', {
+            const response = await apiFetch('/api/catalogos', {
                 method: 'POST',
                 body: JSON.stringify(novoCatalogo),
             });

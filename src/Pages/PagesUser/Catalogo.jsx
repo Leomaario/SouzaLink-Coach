@@ -14,7 +14,7 @@ const Catalogo = () => {
         const fetchCatalogos = async () => {
             try {
                 setLoading(true);
-                const responseCatalogos = await apiFetch('/catalogos');
+                const responseCatalogos = await apiFetch('/api/catalogos');
                 if (!responseCatalogos.ok) throw new Error('Falha ao buscar os catálogos.');
                 const catalogosData = await responseCatalogos.json();
 

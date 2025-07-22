@@ -16,8 +16,8 @@ const GerenciarCursos = () => {
         const fetchData = async () => {
             try {
                 const [videosResponse, catalogosResponse] = await Promise.all([
-                    apiFetch('/videos'),
-                    apiFetch('/catalogos')
+                    apiFetch('/api/videos'),
+                    apiFetch('/api/catalogos')
                 ]);
                 if (!videosResponse.ok || !catalogosResponse.ok) throw new Error('Falha ao carregar dados.');
                 setVideos(await videosResponse.json());
@@ -34,7 +34,7 @@ const GerenciarCursos = () => {
     const handleDeletar = async (id, nome) => {
         if (window.confirm(`Tem a certeza que quer apagar o curso "${nome}"?`)) {
             try {
-                await apiFetch(`/videos/${id}`, { method: 'DELETE' });
+                await apiFetch(`/api/videos/${id}`, { method: 'DELETE' });
                 setVideos(prev => prev.filter(v => v.id !== id));
             } catch (err) {
                 alert('Falha ao apagar o curso.');
@@ -53,7 +53,7 @@ const GerenciarCursos = () => {
         e.preventDefault();
         try {
             const { id, titulo, descricao, catalogoId, urlDoVideo } = videoEmEdicao;
-            const response = await apiFetch(`/videos/${id}`, {
+            const response = await apiFetch(`/api/videos/${id}`, {
                 method: 'PUT',
                 body: JSON.stringify({ titulo, descricao, catalogoId, urlDoVideo }),
             });

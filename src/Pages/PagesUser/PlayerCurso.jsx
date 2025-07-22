@@ -21,7 +21,7 @@ const PlayerCurso = () => {
             setLoading(true);
             setError(null);
             try {
-                const videoResponse = await apiFetch(`/videos/buscar/${id}`);
+                const videoResponse = await apiFetch(`/api/videos/buscar/${id}`);
                 if (!videoResponse.ok) throw new Error(`Vídeo com ID ${id} não encontrado.`);
                 const videoInfo = await videoResponse.json();
                 
