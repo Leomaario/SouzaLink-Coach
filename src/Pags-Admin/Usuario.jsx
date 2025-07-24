@@ -49,6 +49,9 @@ export default function CriarUsuario() {
     try {
       const response = await apiFetch('/api/auth/registrar', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(formState),
       });
       const data = await response.json();

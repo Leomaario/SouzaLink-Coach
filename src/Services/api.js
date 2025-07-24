@@ -1,16 +1,15 @@
-
 const isProduction = import.meta.env.MODE === 'production';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
   || (isProduction
-      ? 'https://api-e-learning-gjnd.onrender.com/api'
-      : 'http://localhost:8080/api');
+    ? 'https://api-e-learning-gjnd.onrender.com' 
+    : 'http://localhost:8080');
 
 console.log('API_BASE_URL:', API_BASE_URL);
 
 export const apiFetch = async (endpoint, options = {}) => {
   const token = localStorage.getItem('token');
-  const isAuthEndpoint = endpoint.startsWith('/api/auth/login');
-  
+
+  const isLoginEndpoint = endpoint === '/api/auth/login';
 
   const headers = {
     'Content-Type': 'application/json',
@@ -34,16 +33,17 @@ export const apiFetch = async (endpoint, options = {}) => {
   try {
     response = await fetch(url, config);
   } catch (err) {
-    console.error("Usuario ou senha incorreto; Codigo: 401, Contate o Administrador");
+    console.error("Erro de conexão:", err);
     throw new Error('Erro de conexão com o servidor. Tente novamente mais tarde.');
   }
 
+  // O resto do seu código de tratamento de erro está ótimo.
   if (response.status === 401 || response.status === 403) {
     let errorMsg = 'Não autorizado';
     try {
       const errorData = await response.json();
-      errorMsg = errorData.message || errorMsg;
-    } catch {}
+      errorMsg = errorData.message || 'Acesso não autorizado ou token inválido.';
+    } catch { }
     throw new Error(errorMsg);
   }
 
@@ -51,8 +51,8 @@ export const apiFetch = async (endpoint, options = {}) => {
     let errorMsg = 'Erro ao fazer a requisição';
     try {
       const errorData = await response.json();
-      errorMsg = errorData.message || errorMsg;
-    } catch {}
+      errorMsg = errorData.message || `Erro no servidor: ${response.status}`;
+    } catch { }
     throw new Error(errorMsg);
   }
 
