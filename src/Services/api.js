@@ -9,7 +9,7 @@ console.log('API_BASE_URL:', API_BASE_URL);
 
 export const apiFetch = async (endpoint, options = {}) => {
   const token = localStorage.getItem('token');
-  const isAuthEndpoint = endpoint.startsWith('/api/auth/');
+  const isAuthEndpoint = endpoint.startsWith('/api/auth/login');
   
 
   const headers = {
@@ -19,7 +19,7 @@ export const apiFetch = async (endpoint, options = {}) => {
     ...(options.headers || {}),
   };
 
-  if (token && !isAuthEndpoint) {
+  if (token && !isLoginEndpoint) {
     headers['Authorization'] = `Bearer ${token}`;
   }
 
