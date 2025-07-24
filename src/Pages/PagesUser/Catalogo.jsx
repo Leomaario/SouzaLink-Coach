@@ -19,7 +19,7 @@ const Catalogo = () => {
                 const catalogosData = await responseCatalogos.json();
 
                 const promises = catalogosData.map(catalogo =>
-                    apiFetch(`/catalogos/${catalogo.id}/videos`)
+                    apiFetch(`/api/catalogos/${catalogo.id}/videos`)
                         .then(res => res.ok ? res.json() : [])
                 );
 
