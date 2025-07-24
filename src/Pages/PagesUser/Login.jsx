@@ -10,53 +10,76 @@ const Login = () => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
+    // --- NOVO ESTADO PARA CONTROLAR A VISIBILIDADE DO AVISO ---
+    const [mostrarAviso, setMostrarAviso] = useState(true); // true = aparece ao carregar a página
+
     const handleLogin = async (e) => {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
+        e.preventDefault();
+        setError('');
+        setLoading(true);
 
-    try {
-        const response = await apiFetch('/api/auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ usuario, senha }),
+        try {
+            const response = await apiFetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ usuario, senha }),
+            });
 
-        });
+            const data = await response.json();
 
-        const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message || 'Credenciais inválidas. Tente novamente.');
+            }
 
-        if (!response.ok) {
-            throw new Error(data.message || 'Credenciais inválidas. Tente novamente.');
+            if (data.token) {
+                localStorage.setItem('token', data.token);
+                const userData = {
+                    id: data.id,
+                    usuario: data.usuario,
+                    email: data.email,
+                    roles: data.roles
+                };
+                localStorage.setItem('user', JSON.stringify(userData));
+                setUsuario('');
+                setSenha('');
+                navigate('/dashboard');
+            } else {
+                throw new Error('Token não recebido do servidor.');
+            }
+        } catch (err) {
+            setError(`Usuario ou senha incorreto, Entre em contato com o administrador: erro 401.`);
+            console.error('Login error:', err);
+        } finally {
+            setLoading(false);
         }
+    };
 
-        if (data.token) {
-            localStorage.setItem('token', data.token);
-            const userData = {
-                id: data.id,
-                usuario: data.usuario,
-                email: data.email,
-                roles: data.roles
-            };
-            localStorage.setItem('user', JSON.stringify(userData));
-            setUsuario('');
-            setSenha('');
-            navigate('/dashboard');
-        } else {
-            throw new Error('Token não recebido do servidor.');
-        }
-    } catch (err) {
-        setError(`Usuario ou senha incorreto, Entre em contato com o administrador: erro 401.`);
-        console.error('Login error:', err);
-    } finally {
-        setLoading(false);
-    }
-};
-
+    // --- COMPONENTE DO MODAL DE AVISO ---
+    const AvisoModal = () => (
+        <div className="modal-overlay">
+            <div className="modal-content">
+                <h3>Aviso Importante</h3>
+                <p>
+                    Olá, testador!
+                    <br/><br/>
+                    As requisições estão levando até 1 segundo e 5ms para carregar, isso devido a ser um deploy em sistemas gratuitos onde a demora do servidor é grande.
+                    <br/><br/>
+                    Obrigado pela compreensão.
+                    <br/><br/>
+                    Att, Leomario
+                </p>
+                <button onClick={() => setMostrarAviso(false)}>Entendi</button>
+            </div>
+        </div>
+    );
 
     return (
         <div className="login-container">
+            {/* --- ADICIONA O MODAL À TELA --- */}
+            {mostrarAviso && <AvisoModal />}
+
             {error && <div className="error-message">{error}</div>}
             <form onSubmit={handleLogin}>
                 <img src="/imgs/logo.png" alt="Logo" className="logo" />
@@ -74,11 +97,9 @@ const Login = () => {
                     onChange={(e) => setSenha(e.target.value)}
                     required
                 />
-
                 <button type="submit" disabled={loading}>
                     {loading ? 'Entrando...' : 'Entrar'}
                 </button>
-                
             </form>
         </div>
     );
