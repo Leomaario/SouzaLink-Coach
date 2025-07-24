@@ -54,7 +54,7 @@ export default function CursosAdmin() {
         };
 
         try {
-            const response = await apiFetch('/videos', {
+            const response = await apiFetch('/api/videos', {
                 method: 'POST',
                 body: JSON.stringify(novoCursoData),
             });
