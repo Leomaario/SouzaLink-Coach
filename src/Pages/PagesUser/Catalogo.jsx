@@ -43,7 +43,7 @@ const Catalogo = () => {
     }, []);
 
     const handleVideoClick = (videoId) => {
-        navigate(`/api/curso/${videoId}`);
+        navigate(`/curso/${videoId}`);
     };
 
     if (loading) {
