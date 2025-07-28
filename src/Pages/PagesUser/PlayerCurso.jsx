@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 import '../../Styles/PlayerCurso.css';
 import { useParams, Link } from 'react-router-dom';
@@ -6,21 +6,21 @@ import { apiFetch } from '../../Services/api';
 
 const PlayerCurso = () => {
     const { id } = useParams();
-    const isMounted = useRef(true);
-
     const [cursoData, setCursoData] = useState({
         video: null,
         playlist: [],
         concluido: false
     });
-
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isReady, setIsReady] = useState(false);
+    const [playerKey, setPlayerKey] = useState(0);
 
-    // ✅ Evita atualizações após desmontagem
     useEffect(() => {
-        isMounted.current = true;
+        if (!id) return;
+
+        let isMounted = true;
+        setIsReady(false);
 
         const fetchTudo = async () => {
             setLoading(true);
@@ -49,30 +49,33 @@ const PlayerCurso = () => {
                     statusConcluido = statusData.concluido;
                 }
 
-                if (isMounted.current) {
+                if (isMounted) {
                     setCursoData({
                         video: videoInfo,
                         playlist: playlistData,
                         concluido: statusConcluido
                     });
-                    setIsReady(false); // reset autoplay readiness
+                    setPlayerKey(prev => prev + 1);
+
                 }
 
+                setTimeout(() => {
+                    if (isMounted) setIsReady(true);
+                }, 800);
+
             } catch (err) {
-                if (isMounted.current) {
+                if (isMounted) {
                     setError(err.message);
                 }
             } finally {
-                if (isMounted.current) {
-                    setLoading(false);
-                }
+                if (isMounted) setLoading(false);
             }
         };
 
         fetchTudo();
 
         return () => {
-            isMounted.current = false;
+            isMounted = false;
         };
     }, [id]);
 
@@ -81,17 +84,17 @@ const PlayerCurso = () => {
         try {
             const response = await apiFetch(`/api/progresso/${id}/marcar-concluido`, { method: 'POST' });
             if (!response.ok) {
-                alert('Ocorreu um erro ao marcar o vídeo como concluído.');
+                alert('Erro ao marcar como concluído.');
                 setCursoData(prev => ({ ...prev, concluido: false }));
             }
-        } catch (error) {
+        } catch {
             setCursoData(prev => ({ ...prev, concluido: false }));
-            alert('Ocorreu um erro de rede.');
+            alert('Erro de rede ao marcar como concluído.');
         }
     };
 
     if (loading) {
-        return <div className="player-curso-wrapper"><p className="status-message">A carregar curso...</p></div>;
+        return <div className="player-curso-wrapper"><p className="status-message">Carregando curso...</p></div>;
     }
 
     if (error || !cursoData.video) {
@@ -102,30 +105,22 @@ const PlayerCurso = () => {
         <div className="player-curso-wrapper">
             <div className="player-main">
                 <div className="video-box">
-                    <div className='player-wrapper-responsive'>
+                    <div className="player-wrapper-responsive">
                         <ReactPlayer
-                            key={cursoData.video.id} // ✅ força recriação segura do player
-                            className='react-player'
+                            key={playerKey}
+                            className="react-player"
                             url={cursoData.video.urlDoVideo}
-                            width='100%'
-                            height='100%'
-                            controls={true}
+                            width="100%"
+                            height="100%"
+                            controls
                             playing={isReady}
-                            muted={true}
-                            onReady={() => {
-                                console.log('Player pronto (onReady)');
-                                setIsReady(true); // ✅ só toca quando estiver pronto
-                            }}
-                            onError={(e) => {
-                                console.error('!!! ERRO NO PLAYER !!!:', e);
-                                if (e?.name === 'AbortError') {
-                                    console.warn('AbortError ignorado (provavelmente troca rápida de vídeo)');
-                                }
-                            }}
-                            onPlay={() => console.log('Player recebeu o comando PLAY (onPlay)')}
-                            onStart={() => console.log('>>> O VÍDEO REALMENTE COMEÇOU A TOCAR (onStart) <<<')}
-                            onPause={() => console.log('Vídeo pausado (onPause)')}
-                            onEnded={() => console.log('Vídeo finalizado (onEnded)')}
+                            muted
+                            playsinline
+                            onError={(e) => console.error('Erro no player:', e)}
+                            onPlay={() => console.log('onPlay')}
+                            onStart={() => console.log('onStart')}
+                            onPause={() => console.log('onPause')}
+                            onEnded={() => console.log('onEnded')}
                         />
                     </div>
                     <div className="video-details">
