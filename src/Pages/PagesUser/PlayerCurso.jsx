@@ -3,6 +3,7 @@ import ReactPlayer from 'react-player';
 import '../../Styles/PlayerCurso.css';
 import { useParams, Link } from 'react-router-dom';
 import { apiFetch } from '../../Services/api';
+import { BsPlusCircleFill, BsPencilSquare, BsTrashFill } from 'react-icons/bs';
 
 const PlayerCurso = () => {
     const { id } = useParams();
@@ -14,6 +15,7 @@ const PlayerCurso = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isPlayerReady, setIsPlayerReady] = useState(false);
+    const [shouldPlay, setShouldPlay] = useState(false);
     const [playerKey, setPlayerKey] = useState(0);
     const playerRef = useRef(null);
     const isMounted = useRef(true);
@@ -21,6 +23,7 @@ const PlayerCurso = () => {
     useEffect(() => {
         isMounted.current = true;
         setIsPlayerReady(false);
+        setShouldPlay(false);
         setLoading(true);
         setError(null);
 
@@ -49,10 +52,11 @@ const PlayerCurso = () => {
                     setCursoData({ video, playlist, concluido });
                     setPlayerKey(prev => prev + 1);
 
-                    // Aguarda o componente montar
+                    // Aguarda montagem do componente para ativar o player
                     setTimeout(() => {
                         if (isMounted.current) {
                             setIsPlayerReady(true);
+                            setShouldPlay(true);
                         }
                     }, 500);
                 }
@@ -109,12 +113,15 @@ const PlayerCurso = () => {
                                 ref={playerRef}
                                 url={cursoData.video.urlDoVideo}
                                 controls
-                                playing={true}
+                                playing={shouldPlay}
                                 muted
                                 width="100%"
                                 height="100%"
                                 playsinline
-                                onError={(e) => console.error('Erro no player:', e)}
+                                onReady={() => console.log("✅ O VÍDEO ESTÁ PRONTO")}
+                                onPlay={() => console.log("▶️ Player recebeu comando PLAY")}
+                                onPause={() => console.log("⏸️ Vídeo pausado")}
+                                onError={(e) => console.error('❌ Erro no player:', e)}
                             />
                         )}
                     </div>
