@@ -1,141 +1,151 @@
 .player-curso-wrapper {
-    background-color: #f0f4f8;
-    padding: 2rem;
-    min-height: 100vh;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    animation: fadeIn 0.5s ease-in;
+  background-color: #f0f4f8;
+  padding: 2rem;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  animation: fadeIn 0.5s ease-in;
 }
 
 .player-main {
-    display: flex;
-    gap: 2rem;
-    flex-wrap: wrap;
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
 }
 
 .video-box {
-    flex: 2;
-    background-color: white;
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 12px rgba(0, 115, 230, 0.1);
+  flex: 2;
+  background-color: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 12px rgba(0, 115, 230, 0.1);
 }
 
 .player-wrapper-responsive {
-    position: relative;
-    padding-top: 56.25%; /* Proporção 16:9, padrão de vídeos */
+  position: relative;
+  padding-top: 56.25%;
+  /* Proporção 16:9, padrão de vídeos */
 }
 
-/* --- CORREÇÃO APLICADA AQUI --- */
 .react-player {
-    position: absolute;
-    top: 0;
-    left: 0;
-    /* Adicionado para fazer o player preencher o container */
-    width: 100%;
-    height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
-/* ----------------------------- */
 
-/* A classe .video-player foi removida pois não estava sendo usada no seu componente React */
+.video-player {
+  width: 100%;
+  border-radius: 10px;
+  background-color: #000;
+  margin-bottom: 1rem;
+}
 
 .video-details h2 {
-    font-size: 1.8rem;
-    color: #003366;
-    margin-bottom: 0.5rem;
+  font-size: 1.8rem;
+  color: #003366;
+  margin-bottom: 0.5rem;
 }
 
 .video-details p {
-    color: #444;
+  color: #444;
 }
 
 .curso-sidebar {
-    flex: 1;
-    background-color: #ffffff;
-    padding: 1.5rem;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0, 115, 230, 0.1);
-    height: fit-content;
+  flex: 1;
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 115, 230, 0.1);
+  height: fit-content;
 }
 
 .curso-sidebar h3 {
-    margin-bottom: 1rem;
-    color: #0056b3;
+  margin-bottom: 1rem;
+  color: #0056b3;
 }
 
 .aulas-lista {
-    list-style: none;
-    padding: 0;
-    margin-bottom: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
+  list-style: none;
+  padding: 0;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
 }
 
 .aulas-lista li {
-    background-color: #e6f0ff;
-    padding: 0.8rem 1rem;
-    border-radius: 8px;
-    transition: background-color 0.2s ease;
-    cursor: pointer;
+  background-color: #e6f0ff;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
 }
 
 .aulas-lista li:hover {
-    background-color: #d0e2ff;
+  background-color: #d0e2ff;
 }
 
 .botao-concluir {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 0.8rem 1.2rem;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .botao-concluir:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
+
 .card-certificado {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    transition: transform 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
 }
 
 .card-certificado:hover {
-    transform: translateY(-4px);
+  transform: translateY(-4px);
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
+
 @media (max-width: 768px) {
-    .player-curso-wrapper {
-        padding: 1rem;
-    }
+  .player-curso-wrapper {
+    padding: 1rem;
+  }
 
-    .player-main {
-        flex-direction: column;
-    }
+  .player-main {
+    flex-direction: column;
+  }
 
-    .video-box, .curso-sidebar {
-        width: 100%;
-    }
+  .video-box,
+  .curso-sidebar {
+    width: 100%;
+  }
 
-    .aulas-lista li {
-        font-size: 0.9rem;
-    }
+  .video-player {
+    height: 200px;
+    /* Ajuste para telas menores */
+  }
 
-    .botao-concluir {
-        width: 100%;
-        padding: 0.8rem;
-    }
+  .aulas-lista li {
+    font-size: 0.9rem;
+  }
+
+  .botao-concluir {
+    width: 100%;
+    padding: 0.8rem;
+  }
 }
