@@ -24,6 +24,16 @@ const PlayerCurso = () => {
                 const videoResponse = await apiFetch(`/api/videos/buscar/${id}`);
                 if (!videoResponse.ok) throw new Error(`Vídeo com ID ${id} não encontrado.`);
                 const videoInfo = await videoResponse.json();
+
+                console.log('Video Info:', videoInfo);
+                console.log('Video URL:', videoInfo.videoUrl);
+                console.log('Video ID:', videoInfo.id);
+                console.log('Video Catalogo ID:', videoInfo.catalogoId);
+                console.log('Video Titulo:', videoInfo.titulo);
+                console.log('Video Descricao:', videoInfo.descricao);
+                if (!videoInfo.videoUrl) {
+                    throw new Error('URL do vídeo não encontrada.');
+                }
                 
                 let playlistData = [];
                 if (videoInfo?.catalogoId) {
