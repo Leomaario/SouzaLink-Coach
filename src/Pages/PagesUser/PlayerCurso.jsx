@@ -62,7 +62,6 @@ const PlayerCurso = () => {
             setShouldPlay(false);
         };
     }, [id]);
-
     const handleMarcarConcluido = async () => {
         setCursoData(prev => ({ ...prev, concluido: true }));
         try {
