@@ -17,6 +17,9 @@ const PlayerCurso = () => {
     useEffect(() => {
         if (!id) return;
 
+        // --- INÍCIO DA CORREÇÃO ---
+        let isMounted = true; // 1. Flag para verificar se o componente está "montado"
+
         const fetchTudo = async () => {
             setLoading(true);
             setError(null);
@@ -34,7 +37,6 @@ const PlayerCurso = () => {
                 console.log('Catálogo Nome do vídeo:', videoInfo.catalogoNome);
                 console.log('Catálogo Descrição do vídeo:', videoInfo.catalogoDescricao);
                 
-
                 if (!videoInfo.urlDoVideo) {
                     throw new Error('URL do vídeo não encontrada na resposta da API.');
                 }
@@ -54,20 +56,34 @@ const PlayerCurso = () => {
                     statusConcluido = statusData.concluido;
                 }
                 
-                setCursoData({
-                    video: videoInfo,
-                    playlist: playlistData,
-                    concluido: statusConcluido
-                });
+                // 2. Só atualiza o estado se o componente ainda estiver na tela
+                if (isMounted) {
+                    setCursoData({
+                        video: videoInfo,
+                        playlist: playlistData,
+                        concluido: statusConcluido
+                    });
+                }
 
             } catch (err) {
-                setError(err.message);
+                if (isMounted) {
+                    setError(err.message);
+                }
             } finally {
-                setLoading(false);
+                if (isMounted) {
+                    setLoading(false);
+                }
             }
         };
 
         fetchTudo();
+
+        // 3. Função de "limpeza" que roda quando o componente é desmontado
+        return () => {
+            isMounted = false;
+        };
+        // --- FIM DA CORREÇÃO ---
+
     }, [id]);
 
     const handleMarcarConcluido = async () => {
@@ -99,9 +115,7 @@ const PlayerCurso = () => {
                     <div className='player-wrapper-responsive'>
                         <ReactPlayer
                             className='react-player'
-                            // --- CORREÇÃO FINAL APLICADA AQUI ---
                             url={cursoData.video.urlDoVideo} 
-                            // ------------------------------------
                             width='100%'
                             height='100%'
                             controls={true}
