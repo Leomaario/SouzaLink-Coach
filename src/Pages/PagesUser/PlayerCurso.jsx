@@ -25,6 +25,16 @@ const PlayerCurso = () => {
                 if (!videoResponse.ok) throw new Error(`Vídeo com ID ${id} não encontrado.`);
                 const videoInfo = await videoResponse.json();
 
+                console.log(videoInfo);
+                console.log('URL do vídeo:', videoInfo.urlDoVideo);
+                console.log('ID do vídeo:', videoInfo.id);
+                console.log('Título do vídeo:', videoInfo.titulo);
+                console.log('Descrição do vídeo:', videoInfo.descricao);
+                console.log('Catálogo ID do vídeo:', videoInfo.catalogoId);
+                console.log('Catálogo Nome do vídeo:', videoInfo.catalogoNome);
+                console.log('Catálogo Descrição do vídeo:', videoInfo.catalogoDescricao);
+                
+
                 if (!videoInfo.urlDoVideo) {
                     throw new Error('URL do vídeo não encontrada na resposta da API.');
                 }
