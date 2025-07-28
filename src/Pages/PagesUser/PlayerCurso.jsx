@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
-import '../../Styles/PlayerCurso.css'; 
+import '../../Styles/PlayerCurso.css';
 import { useParams, Link } from 'react-router-dom';
 import { apiFetch } from '../../Services/api';
 
@@ -85,7 +85,9 @@ const PlayerCurso = () => {
                     <div className='player-wrapper-responsive'>
                         <ReactPlayer
                             className='react-player'
-                            url={cursoData.video.urlDoVideo}
+                            // --- CORREÇÃO APLICADA AQUI ---
+                            url={cursoData.video.videoUrl} 
+                            // -----------------------------
                             width='100%'
                             height='100%'
                             controls={true}
@@ -98,7 +100,6 @@ const PlayerCurso = () => {
                             volume={1}
                             playbackRate={1.0}
                             style={{ maxWidth: '100%', maxHeight: '100%' }}
-                            // MUDANÇA: Adicionada configuração para evitar erros de CORS
                             config={{
                                 file: {
                                     attributes: {
