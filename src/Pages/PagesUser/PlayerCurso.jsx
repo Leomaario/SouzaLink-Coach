@@ -17,8 +17,7 @@ const PlayerCurso = () => {
     useEffect(() => {
         if (!id) return;
 
-        // --- INÍCIO DA CORREÇÃO ---
-        let isMounted = true; // 1. Flag para verificar se o componente está "montado"
+        let isMounted = true; // Flag para verificar se o componente está "montado"
 
         const fetchTudo = async () => {
             setLoading(true);
@@ -28,7 +27,8 @@ const PlayerCurso = () => {
                 if (!videoResponse.ok) throw new Error(`Vídeo com ID ${id} não encontrado.`);
                 const videoInfo = await videoResponse.json();
 
-                console.log(videoInfo);
+                // Logs para verificar os dados recebidos
+                console.log("DADOS COMPLETOS DO VÍDEO:", videoInfo);
                 console.log('URL do vídeo:', videoInfo.urlDoVideo);
                 console.log('ID do vídeo:', videoInfo.id);
                 console.log('Título do vídeo:', videoInfo.titulo);
@@ -56,7 +56,7 @@ const PlayerCurso = () => {
                     statusConcluido = statusData.concluido;
                 }
                 
-                // 2. Só atualiza o estado se o componente ainda estiver na tela
+                // Só atualiza o estado se o componente ainda estiver na tela
                 if (isMounted) {
                     setCursoData({
                         video: videoInfo,
@@ -78,12 +78,10 @@ const PlayerCurso = () => {
 
         fetchTudo();
 
-        // 3. Função de "limpeza" que roda quando o componente é desmontado
+        // Função de "limpeza" que roda quando o componente é desmontado
         return () => {
             isMounted = false;
         };
-        // --- FIM DA CORREÇÃO ---
-
     }, [id]);
 
     const handleMarcarConcluido = async () => {
@@ -121,25 +119,22 @@ const PlayerCurso = () => {
                             controls={true}
                             playing={true}
                             muted={true}
-                            playsinline={true}
-                            pip={false}
-                            light={false}
-                            loop={false}
-                            volume={1}
-                            playbackRate={1.0}
-                            style={{ maxWidth: '100%', maxHeight: '100%' }}
-                            config={{
-                                file: {
-                                    attributes: {
-                                        crossOrigin: 'anonymous'
-                                    }
-                                }
+                            
+                            // --- LOGS DE DIAGNÓSTICO DO PLAYER ---
+                            onReady={() => console.log('Player está PRONTO (onReady)')}
+                            onStart={() => console.log('>>> O VÍDEO REALMENTE COMEÇOU A TOCAR (onStart) <<<')}
+                            onPlay={() => console.log('Player recebeu o comando PLAY (onPlay)')}
+                            onPause={() => console.log('Vídeo pausado (onPause)')}
+                            onEnded={() => console.log('Vídeo finalizado (onEnded)')}
+                            onError={(e, data, hlsInstance, hlsGlobal) => {
+                                console.error('!!! ERRO NO PLAYER !!!:', {
+                                    errorEvent: e,
+                                    errorData: data,
+                                    hlsInstance: hlsInstance,
+                                    hlsGlobal: hlsGlobal
+                                });
+                                alert('Ocorreu um erro ao tentar tocar o vídeo. Verifique o console para mais detalhes.');
                             }}
-                            onError={() => alert('Erro ao carregar o vídeo. Verifique a URL ou tente novamente mais tarde.')}
-                            onPlay={() => console.log('Vídeo iniciado')}
-                            onPause={() => console.log('Vídeo pausado')}
-                            onEnded={() => console.log('Vídeo finalizado')}
-                            onProgress={(progress) => console.log('Progresso do vídeo:', progress)}
                         />
                     </div>
                     <div className="video-details">
