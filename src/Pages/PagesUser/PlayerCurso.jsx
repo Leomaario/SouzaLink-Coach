@@ -3,7 +3,6 @@ import ReactPlayer from 'react-player/youtube';
 import '../../Styles/PlayerCurso.css';
 import { useParams, Link } from 'react-router-dom';
 import { apiFetch } from '../../Services/api';
-import { BsPlusCircleFill, BsPencilSquare, BsTrashFill } from 'react-icons/bs';
 
 const PlayerCurso = () => {
     const { id } = useParams();
