@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ReactPlayer from 'react-player';
 import '../../Styles/PlayerCurso.css';
 import { useParams, Link } from 'react-router-dom';
@@ -13,83 +13,80 @@ const PlayerCurso = () => {
     });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [isReady, setIsReady] = useState(false);
+    const [isPlayerReady, setIsPlayerReady] = useState(false);
     const [playerKey, setPlayerKey] = useState(0);
+    const playerRef = useRef(null);
+    const isMounted = useRef(true);
 
     useEffect(() => {
-        if (!id) return;
+        isMounted.current = true;
+        setIsPlayerReady(false);
+        setLoading(true);
+        setError(null);
 
-        let isMounted = true;
-        setIsReady(false);
-
-        const fetchTudo = async () => {
-            setLoading(true);
-            setError(null);
+        const carregarDados = async () => {
             try {
-                const videoResponse = await apiFetch(`/api/videos/buscar/${id}`);
-                if (!videoResponse.ok) throw new Error(`Vídeo com ID ${id} não encontrado.`);
-                const videoInfo = await videoResponse.json();
+                const response = await apiFetch(`/api/videos/buscar/${id}`);
+                if (!response.ok) throw new Error('Vídeo não encontrado');
+                const video = await response.json();
 
-                if (!videoInfo.urlDoVideo) {
-                    throw new Error('URL do vídeo não encontrada na resposta da API.');
-                }
-
-                let playlistData = [];
-                if (videoInfo?.catalogoId) {
-                    const playlistResponse = await apiFetch(`/api/catalogos/${videoInfo.catalogoId}/videos`);
-                    if (playlistResponse.ok) {
-                        playlistData = await playlistResponse.json();
+                let playlist = [];
+                if (video.catalogoId) {
+                    const playlistRes = await apiFetch(`/api/catalogos/${video.catalogoId}/videos`);
+                    if (playlistRes.ok) {
+                        playlist = await playlistRes.json();
                     }
                 }
 
-                let statusConcluido = false;
-                const statusResponse = await apiFetch(`/api/progresso/${id}/status`);
-                if (statusResponse.ok) {
-                    const statusData = await statusResponse.json();
-                    statusConcluido = statusData.concluido;
+                let concluido = false;
+                const statusRes = await apiFetch(`/api/progresso/${id}/status`);
+                if (statusRes.ok) {
+                    const status = await statusRes.json();
+                    concluido = status.concluido;
                 }
 
-                if (isMounted) {
-                    setCursoData({
-                        video: videoInfo,
-                        playlist: playlistData,
-                        concluido: statusConcluido
-                    });
+                if (isMounted.current) {
+                    setCursoData({ video, playlist, concluido });
                     setPlayerKey(prev => prev + 1);
 
+                    // Aguarda o componente montar
+                    setTimeout(() => {
+                        if (isMounted.current) {
+                            setIsPlayerReady(true);
+                        }
+                    }, 500);
                 }
-
-                setTimeout(() => {
-                    if (isMounted) setIsReady(true);
-                }, 800);
-
             } catch (err) {
-                if (isMounted) {
+                if (isMounted.current) {
                     setError(err.message);
                 }
             } finally {
-                if (isMounted) setLoading(false);
+                if (isMounted.current) {
+                    setLoading(false);
+                }
             }
         };
 
-        fetchTudo();
+        carregarDados();
 
         return () => {
-            isMounted = false;
+            isMounted.current = false;
         };
     }, [id]);
 
     const handleMarcarConcluido = async () => {
         setCursoData(prev => ({ ...prev, concluido: true }));
         try {
-            const response = await apiFetch(`/api/progresso/${id}/marcar-concluido`, { method: 'POST' });
+            const response = await apiFetch(`/api/progresso/${id}/marcar-concluido`, {
+                method: 'POST',
+            });
             if (!response.ok) {
                 alert('Erro ao marcar como concluído.');
                 setCursoData(prev => ({ ...prev, concluido: false }));
             }
         } catch {
+            alert('Erro ao conectar com o servidor.');
             setCursoData(prev => ({ ...prev, concluido: false }));
-            alert('Erro de rede ao marcar como concluído.');
         }
     };
 
@@ -98,7 +95,7 @@ const PlayerCurso = () => {
     }
 
     if (error || !cursoData.video) {
-        return <div className="player-curso-wrapper"><p className="status-message error-message">{error || "Vídeo não encontrado."}</p></div>;
+        return <div className="player-curso-wrapper"><p className="status-message error-message">{error || "Vídeo não disponível."}</p></div>;
     }
 
     return (
@@ -106,22 +103,20 @@ const PlayerCurso = () => {
             <div className="player-main">
                 <div className="video-box">
                     <div className="player-wrapper-responsive">
-                        <ReactPlayer
-                            key={playerKey}
-                            className="react-player"
-                            url={cursoData.video.urlDoVideo}
-                            width="100%"
-                            height="100%"
-                            controls
-                            playing={isReady}
-                            muted
-                            playsinline
-                            onError={(e) => console.error('Erro no player:', e)}
-                            onPlay={() => console.log('onPlay')}
-                            onStart={() => console.log('onStart')}
-                            onPause={() => console.log('onPause')}
-                            onEnded={() => console.log('onEnded')}
-                        />
+                        {isPlayerReady && (
+                            <ReactPlayer
+                                key={playerKey}
+                                ref={playerRef}
+                                url={cursoData.video.urlDoVideo}
+                                controls
+                                playing={true}
+                                muted
+                                width="100%"
+                                height="100%"
+                                playsinline
+                                onError={(e) => console.error('Erro no player:', e)}
+                            />
+                        )}
                     </div>
                     <div className="video-details">
                         <h2>{cursoData.video.titulo}</h2>
@@ -132,11 +127,11 @@ const PlayerCurso = () => {
                 <div className="curso-sidebar">
                     <h3>Conteúdo do Catálogo</h3>
                     <ul className="aulas-lista">
-                        {cursoData.playlist.map(videoDaLista => (
-                            <li key={videoDaLista.id} className={videoDaLista.id === cursoData.video.id ? 'active' : ''}>
-                                <Link to={`/curso/${videoDaLista.id}`}>
-                                    {videoDaLista.id === cursoData.video.id && '▶️ '}
-                                    {videoDaLista.titulo}
+                        {cursoData.playlist.map(video => (
+                            <li key={video.id} className={video.id === cursoData.video.id ? 'active' : ''}>
+                                <Link to={`/curso/${video.id}`}>
+                                    {video.id === cursoData.video.id && '▶️ '}
+                                    {video.titulo}
                                 </Link>
                             </li>
                         ))}
