@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
-import '../../Styles/PlayerCurso.css'; 
+import '../../Styles/PlayerCurso.css';
 import { useParams, Link } from 'react-router-dom';
 import { apiFetch } from '../../Services/api';
 
@@ -26,11 +26,11 @@ const PlayerCurso = () => {
                 const videoResponse = await apiFetch(`/api/videos/buscar/${id}`);
                 if (!videoResponse.ok) throw new Error(`Vídeo com ID ${id} não encontrado.`);
                 const videoInfo = await videoResponse.json();
-                
+
                 if (!videoInfo.urlDoVideo) {
                     throw new Error('URL do vídeo não encontrada na resposta da API.');
                 }
-                
+
                 let playlistData = [];
                 if (videoInfo?.catalogoId) {
                     const playlistResponse = await apiFetch(`/api/catalogos/${videoInfo.catalogoId}/videos`);
@@ -45,7 +45,7 @@ const PlayerCurso = () => {
                     const statusData = await statusResponse.json();
                     statusConcluido = statusData.concluido;
                 }
-                
+
                 if (isMounted) {
                     setCursoData({
                         video: videoInfo,
@@ -94,23 +94,31 @@ const PlayerCurso = () => {
         return <div className="player-curso-wrapper"><p className="status-message error-message">{error || "Vídeo não encontrado."}</p></div>;
     }
 
+    const [isReady, setIsReady] = useState(false);
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setIsReady(true);
+        }, 1000); // Espera 1 segundo antes de permitir o autoplay
+
+        return () => clearTimeout(timer);
+
+    }, []);
+
     return (
         <div className="player-curso-wrapper">
             <div className="player-main">
                 <div className="video-box">
                     <div className='player-wrapper-responsive'>
                         <ReactPlayer
-                            key={cursoData.video.id} // 🔑 Força o remount ao trocar de vídeo
+
+                            key={cursoData.video.id}
                             className='react-player'
-                            url={cursoData.video.urlDoVideo} 
+                            url={cursoData.video.urlDoVideo}
                             width='100%'
                             height='100%'
                             controls={true}
-                            playing={true}
+                            playing={isReady}
                             muted={true}
-                            
-                            // A propriedade 'config' que causava o erro foi removida daqui
-
                             onError={(e) => console.error('!!! ERRO NO PLAYER !!!:', e)}
                             onPlay={() => console.log('Player recebeu o comando PLAY (onPlay)')}
                             onStart={() => console.log('>>> O VÍDEO REALMENTE COMEÇOU A TOCAR (onStart) <<<')}
@@ -136,8 +144,8 @@ const PlayerCurso = () => {
                             </li>
                         ))}
                     </ul>
-                    <button 
-                        onClick={handleMarcarConcluido} 
+                    <button
+                        onClick={handleMarcarConcluido}
                         className="botao-concluir"
                         disabled={cursoData.concluido}
                     >
