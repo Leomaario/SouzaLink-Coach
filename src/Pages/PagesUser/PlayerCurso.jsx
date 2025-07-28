@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ReactPlayer from 'react-player';
 import '../../Styles/PlayerCurso.css';
 import { useParams, Link } from 'react-router-dom';
@@ -6,18 +6,21 @@ import { apiFetch } from '../../Services/api';
 
 const PlayerCurso = () => {
     const { id } = useParams();
+    const isMounted = useRef(true);
+
     const [cursoData, setCursoData] = useState({
         video: null,
         playlist: [],
         concluido: false
     });
+
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isReady, setIsReady] = useState(false);
 
+    // ✅ Evita atualizações após desmontagem
     useEffect(() => {
-        if (!id) return;
-
-        let isMounted = true; // Flag para verificar se o componente está "montado"
+        isMounted.current = true;
 
         const fetchTudo = async () => {
             setLoading(true);
@@ -46,20 +49,21 @@ const PlayerCurso = () => {
                     statusConcluido = statusData.concluido;
                 }
 
-                if (isMounted) {
+                if (isMounted.current) {
                     setCursoData({
                         video: videoInfo,
                         playlist: playlistData,
                         concluido: statusConcluido
                     });
+                    setIsReady(false); // reset autoplay readiness
                 }
 
             } catch (err) {
-                if (isMounted) {
+                if (isMounted.current) {
                     setError(err.message);
                 }
             } finally {
-                if (isMounted) {
+                if (isMounted.current) {
                     setLoading(false);
                 }
             }
@@ -68,7 +72,7 @@ const PlayerCurso = () => {
         fetchTudo();
 
         return () => {
-            isMounted = false;
+            isMounted.current = false;
         };
     }, [id]);
 
@@ -94,24 +98,13 @@ const PlayerCurso = () => {
         return <div className="player-curso-wrapper"><p className="status-message error-message">{error || "Vídeo não encontrado."}</p></div>;
     }
 
-    const [isReady, setIsReady] = useState(false);
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsReady(true);
-        }, 1000); // Espera 1 segundo antes de permitir o autoplay
-
-        return () => clearTimeout(timer);
-
-    }, []);
-
     return (
         <div className="player-curso-wrapper">
             <div className="player-main">
                 <div className="video-box">
                     <div className='player-wrapper-responsive'>
                         <ReactPlayer
-
-                            key={cursoData.video.id}
+                            key={cursoData.video.id} // ✅ força recriação segura do player
                             className='react-player'
                             url={cursoData.video.urlDoVideo}
                             width='100%'
@@ -119,7 +112,16 @@ const PlayerCurso = () => {
                             controls={true}
                             playing={isReady}
                             muted={true}
-                            onError={(e) => console.error('!!! ERRO NO PLAYER !!!:', e)}
+                            onReady={() => {
+                                console.log('Player pronto (onReady)');
+                                setIsReady(true); // ✅ só toca quando estiver pronto
+                            }}
+                            onError={(e) => {
+                                console.error('!!! ERRO NO PLAYER !!!:', e);
+                                if (e?.name === 'AbortError') {
+                                    console.warn('AbortError ignorado (provavelmente troca rápida de vídeo)');
+                                }
+                            }}
                             onPlay={() => console.log('Player recebeu o comando PLAY (onPlay)')}
                             onStart={() => console.log('>>> O VÍDEO REALMENTE COMEÇOU A TOCAR (onStart) <<<')}
                             onPause={() => console.log('Vídeo pausado (onPause)')}
