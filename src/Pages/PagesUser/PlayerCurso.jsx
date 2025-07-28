@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
-import '../../Styles/PlayerCurso.css';
+import '../../Styles/PlayerCurso.css'; 
 import { useParams, Link } from 'react-router-dom';
 import { apiFetch } from '../../Services/api';
 
@@ -25,14 +25,8 @@ const PlayerCurso = () => {
                 if (!videoResponse.ok) throw new Error(`Vídeo com ID ${id} não encontrado.`);
                 const videoInfo = await videoResponse.json();
 
-                console.log('Video Info:', videoInfo);
-                console.log('Video URL:', videoInfo.videoUrl);
-                console.log('Video ID:', videoInfo.id);
-                console.log('Video Catalogo ID:', videoInfo.catalogoId);
-                console.log('Video Titulo:', videoInfo.titulo);
-                console.log('Video Descricao:', videoInfo.descricao);
-                if (!videoInfo.videoUrl) {
-                    throw new Error('URL do vídeo não encontrada.');
+                if (!videoInfo.urlDoVideo) {
+                    throw new Error('URL do vídeo não encontrada na resposta da API.');
                 }
                 
                 let playlistData = [];
@@ -95,9 +89,9 @@ const PlayerCurso = () => {
                     <div className='player-wrapper-responsive'>
                         <ReactPlayer
                             className='react-player'
-                            // --- CORREÇÃO APLICADA AQUI ---
-                            url={cursoData.video.videoUrl} 
-                            // -----------------------------
+                            // --- CORREÇÃO FINAL APLICADA AQUI ---
+                            url={cursoData.video.urlDoVideo} 
+                            // ------------------------------------
                             width='100%'
                             height='100%'
                             controls={true}
