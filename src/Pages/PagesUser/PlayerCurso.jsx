@@ -118,7 +118,7 @@ const PlayerCurso = () => {
                                 width="100%"
                                 height="100%"
                                 playsinline
-                                playing{true}
+
                                 onReady={() => console.log("✅ O VÍDEO ESTÁ PRONTO")}
                                 onPlay={() => console.log("▶️ Player recebeu comando PLAY")}
                                 onPause={() => console.log("⏸️ Vídeo pausado")}
