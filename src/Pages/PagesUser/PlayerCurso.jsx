@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import ReactPlayer from 'react-player';
+import ReactPlayer from 'react-player/youtube';
 import '../../Styles/PlayerCurso.css';
 import { useParams, Link } from 'react-router-dom';
 import { apiFetch } from '../../Services/api';
@@ -14,20 +14,16 @@ const PlayerCurso = () => {
     });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [isPlayerReady, setIsPlayerReady] = useState(false);
     const [shouldPlay, setShouldPlay] = useState(false);
     const [playerKey, setPlayerKey] = useState(0);
     const playerRef = useRef(null);
-    const isMounted = useRef(true);
 
     useEffect(() => {
-        isMounted.current = true;
-        setIsPlayerReady(false);
-        setShouldPlay(false);
-        setLoading(true);
-        setError(null);
-
+        let isMounted = true;
         const carregarDados = async () => {
+            setLoading(true);
+            setError(null);
+
             try {
                 const response = await apiFetch(`/api/videos/buscar/${id}`);
                 if (!response.ok) throw new Error('Vídeo não encontrado');
@@ -48,33 +44,23 @@ const PlayerCurso = () => {
                     concluido = status.concluido;
                 }
 
-                if (isMounted.current) {
+                if (isMounted) {
                     setCursoData({ video, playlist, concluido });
-                    setPlayerKey(prev => prev + 1);
-
-                    // Aguarda montagem do componente para ativar o player
-                    setTimeout(() => {
-                        if (isMounted.current) {
-                            setIsPlayerReady(true);
-                            setShouldPlay(true);
-                        }
-                    }, 500);
+                    setPlayerKey(prev => prev + 1); // Força a atualização do player
+                    setShouldPlay(true);
                 }
             } catch (err) {
-                if (isMounted.current) {
-                    setError(err.message);
-                }
+                if (isMounted) setError(err.message);
             } finally {
-                if (isMounted.current) {
-                    setLoading(false);
-                }
+                if (isMounted) setLoading(false);
             }
         };
 
         carregarDados();
 
         return () => {
-            isMounted.current = false;
+            isMounted = false;
+            setShouldPlay(false);
         };
     }, [id]);
 
@@ -107,23 +93,21 @@ const PlayerCurso = () => {
             <div className="player-main">
                 <div className="video-box">
                     <div className="player-wrapper-responsive">
-                        {isPlayerReady && (
-                            <ReactPlayer
-                                key={playerKey}
-                                ref={playerRef}
-                                url={cursoData.video.urlDoVideo}
-                                controls
-                                playing={shouldPlay}
-                                muted
-                                width="100%"
-                                height="100%"
-                                playsinline
-                                onReady={() => console.log("✅ O VÍDEO ESTÁ PRONTO")}
-                                onPlay={() => console.log("▶️ Player recebeu comando PLAY")}
-                                onPause={() => console.log("⏸️ Vídeo pausado")}
-                                onError={(e) => console.error('❌ Erro no player:', e)}
-                            />
-                        )}
+                        <ReactPlayer
+                            key={playerKey}
+                            ref={playerRef}
+                            url={cursoData.video.urlDoVideo}
+                            controls
+                            playing={shouldPlay}
+                            muted
+                            width="100%"
+                            height="100%"
+                            playsinline
+                            onReady={() => console.log("✅ Vídeo pronto")}
+                            onPlay={() => console.log("▶️ Tocando")}
+                            onPause={() => console.log("⏸️ Pausado")}
+                            onError={(e) => console.error('❌ Erro no player:', e)}
+                        />
                     </div>
                     <div className="video-details">
                         <h2>{cursoData.video.titulo}</h2>
