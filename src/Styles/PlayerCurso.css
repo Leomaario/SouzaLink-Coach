@@ -4,86 +4,86 @@
     min-height: 100vh;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     animation: fadeIn 0.5s ease-in;
-  }
-  
-  .player-main {
+}
+
+.player-main {
     display: flex;
     gap: 2rem;
     flex-wrap: wrap;
-  }
-  
-  .video-box {
+}
+
+.video-box {
     flex: 2;
     background-color: white;
     border-radius: 12px;
     padding: 1.5rem;
     box-shadow: 0 2px 12px rgba(0, 115, 230, 0.1);
-  }
-  
-  .player-wrapper-responsive {
-  position: relative;
-  padding-top: 56.25%; /* Proporção 16:9, padrão de vídeos */
 }
 
-.react-player {
-  position: absolute;
-  top: 0;
-  left: 0;
+.player-wrapper-responsive {
+    position: relative;
+    padding-top: 56.25%; /* Proporção 16:9, padrão de vídeos */
 }
-  
-  .video-player {
+
+/* --- CORREÇÃO APLICADA AQUI --- */
+.react-player {
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* Adicionado para fazer o player preencher o container */
     width: 100%;
-    border-radius: 10px;
-    background-color: #000;
-    margin-bottom: 1rem;
-  }
-  
-  .video-details h2 {
+    height: 100%;
+}
+/* ----------------------------- */
+
+/* A classe .video-player foi removida pois não estava sendo usada no seu componente React */
+
+.video-details h2 {
     font-size: 1.8rem;
     color: #003366;
     margin-bottom: 0.5rem;
-  }
-  
-  .video-details p {
+}
+
+.video-details p {
     color: #444;
-  }
-  
-  .curso-sidebar {
+}
+
+.curso-sidebar {
     flex: 1;
     background-color: #ffffff;
     padding: 1.5rem;
     border-radius: 12px;
     box-shadow: 0 2px 12px rgba(0, 115, 230, 0.1);
     height: fit-content;
-  }
-  
-  .curso-sidebar h3 {
+}
+
+.curso-sidebar h3 {
     margin-bottom: 1rem;
     color: #0056b3;
-  }
-  
-  .aulas-lista {
+}
+
+.aulas-lista {
     list-style: none;
     padding: 0;
     margin-bottom: 1.5rem;
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
-  }
-  
-  .aulas-lista li {
+}
+
+.aulas-lista li {
     background-color: #e6f0ff;
     padding: 0.8rem 1rem;
     border-radius: 8px;
     transition: background-color 0.2s ease;
     cursor: pointer;
-  }
-  
-  .aulas-lista li:hover {
+}
+
+.aulas-lista li:hover {
     background-color: #d0e2ff;
-  }
-  
-  .botao-concluir {
+}
+
+.botao-concluir {
     background-color: #007bff;
     color: white;
     border: none;
@@ -93,53 +93,49 @@
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
-  }
-  
-  .botao-concluir:hover {
+}
+
+.botao-concluir:hover {
     background-color: #0056b3;
-  }
-  .card-certificado {
+}
+.card-certificado {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     transition: transform 0.3s ease;
-  }
-  
-  .card-certificado:hover {
+}
+
+.card-certificado:hover {
     transform: translateY(-4px);
-  }
-  
-  @keyframes fadeIn {
+}
+
+@keyframes fadeIn {
     from {
-      opacity: 0;
-      transform: translateY(20px);
+        opacity: 0;
+        transform: translateY(20px);
     }
     to {
-      opacity: 1;
-      transform: translateY(0);
+        opacity: 1;
+        transform: translateY(0);
     }
-  }
-  @media (max-width: 768px) {
+}
+@media (max-width: 768px) {
     .player-curso-wrapper {
-      padding: 1rem;
+        padding: 1rem;
     }
-  
+
     .player-main {
-      flex-direction: column;
+        flex-direction: column;
     }
-  
+
     .video-box, .curso-sidebar {
-      width: 100%;
+        width: 100%;
     }
-  
-    .video-player {
-      height: 200px; /* Ajuste para telas menores */
-    }
-  
+
     .aulas-lista li {
-      font-size: 0.9rem;
+        font-size: 0.9rem;
     }
-  
+
     .botao-concluir {
-      width: 100%;
-      padding: 0.8rem;
+        width: 100%;
+        padding: 0.8rem;
     }
-  }
+}

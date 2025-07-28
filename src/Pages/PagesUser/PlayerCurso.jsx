@@ -26,16 +26,6 @@ const PlayerCurso = () => {
                 const videoResponse = await apiFetch(`/api/videos/buscar/${id}`);
                 if (!videoResponse.ok) throw new Error(`Vídeo com ID ${id} não encontrado.`);
                 const videoInfo = await videoResponse.json();
-
-                // Logs para verificar os dados recebidos
-                console.log("DADOS COMPLETOS DO VÍDEO:", videoInfo);
-                console.log('URL do vídeo:', videoInfo.urlDoVideo);
-                console.log('ID do vídeo:', videoInfo.id);
-                console.log('Título do vídeo:', videoInfo.titulo);
-                console.log('Descrição do vídeo:', videoInfo.descricao);
-                console.log('Catálogo ID do vídeo:', videoInfo.catalogoId);
-                console.log('Catálogo Nome do vídeo:', videoInfo.catalogoNome);
-                console.log('Catálogo Descrição do vídeo:', videoInfo.catalogoDescricao);
                 
                 if (!videoInfo.urlDoVideo) {
                     throw new Error('URL do vídeo não encontrada na resposta da API.');
@@ -56,7 +46,6 @@ const PlayerCurso = () => {
                     statusConcluido = statusData.concluido;
                 }
                 
-                // Só atualiza o estado se o componente ainda estiver na tela
                 if (isMounted) {
                     setCursoData({
                         video: videoInfo,
@@ -78,7 +67,6 @@ const PlayerCurso = () => {
 
         fetchTudo();
 
-        // Função de "limpeza" que roda quando o componente é desmontado
         return () => {
             isMounted = false;
         };
@@ -120,21 +108,13 @@ const PlayerCurso = () => {
                             playing={true}
                             muted={true}
                             
-                            // --- LOGS DE DIAGNÓSTICO DO PLAYER ---
-                            onReady={() => console.log('Player está PRONTO (onReady)')}
-                            onStart={() => console.log('>>> O VÍDEO REALMENTE COMEÇOU A TOCAR (onStart) <<<')}
+                            // A propriedade 'config' que causava o erro foi removida daqui
+
+                            onError={(e) => console.error('!!! ERRO NO PLAYER !!!:', e)}
                             onPlay={() => console.log('Player recebeu o comando PLAY (onPlay)')}
+                            onStart={() => console.log('>>> O VÍDEO REALMENTE COMEÇOU A TOCAR (onStart) <<<')}
                             onPause={() => console.log('Vídeo pausado (onPause)')}
                             onEnded={() => console.log('Vídeo finalizado (onEnded)')}
-                            onError={(e, data, hlsInstance, hlsGlobal) => {
-                                console.error('!!! ERRO NO PLAYER !!!:', {
-                                    errorEvent: e,
-                                    errorData: data,
-                                    hlsInstance: hlsInstance,
-                                    hlsGlobal: hlsGlobal
-                                });
-                                alert('Ocorreu um erro ao tentar tocar o vídeo. Verifique o console para mais detalhes.');
-                            }}
                         />
                     </div>
                     <div className="video-details">
