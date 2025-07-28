@@ -100,6 +100,7 @@ const PlayerCurso = () => {
                 <div className="video-box">
                     <div className='player-wrapper-responsive'>
                         <ReactPlayer
+                            key={cursoData.video.id} // 🔑 Força o remount ao trocar de vídeo
                             className='react-player'
                             url={cursoData.video.urlDoVideo} 
                             width='100%'
