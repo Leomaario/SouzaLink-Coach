@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 import '../../Styles/PlayerCurso.css';
 import { useParams, Link } from 'react-router-dom';
 import { apiFetch } from '../../Services/api';
-import { BsPlusCircleFill, BsPencilSquare, BsTrashFill } from 'react-icons/bs'
-
-
+import { BsPlusCircleFill, BsPencilSquare, BsTrashFill } from 'react-icons/bs';
 
 const PlayerCurso = () => {
     const { id } = useParams();
@@ -16,41 +14,18 @@ const PlayerCurso = () => {
     });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [isPlayerReady, setIsPlayerReady] = useState(false);
-    const [playerKey, setPlayerKey] = useState(0);
-    const playerRef = useRef(null);
-    const isMounted = useRef(true);
-
-
-
-
-    //corrige o erro Uncaught (in promise) AbortError: The play() request was interrupted because the media was removed from the document. https://goo.gl/LdLk22
-    const [shouldPlay, setShouldPlay] = useState(false);
+    const [playing, setPlaying] = useState(false);
     useEffect(() => {
-        if (shouldPlay && playerRef.current) {
-            playerRef.current.play();
-        }
-    }, [shouldPlay]);
-
-
-    const headers = {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-    };
-    const apiFetch = (endpoint, options = {}) => fetch('https://api-e-learning-gjnd.onrender.com/api/user-dashboard/data', {
-        headers: headers
-    });
-
-
-    useEffect(() => {
-        isMounted.current = true;
-        setIsPlayerReady(false);
-        setShouldPlay(false);
-        setLoading(true);
-        setError(null);
-
+        let isMounted = true;
 
         const carregarDados = async () => {
+            if (!isMounted) return; // Evita atualizações de estado se o componente foi desmontado
+
+            setLoading(true);
+            setError(null);
+            setPlaying(false);
+
+
             try {
                 const response = await apiFetch(`/api/videos/buscar/${id}`);
                 if (!response.ok) throw new Error('Vídeo não encontrado');
@@ -71,44 +46,21 @@ const PlayerCurso = () => {
                     concluido = status.concluido;
                 }
 
-                if (isMounted.current) {
+                if (isMounted) {
                     setCursoData({ video, playlist, concluido });
-                    setPlayerKey(prev => prev + 1);
-
-                    // Aguarda montagem do componente para ativar o player
-                    setTimeout(() => {
-                        if (isMounted.current) {
-                            setIsPlayerReady(true);
-                            setShouldPlay(true);
-                        }
-                    }, 500);
+                    setPlaying(true); // Ativa o autoplay após os dados carregarem
                 }
             } catch (err) {
-                if (isMounted.current) {
-                    setError(err.message);
-                }
+                if (isMounted) setError(err.message);
             } finally {
-                if (isMounted.current) {
-                    setLoading(false);
-                }
+                if (isMounted) setLoading(false);
             }
         };
 
         carregarDados();
 
-        // Limpeza do efeito para evitar vazamentos de memória
         return () => {
-            isMounted.current = false;
-            if (playerRef.current) {
-                playerRef.current.getInternalPlayer().pause();
-            }
-            setIsPlayerReady(false);
-            setShouldPlay(false);
-            setPlayerKey(0);
-            setCursoData({ video: null, playlist: [], concluido: false });
-            setLoading(true);
-            setError(null);
-
+            isMounted = false;
         };
     }, [id]);
 
@@ -136,39 +88,25 @@ const PlayerCurso = () => {
         return <div className="player-curso-wrapper"><p className="status-message error-message">{error || "Vídeo não disponível."}</p></div>;
     }
 
-    //corrige o erro do stream não reproduzir e mostra no log
-    if (!isPlayerReady) {
-        return <div className="player-curso-wrapper"><p className="status-message">Preparando o player...</p></div>;
-    }
-
-    if (isPlayerReady) {
-        shouldPlay = true;
-    }
-
-
     return (
         <div className="player-curso-wrapper">
             <div className="player-main">
                 <div className="video-box">
                     <div className="player-wrapper-responsive">
-                        {isPlayerReady && (
-                            <ReactPlayer
-                                key={playerKey}
-                                ref={playerRef}
-                                url={cursoData.video.urlDoVideo}
-                                controls
-                                playing={false}
-                                muted={true}
-                                width="100%"
-                                height="100%"
-                                playsinline
-
-                                onReady={() => console.log("✅ O VÍDEO ESTÁ PRONTO")}
-                                onPlay={() => console.log("▶️ Player recebeu comando PLAY")}
-                                onPause={() => console.log("⏸️ Vídeo pausado")}
-                                onError={(e) => console.error('❌ Erro no player:', e)}
-                            />
-                        )}
+                        <ReactPlayer
+                            key={id} // Força recriação ao mudar de vídeo
+                            url={cursoData.video.urlDoVideo}
+                            controls
+                            playing={playing} // Controlado pelo estado
+                            muted
+                            width="100%"
+                            height="100%"
+                            playsinline
+                            onReady={() => console.log("✅ Vídeo pronto")}
+                            onPlay={() => console.log("▶️ Tocando")}
+                            onPause={() => console.log("⏸️ Pausado")}
+                            onError={(e) => console.error('❌ Erro no player:', e)}
+                        />
                     </div>
                     <div className="video-details">
                         <h2>{cursoData.video.titulo}</h2>
