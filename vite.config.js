@@ -27,9 +27,4 @@ export default defineConfig({
       '@pages': Path.resolve(__dirname, './src/Pages')
     }
   },
-  build: {
-    rollupOptions: {
-      external: ['react-player']
-    }
-  }
 });

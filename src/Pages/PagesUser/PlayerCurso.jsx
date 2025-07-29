@@ -5,6 +5,8 @@ import { useParams, Link } from 'react-router-dom';
 import { apiFetch } from '../../Services/api';
 import { BsPlusCircleFill, BsPencilSquare, BsTrashFill } from 'react-icons/bs';
 
+
+
 const PlayerCurso = () => {
     const { id } = useParams();
     const [cursoData, setCursoData] = useState({
