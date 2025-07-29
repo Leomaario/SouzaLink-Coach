@@ -3,20 +3,33 @@ import ReactPlayer from 'react-player';
 import '../../Styles/PlayerCurso.css';
 import { useParams, Link } from 'react-router-dom';
 import { apiFetch } from '../../Services/api';
-import { BsPlusCircleFill, BsPencilSquare, BsTrashFill } from 'react-icons/bs';
+
+const LoadingState = () => (
+    <div className="player-curso-wrapper">
+        <p className="status-message">Carregando curso...</p>
+    </div>
+);
+
+const ErrorState = ({ message }) => (
+    <div className="player-curso-wrapper">
+        <p className="status-message error-message">{message}</p>
+    </div>
+);
 
 const PlayerCurso = () => {
     const { id } = useParams();
     const [cursoData, setCursoData] = useState({
         video: null,
         playlist: [],
-        concluido: false
     });
+    const [concluido, setConcluido] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [playing, setPlaying] = useState(false);
+    const [submissionError, setSubmissionError] = useState(null);
+
     useEffect(() => {
-        let isMounted = true;
+        const controller = new Ab
 
         const carregarDados = async () => {
             if (!isMounted) return;
@@ -96,22 +109,12 @@ const PlayerCurso = () => {
                         <ReactPlayer
                             key={id}
                             className='react-player'
-                            url={cursoData.video.urlDoVideo}
+                            src={cursoData.video.urlDoVideo}
                             controls={true}
+                            playing={playing}
+                            muted={true} // Garante que o autoplay funcione na maioria dos navegadores
                             width="100%"
                             height="100%"
-
-                            //config para especificar o tipo de player, ou seja? yotube!
-                            config={{
-                                youtube: {
-                                    playerVars: {
-                                        showinfo: 0,       // Esconde informações do vídeo  
-                                        modestbranding: 1,   // Usa um logo do YouTube menos chamativo na barra de controle
-                                        controls: 1,         // Garante que os controles do YouTube apareçam
-                                        disablekb: 0         // Permite o controle pelo teclado
-                                    }
-                                }
-                            }}
                         />
                     </div>
                     <div className="video-details">
