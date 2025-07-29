@@ -10,25 +10,25 @@ const Catalogo = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-
-
-    const headers = {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-    };
-    const apiFetch = (endpoint, options = {}) => fetch('https://api-e-learning-gjnd.onrender.com/api/user-dashboard/data', {
-        headers: headers
-    });
-
-
+    // --- ERRO CORRIGIDO ---
+    // O bloco de código que redefinia 'headers' e 'apiFetch' foi removido daqui.
+    // Agora, o componente usará a função 'apiFetch' importada corretamente de '/Services/api.js'.
 
     useEffect(() => {
         const fetchCatalogos = async () => {
             try {
                 setLoading(true);
+                setError(null);
                 const responseCatalogos = await apiFetch('/api/catalogos');
                 if (!responseCatalogos.ok) throw new Error('Falha ao buscar os catálogos.');
-                const catalogosData = await responseCatalogos.json();
+
+                let catalogosData = await responseCatalogos.json();
+
+                // Adicionada verificação para garantir que os dados são uma lista (array)
+                if (!Array.isArray(catalogosData)) {
+                    console.error("A resposta da API para /api/catalogos não é um array:", catalogosData);
+                    throw new Error('O formato dos dados recebidos para os catálogos é inválido.');
+                }
 
                 const promises = catalogosData.map(catalogo =>
                     apiFetch(`/api/catalogos/${catalogo.id}/videos`)
@@ -116,11 +116,8 @@ const Catalogo = () => {
                             ) : (
                                 <p className="sem-videos-msg">Nenhum curso neste catálogo ainda.</p>
                             )}
-
                         </div>
-
                     </div>
-
                 ))
             )}
         </div>
