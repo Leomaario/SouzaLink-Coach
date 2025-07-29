@@ -75,22 +75,20 @@ const PlayerCurso = () => {
 
         carregarDados();
 
+        // Limpeza do efeito para evitar vazamentos de memória
+        return () => {
+            isMounted.current = false;
+            if (playerRef.current) {
+                playerRef.current.getInternalPlayer().pause();
+            }
+            setIsPlayerReady(false);
+            setShouldPlay(false);
+            setPlayerKey(0);
+            setCursoData({ video: null, playlist: [], concluido: false });
+            setLoading(true);
+            setError(null);
 
-        useEffect(() => {
-            const handleVisibilityChange = () => {
-                if (document.hidden && playerRef.current) {
-                    playerRef.current.seekTo(playerRef.current.getCurrentTime());
-                    setShouldPlay(false);
-                }
-            };
-
-            document.addEventListener('visibilitychange', handleVisibilityChange);
-            return () => {
-                document.removeEventListener('visibilitychange', handleVisibilityChange);
-
-
-            };
-        }, []);
+        };
     }, [id]);
 
     const handleMarcarConcluido = async () => {
@@ -133,6 +131,7 @@ const PlayerCurso = () => {
                                 width="100%"
                                 height="100%"
                                 playsinline
+
 
                                 onReady={() => console.log("✅ O VÍDEO ESTÁ PRONTO")}
                                 onPlay={() => console.log("▶️ Player recebeu comando PLAY")}
