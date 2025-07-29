@@ -19,7 +19,7 @@ const PlayerCurso = () => {
         let isMounted = true;
 
         const carregarDados = async () => {
-            if (!isMounted) return; // Evita atualizações de estado se o componente foi desmontado
+            if (!isMounted) return;
 
             setLoading(true);
             setError(null);
@@ -94,18 +94,24 @@ const PlayerCurso = () => {
                 <div className="video-box">
                     <div className="player-wrapper-responsive">
                         <ReactPlayer
-                            key={id} // Força recriação ao mudar de vídeo
+                            key={id}
+                            className='react-player'
                             url={cursoData.video.urlDoVideo}
-                            controls
-                            playing={playing} // Controlado pelo estado
-                            muted
+                            controls={true}
                             width="100%"
                             height="100%"
-                            playsinline
-                            onReady={() => console.log("✅ Vídeo pronto")}
-                            onPlay={() => console.log("▶️ Tocando")}
-                            onPause={() => console.log("⏸️ Pausado")}
-                            onError={(e) => console.error('❌ Erro no player:', e)}
+
+                            //config para especificar o tipo de player, ou seja? yotube!
+                            config={{
+                                youtube: {
+                                    playerVars: {
+                                        showinfo: 0,       // Esconde informações do vídeo  
+                                        modestbranding: 1,   // Usa um logo do YouTube menos chamativo na barra de controle
+                                        controls: 1,         // Garante que os controles do YouTube apareçam
+                                        disablekb: 0         // Permite o controle pelo teclado
+                                    }
+                                }
+                            }}
                         />
                     </div>
                     <div className="video-details">
