@@ -75,9 +75,22 @@ const PlayerCurso = () => {
 
         carregarDados();
 
-        return () => {
-            isMounted.current = false;
-        };
+
+        useEffect(() => {
+            const handleVisibilityChange = () => {
+                if (document.hidden && playerRef.current) {
+                    playerRef.current.seekTo(playerRef.current.getCurrentTime());
+                    setShouldPlay(false);
+                }
+            };
+
+            document.addEventListener('visibilitychange', handleVisibilityChange);
+            return () => {
+                document.removeEventListener('visibilitychange', handleVisibilityChange);
+
+
+            };
+        }, []);
     }, [id]);
 
     const handleMarcarConcluido = async () => {
