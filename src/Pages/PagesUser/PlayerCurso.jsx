@@ -16,17 +16,9 @@ const ErrorState = ({ message }) => (
     </div>
 );
 
-// Verifica se a URL é válida e do YouTube
-const isYouTubeUrlPlayable = (url) => {
-    return ReactPlayer.canPlay(url) && url.includes('youtube.com');
-};
-
 const PlayerCurso = () => {
     const { id } = useParams();
-    const [cursoData, setCursoData] = useState({
-        video: null,
-        playlist: [],
-    });
+    const [cursoData, setCursoData] = useState({ video: null, playlist: [] });
     const [concluido, setConcluido] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -34,7 +26,6 @@ const PlayerCurso = () => {
 
     useEffect(() => {
         if (!id) return;
-
         const controller = new AbortController();
         const signal = controller.signal;
 
@@ -47,6 +38,8 @@ const PlayerCurso = () => {
                 const response = await apiFetch(`/api/videos/buscar/${id}`, { signal });
                 if (!response.ok) throw new Error('Vídeo não encontrado');
                 const video = await response.json();
+
+                console.log("URL do vídeo recebida:", video.urlDoVideo);
 
                 let playlist = [];
                 if (video.catalogoId) {
@@ -66,13 +59,16 @@ const PlayerCurso = () => {
                 setCursoData({ video, playlist });
                 setConcluido(statusConcluido);
 
-                // Só ativa autoplay se a URL for válida
-                if (isYouTubeUrlPlayable(video.urlDoVideo)) {
+                // Ativa reprodução apenas se a URL for válida
+                if (ReactPlayer.canPlay(video.urlDoVideo)) {
                     setPlaying(true);
+                } else {
+                    console.warn("URL inválida ou não suportada:", video.urlDoVideo);
+                    setError("O vídeo não pôde ser carregado. Verifique a URL.");
                 }
-
             } catch (err) {
                 if (err.name !== 'AbortError') {
+                    console.error("Erro ao carregar vídeo:", err.message);
                     setError(err.message);
                 }
             } finally {
@@ -82,9 +78,7 @@ const PlayerCurso = () => {
 
         carregarDados();
 
-        return () => {
-            controller.abort();
-        };
+        return () => controller.abort();
     }, [id]);
 
     const handleMarcarConcluido = async () => {
@@ -111,9 +105,9 @@ const PlayerCurso = () => {
             <div className="player-main">
                 <div className="video-box">
                     <div className="player-wrapper-responsive">
-                        {isYouTubeUrlPlayable(cursoData.video.urlDoVideo) ? (
+                        {ReactPlayer.canPlay(cursoData.video.urlDoVideo) ? (
                             <ReactPlayer
-                                key={id}
+                                key={cursoData.video.urlDoVideo}
                                 className='react-player'
                                 url={cursoData.video.urlDoVideo}
                                 controls
@@ -121,10 +115,11 @@ const PlayerCurso = () => {
                                 muted
                                 width="100%"
                                 height="100%"
+                                onReady={() => setPlaying(true)}
                             />
                         ) : (
                             <p className="status-message error-message">
-                                URL inválida ou vídeo do YouTube indisponível.
+                                URL inválida ou vídeo indisponível para reprodução.
                             </p>
                         )}
                     </div>
