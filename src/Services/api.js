@@ -12,6 +12,7 @@ export const apiFetch = async (endpoint, options = {}) => {
   const isLoginEndpoint = endpoint === '/api/auth/login';
 
   const headers = {
+
     'Content-Type': 'application/json',
     'Accept': 'application/json',
     'X-Requested-With': 'XMLHttpRequest',

@@ -4,6 +4,7 @@ import '../../Styles/PlayerCurso.css';
 import { useParams, Link } from 'react-router-dom';
 import { apiFetch } from '../../Services/api';
 
+// Componentes auxiliares para estados de UI
 const LoadingState = () => (
     <div className="player-curso-wrapper">
         <p className="status-message">Carregando curso...</p>
@@ -26,79 +27,84 @@ const PlayerCurso = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [playing, setPlaying] = useState(false);
-    const [submissionError, setSubmissionError] = useState(null);
 
     useEffect(() => {
-        const controller = new Ab
+        if (!id) return;
+
+        // Implementação correta do AbortController para cancelar requisições
+        const controller = new AbortController();
+        const signal = controller.signal;
 
         const carregarDados = async () => {
-            if (!isMounted) return;
-
             setLoading(true);
             setError(null);
             setPlaying(false);
 
-
             try {
-                const response = await apiFetch(`/api/videos/buscar/${id}`);
+                // Passamos o 'signal' para a chamada da API
+                const response = await apiFetch(`/api/videos/buscar/${id}`, { signal });
                 if (!response.ok) throw new Error('Vídeo não encontrado');
                 const video = await response.json();
 
                 let playlist = [];
                 if (video.catalogoId) {
-                    const playlistRes = await apiFetch(`/api/catalogos/${video.catalogoId}/videos`);
+                    const playlistRes = await apiFetch(`/api/catalogos/${video.catalogoId}/videos`, { signal });
                     if (playlistRes.ok) {
                         playlist = await playlistRes.json();
                     }
                 }
 
-                let concluido = false;
-                const statusRes = await apiFetch(`/api/progresso/${id}/status`);
+                let statusConcluido = false;
+                const statusRes = await apiFetch(`/api/progresso/${id}/status`, { signal });
                 if (statusRes.ok) {
                     const status = await statusRes.json();
-                    concluido = status.concluido;
+                    statusConcluido = status.concluido;
                 }
 
-                if (isMounted) {
-                    setCursoData({ video, playlist, concluido });
-                    setPlaying(true); // Ativa o autoplay após os dados carregarem
-                }
+                setCursoData({ video, playlist });
+                setConcluido(status.concluido);
+                setPlaying(true); // Ativa o autoplay após os dados carregarem
+
             } catch (err) {
-                if (isMounted) setError(err.message);
+                // Ignora o erro se ele for de "abort", que acontece ao navegar rápido
+                if (err.name !== 'AbortError') {
+                    setError(err.message);
+                }
             } finally {
-                if (isMounted) setLoading(false);
+                setLoading(false);
             }
         };
 
         carregarDados();
 
+        // Função de limpeza: aborta as requisições se o componente for desmontado
         return () => {
-            isMounted = false;
+            controller.abort();
         };
     }, [id]);
 
     const handleMarcarConcluido = async () => {
-        setCursoData(prev => ({ ...prev, concluido: true }));
+        setConcluido(true);
         try {
             const response = await apiFetch(`/api/progresso/${id}/marcar-concluido`, {
                 method: 'POST',
             });
             if (!response.ok) {
                 alert('Erro ao marcar como concluído.');
-                setCursoData(prev => ({ ...prev, concluido: false }));
+                setConcluido(false); // Reverte o estado em caso de erro
             }
         } catch {
             alert('Erro ao conectar com o servidor.');
-            setCursoData(prev => ({ ...prev, concluido: false }));
+            setConcluido(false); // Reverte o estado em caso de erro
         }
     };
 
     if (loading) {
-        return <div className="player-curso-wrapper"><p className="status-message">Carregando curso...</p></div>;
+        return <LoadingState />;
     }
 
     if (error || !cursoData.video) {
-        return <div className="player-curso-wrapper"><p className="status-message error-message">{error || "Vídeo não disponível."}</p></div>;
+        return <ErrorState message={error || "Vídeo não disponível."} />;
     }
 
     return (
@@ -109,10 +115,10 @@ const PlayerCurso = () => {
                         <ReactPlayer
                             key={id}
                             className='react-player'
-                            src={cursoData.video.urlDoVideo}
+                            url={cursoData.video.urlDoVideo}
                             controls={true}
                             playing={playing}
-                            muted={true} // Garante que o autoplay funcione na maioria dos navegadores
+                            muted={true}
                             width="100%"
                             height="100%"
                         />
@@ -138,9 +144,9 @@ const PlayerCurso = () => {
                     <button
                         onClick={handleMarcarConcluido}
                         className="botao-concluir"
-                        disabled={cursoData.concluido}
+                        disabled={concluido}
                     >
-                        {cursoData.concluido ? 'Concluído ✔️' : 'Marcar como concluído'}
+                        {concluido ? 'Concluído ✔️' : 'Marcar como concluído'}
                     </button>
                 </div>
             </div>
