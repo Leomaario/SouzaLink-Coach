@@ -99,22 +99,20 @@ const PlayerCurso = () => {
             <div className="player-main">
                 <div className="video-box">
                     <div className="player-wrapper-responsive">
-                        {isValidYouTubeUrl(cursoData.video.urlDoVideo) ? (
-                            <ReactPlayer
-                                key={id}
-                                className="react-player"
-                                url={cursoData.video.urlDoVideo}
-                                controls
-                                playing={playing}
-                                muted
-                                width="100%"
-                                height="100%"
-                            />
-                        ) : (
-                            <p className="status-message error-message">
-                                URL inválida ou vídeo do YouTube indisponível.
-                            </p>
-                        )}
+                        {/* --- MUDANÇA APLICADA AQUI --- */}
+                        {/* Substituímos o ReactPlayer por um iframe padrão */}
+                        <iframe
+                            className="react-player" // Mantendo a classe para o CSS funcionar
+                            width="100%"
+                            height="100%"
+                            src={cursoData.video.urlDoVideo}
+                            title={cursoData.video.titulo}
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerPolicy="strict-origin-when-cross-origin"
+                            allowFullScreen
+                        ></iframe>
+                        {/* --- FIM DA MUDANÇA --- */}
                     </div>
                     <div className="video-details">
                         <h2>{cursoData.video.titulo}</h2>
@@ -125,7 +123,7 @@ const PlayerCurso = () => {
                 <div className="curso-sidebar">
                     <h3>Conteúdo do Catálogo</h3>
                     <ul className="aulas-lista">
-                        {cursoData.playlist.map((video) => (
+                        {cursoData.playlist.map(video => (
                             <li key={video.id} className={video.id === cursoData.video.id ? 'active' : ''}>
                                 <Link to={`/curso/${video.id}`}>
                                     {video.id === cursoData.video.id && '▶️ '}
