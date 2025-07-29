@@ -3,7 +3,7 @@ import ReactPlayer from 'react-player';
 import '../../Styles/PlayerCurso.css';
 import { useParams, Link } from 'react-router-dom';
 import { apiFetch } from '../../Services/api';
-import { BsPlusCircleFill, BsPencilSquare, BsTrashFill } from 'react-icons/bs';
+import { BsPlusCircleFill, BsPencilSquare, BsTrashFill } from 'react-icons/bs'
 
 
 
@@ -17,10 +17,30 @@ const PlayerCurso = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isPlayerReady, setIsPlayerReady] = useState(false);
-    const [shouldPlay, setShouldPlay] = useState(false);
     const [playerKey, setPlayerKey] = useState(0);
     const playerRef = useRef(null);
     const isMounted = useRef(true);
+
+
+
+
+    //corrige o erro Uncaught (in promise) AbortError: The play() request was interrupted because the media was removed from the document. https://goo.gl/LdLk22
+    const [shouldPlay, setShouldPlay] = useState(false);
+    useEffect(() => {
+        if (shouldPlay && playerRef.current) {
+            playerRef.current.play();
+        }
+    }, [shouldPlay]);
+
+
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+    };
+    const apiFetch = (endpoint, options = {}) => fetch('https://api-e-learning-gjnd.onrender.com/api/user-dashboard/data', {
+        headers: headers
+    });
+
 
     useEffect(() => {
         isMounted.current = true;
@@ -28,6 +48,7 @@ const PlayerCurso = () => {
         setShouldPlay(false);
         setLoading(true);
         setError(null);
+
 
         const carregarDados = async () => {
             try {
@@ -114,6 +135,16 @@ const PlayerCurso = () => {
     if (error || !cursoData.video) {
         return <div className="player-curso-wrapper"><p className="status-message error-message">{error || "Vídeo não disponível."}</p></div>;
     }
+
+    //corrige o erro do stream não reproduzir e mostra no log
+    if (!isPlayerReady) {
+        return <div className="player-curso-wrapper"><p className="status-message">Preparando o player...</p></div>;
+    }
+
+    if (isPlayerReady) {
+        shouldPlay = true;
+    }
+
 
     return (
         <div className="player-curso-wrapper">

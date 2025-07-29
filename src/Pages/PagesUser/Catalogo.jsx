@@ -10,6 +10,18 @@ const Catalogo = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+
+
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+    };
+    const apiFetch = (endpoint, options = {}) => fetch('https://api-e-learning-gjnd.onrender.com/api/user-dashboard/data', {
+        headers: headers
+    });
+
+
+
     useEffect(() => {
         const fetchCatalogos = async () => {
             try {
