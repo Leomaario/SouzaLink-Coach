@@ -126,12 +126,11 @@ const PlayerCurso = () => {
                                 ref={playerRef}
                                 url={cursoData.video.urlDoVideo}
                                 controls
-                                playing={shouldPlay}
-                                muted
+                                playing={false}
+                                muted={true}
                                 width="100%"
                                 height="100%"
                                 playsinline
-
 
                                 onReady={() => console.log("✅ O VÍDEO ESTÁ PRONTO")}
                                 onPlay={() => console.log("▶️ Player recebeu comando PLAY")}
