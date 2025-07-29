@@ -4,7 +4,6 @@ import '../../Styles/PlayerCurso.css';
 import { useParams, Link } from 'react-router-dom';
 import { apiFetch } from '../../Services/api';
 
-// Componentes auxiliares para estados de UI
 const LoadingState = () => (
     <div className="player-curso-wrapper">
         <p className="status-message">Carregando curso...</p>
@@ -16,6 +15,11 @@ const ErrorState = ({ message }) => (
         <p className="status-message error-message">{message}</p>
     </div>
 );
+
+// Verifica se a URL é válida e do YouTube
+const isYouTubeUrlPlayable = (url) => {
+    return ReactPlayer.canPlay(url) && url.includes('youtube.com');
+};
 
 const PlayerCurso = () => {
     const { id } = useParams();
@@ -31,7 +35,6 @@ const PlayerCurso = () => {
     useEffect(() => {
         if (!id) return;
 
-        // Implementação correta do AbortController para cancelar requisições
         const controller = new AbortController();
         const signal = controller.signal;
 
@@ -41,7 +44,6 @@ const PlayerCurso = () => {
             setPlaying(false);
 
             try {
-                // Passamos o 'signal' para a chamada da API
                 const response = await apiFetch(`/api/videos/buscar/${id}`, { signal });
                 if (!response.ok) throw new Error('Vídeo não encontrado');
                 const video = await response.json();
@@ -62,11 +64,14 @@ const PlayerCurso = () => {
                 }
 
                 setCursoData({ video, playlist });
-                setConcluido(status.concluido);
-                setPlaying(true); // Ativa o autoplay após os dados carregarem
+                setConcluido(statusConcluido);
+
+                // Só ativa autoplay se a URL for válida
+                if (isYouTubeUrlPlayable(video.urlDoVideo)) {
+                    setPlaying(true);
+                }
 
             } catch (err) {
-                // Ignora o erro se ele for de "abort", que acontece ao navegar rápido
                 if (err.name !== 'AbortError') {
                     setError(err.message);
                 }
@@ -77,7 +82,6 @@ const PlayerCurso = () => {
 
         carregarDados();
 
-        // Função de limpeza: aborta as requisições se o componente for desmontado
         return () => {
             controller.abort();
         };
@@ -91,37 +95,38 @@ const PlayerCurso = () => {
             });
             if (!response.ok) {
                 alert('Erro ao marcar como concluído.');
-                setConcluido(false); // Reverte o estado em caso de erro
+                setConcluido(false);
             }
         } catch {
             alert('Erro ao conectar com o servidor.');
-            setConcluido(false); // Reverte o estado em caso de erro
+            setConcluido(false);
         }
     };
 
-    if (loading) {
-        return <LoadingState />;
-    }
-
-    if (error || !cursoData.video) {
-        return <ErrorState message={error || "Vídeo não disponível."} />;
-    }
+    if (loading) return <LoadingState />;
+    if (error || !cursoData.video) return <ErrorState message={error || "Vídeo não disponível."} />;
 
     return (
         <div className="player-curso-wrapper">
             <div className="player-main">
                 <div className="video-box">
                     <div className="player-wrapper-responsive">
-                        <ReactPlayer
-                            key={id}
-                            className='react-player'
-                            url={cursoData.video.urlDoVideo}
-                            controls={true}
-                            playing={playing}
-                            muted={true}
-                            width="100%"
-                            height="100%"
-                        />
+                        {isYouTubeUrlPlayable(cursoData.video.urlDoVideo) ? (
+                            <ReactPlayer
+                                key={id}
+                                className='react-player'
+                                url={cursoData.video.urlDoVideo}
+                                controls
+                                playing={playing}
+                                muted
+                                width="100%"
+                                height="100%"
+                            />
+                        ) : (
+                            <p className="status-message error-message">
+                                URL inválida ou vídeo do YouTube indisponível.
+                            </p>
+                        )}
                     </div>
                     <div className="video-details">
                         <h2>{cursoData.video.titulo}</h2>
