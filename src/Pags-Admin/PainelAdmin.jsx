@@ -76,25 +76,7 @@ function PainelAdmin() {
                         <p>{stats.totalCertificados} emitidos</p>
                     </div>
                 </div>
-                <div className="visao-card">
-                    <BsBookFill className="visao-icon" />
-                    <div>
-                        <h3>Capacitações</h3>
-                        <p>{stats.totalCapacitacoes} concluídas</p>
-                    </div>
-                    <div className="visao-card">
-                        <BsBookFill className="visao-icon" />
-                        <div>
-                            <h3>Catálogos</h3>
-                            <p>{stats.totalCatalogos} disponíveis</p>
-                        </div>
-                    </div>
-                </div>
             </div>
-
-
-
-
 
 
             <div className="admin-cards-container">
