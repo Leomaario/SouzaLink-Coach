@@ -6,7 +6,7 @@ import { apiFetch } from '../Services/api';
 
 function PainelAdmin() {
     const navigate = useNavigate();
-    const [stats, setStats] = useState({ totalCursos: 0, totalUsuarios: 0, totalRelatorios: 0 });
+    const [stats, setStats] = useState({ totalCursos: 0, totalUsuarios: 0, totalRelatorios: 0, totalCapacitacoes: 0, totalCertificados: 0, totalCatalogos: 0 });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -30,7 +30,7 @@ function PainelAdmin() {
         return (
             <div className="admin-dashboard">
                 <h1 className="admin-titulo">Painel do Administrador</h1>
-                <p className="status-message">A carregar dados...</p>
+                <p className="status-message">Carregando Painel...</p>
             </div>
         );
     }
@@ -51,8 +51,8 @@ function PainelAdmin() {
                 <div className="visao-card">
                     <BsBookFill className="visao-icon" />
                     <div>
-                        <h3>Cursos Ativos</h3>
-                        <p>{stats.totalCursos} cursos</p>
+                        <h3>Capacitações Ativas</h3>
+                        <p>{stats.totalCursos} Capacitações</p>
                     </div>
                 </div>
                 <div className="visao-card">
@@ -73,8 +73,8 @@ function PainelAdmin() {
             <div className="admin-cards-container">
                 <div className="admin-card" onClick={() => navigate('/CursosAdmin')}>
                     <i className="bi bi-plus-square-fill icon"></i>
-                    <h2>Adicionar Curso</h2>
-                    <p>Crie um novo curso com descrição, módulos e vídeos.</p>
+                    <h2>Adicionar Capacitação</h2>
+                    <p>Crie uma nova capacitação com descrição, módulos e vídeos.</p>
                 </div>
                 <div className="admin-card" onClick={() => navigate('/Usuario')}>
                     <i className="bi bi-person-plus-fill icon"></i>
@@ -94,7 +94,7 @@ function PainelAdmin() {
                 <div className="admin-card" onClick={() => navigate('/CriarCatalogo')}>
                     <i className="bi bi-file-earmark-plus icon"></i>
                     <h2>Criar Catálogo</h2>
-                    <p>Organize cursos por categorias e publique no sistema.</p>
+                    <p>Organize capacitações por categorias e publique no sistema.</p>
                 </div>
                 <div className="admin-card" onClick={() => navigate('/GerenciarUsuarios')}>
                     <i className="bi bi-pencil-square icon"></i>
@@ -103,13 +103,13 @@ function PainelAdmin() {
                 </div>
                 <div className="admin-card" onClick={() => navigate('/GerenciarCursos')}>
                     <i className="bi bi-gear-fill icon"></i>
-                    <h2>Gerenciar Cursos</h2>
-                    <p>Atualize, publique ou remova cursos do catálogo.</p>
+                    <h2>Gerenciar Capacitações</h2>
+                    <p>Atualize, publique ou remova capacitações do catálogo.</p>
                 </div>
                 <div className="admin-card" onClick={() => navigate('/GerenciarCatalogo')}>
                     <i className="bi bi-folder-fill icon"></i>
                     <h2>Gerenciar Catálogo</h2>
-                    <p>Organize e edite os catálogos de cursos.</p>
+                    <p>Organize e edite os catálogos de capacitações.</p>
                 </div>
             </div>
         </div>

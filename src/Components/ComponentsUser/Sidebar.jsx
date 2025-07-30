@@ -1,19 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '@styles/Sidebar.css';
-import { 
+import {
     List,
-    HouseDoorFill, 
-    BookFill, 
-    FunnelFill, 
-    EnvelopeCheck, 
-    PersonWorkspace, 
-    Cast, 
-    Backpack3, 
-    PersonPlusFill, 
-    FileEarmarkBarGraph, 
-    PersonCircle, 
-    BoxArrowRight 
+    HouseDoorFill,
+    BookFill,
+    FunnelFill,
+    EnvelopeCheck,
+    PersonWorkspace,
+    Cast,
+    Backpack3,
+    PersonPlusFill,
+    FileEarmarkBarGraph,
+    PersonCircle,
+    BoxArrowRight
 } from 'react-bootstrap-icons';
 
 function Sidebar() {
@@ -54,7 +54,7 @@ function Sidebar() {
             setIsOpen(false);
         }
     };
-  
+
     const handleLogout = () => {
         localStorage.clear();
         navigate('/');
@@ -75,17 +75,17 @@ function Sidebar() {
                 <div className="menu">
                     <nav>
                         <Link to="/dashboard" onClick={handleLinkClick}><HouseDoorFill /><span>Dashboard</span></Link>
-                        <Link to="/MeusCursos" onClick={handleLinkClick}><BookFill /><span>Meus Cursos</span></Link>
+                        <Link to="/MeusCursos" onClick={handleLinkClick}><BookFill /><span>Minhas Capacitações</span></Link>
                         <Link to="/Catalogo" onClick={handleLinkClick}><FunnelFill /><span>Catálogo</span></Link>
                         <Link to="/MeusCertificados" onClick={handleLinkClick}><EnvelopeCheck /><span>Certificados</span></Link>
-                        
+
                         {isAdmin && (
                             <>
                                 <div className="admin-divider"></div>
                                 <h2 className='title-adm'>Atalhos Administrativos</h2>
                                 <Link to="/PainelAdmin" onClick={handleLinkClick}><PersonWorkspace /><span>Painel Admin</span></Link>
                                 <Link to="/gerenciarcatalogo" onClick={handleLinkClick}><Cast /><span>Gerir Catálogos</span></Link>
-                                <Link to="/cursosadmin" onClick={handleLinkClick}><Backpack3 /><span>Adicionar Curso</span></Link>
+                                <Link to="/cursosadmin" onClick={handleLinkClick}><Backpack3 /><span>Adicionar Capacitação</span></Link>
                                 <Link to="/gerenciarcursos" onClick={handleLinkClick}><PersonPlusFill /><span>Gerir Utilizadores</span></Link>
                             </>
                         )}
