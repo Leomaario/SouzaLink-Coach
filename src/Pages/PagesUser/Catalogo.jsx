@@ -4,15 +4,37 @@ import { useNavigate } from 'react-router-dom';
 import { apiFetch } from '../../Services/api.js';
 import { CollectionPlay } from 'react-bootstrap-icons';
 
+
+
+
+function getYouTubeThumbnail(youtubeUrl) {
+    if (!youtubeUrl) {
+        return null;
+    }
+
+    let videoId = '';
+    const url = new URL(youtubeUrl);
+    if (url.hostname === 'youtu.be') {
+        videoId = url.pathname.slice(1);
+    } else if (url.hostname.includes('youtube.com')) {
+        videoId = url.searchParams.get('v');
+    } else if (url.hostname.includes('youtube-nocookie.com')) {
+        videoId = url.pathname.split('/embed/')[1];
+    }
+
+    if (!videoId) {
+        console.error("Não foi possível extrair o ID do vídeo da URL:", youtubeUrl);
+        return null;
+    }
+    return `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
+}
+
 const Catalogo = () => {
     const navigate = useNavigate();
     const [catalogosComVideos, setCatalogosComVideos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // --- ERRO CORRIGIDO ---
-    // O bloco de código que redefinia 'headers' e 'apiFetch' foi removido daqui.
-    // Agora, o componente usará a função 'apiFetch' importada corretamente de '/Services/api.js'.
 
     useEffect(() => {
         const fetchCatalogos = async () => {
@@ -101,9 +123,7 @@ const Catalogo = () => {
                                     >
                                         <div className="card-thumbnail">
                                             <img
-                                                src={video.caminhoThumbnail
-                                                    ? `http://localhost:8080/media/${video.caminhoThumbnail}`
-                                                    : `https://placehold.co/300x170/03339c/FFFFFF/png?text=${encodeURIComponent(video.titulo)}`}
+                                                src={getYouTubeThumbnail(video.urlDoVideo) || `https://placehold.co/300x170/03339c/FFFFFF/png?text=${encodeURIComponent(video.titulo)}`}
                                                 alt={video.titulo}
                                             />
                                             <div className="play-icon-overlay">▶</div>
