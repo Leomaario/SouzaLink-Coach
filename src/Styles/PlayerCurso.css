@@ -20,21 +20,32 @@
   box-shadow: 0 2px 12px rgba(0, 115, 230, 0.1);
 }
 
+/* --- CORREÇÃO APLICADA AQUI --- */
 .player-wrapper-responsive {
-  position: relative;
-}
-
-.react-player {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.video-player {
   width: 100%;
-  border-radius: 10px;
+  /* Define a proporção da tela (16:9) de forma moderna e robusta */
+  aspect-ratio: 16 / 9;
   background-color: #000;
-  margin-bottom: 1rem;
+  /* Fundo preto para o caso de o vídeo demorar a carregar */
+  border-radius: 10px;
+  overflow: hidden;
+  /* Garante que o iframe não ultrapasse as bordas arredondadas */
+}
+
+/* A classe do nosso iframe/player */
+.react-player {
+  width: 100%;
+  height: 100%;
+}
+
+/* --- FIM DA CORREÇÃO --- */
+
+
+/* A classe .video-player foi removida pois não era utilizada */
+
+.video-details {
+  margin-top: 1.5rem;
+  /* Adicionado um espaçamento acima dos detalhes */
 }
 
 .video-details h2 {
@@ -92,6 +103,8 @@
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  width: 100%;
+  /* Faz o botão ocupar a largura toda da sidebar */
 }
 
 .botao-concluir:hover {
@@ -133,17 +146,11 @@
     width: 100%;
   }
 
-  .video-player {
-    height: 200px;
-    /* Ajuste para telas menores */
-  }
-
   .aulas-lista li {
     font-size: 0.9rem;
   }
 
   .botao-concluir {
-    width: 100%;
     padding: 0.8rem;
   }
 }

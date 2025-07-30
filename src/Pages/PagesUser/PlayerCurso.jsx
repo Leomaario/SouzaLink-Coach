@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ReactPlayer from 'react-player'; // Import direto do YouTube player
+import ReactPlayer from 'react-player';
 import '../../Styles/PlayerCurso.css';
 import { useParams, Link } from 'react-router-dom';
 import { apiFetch } from '../../Services/api';
