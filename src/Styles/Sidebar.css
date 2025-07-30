@@ -42,11 +42,17 @@
     flex-grow: 1;
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: rgba(71,195,243,0.2) transparent;
+    scrollbar-color: rgba(71, 195, 243, 0.2) transparent;
 }
 
-.menu::-webkit-scrollbar { width: 6px; }
-.menu::-webkit-scrollbar-thumb { background-color: rgba(71,195,243,0.2); border-radius: 3px; }
+.menu::-webkit-scrollbar {
+    width: 6px;
+}
+
+.menu::-webkit-scrollbar-thumb {
+    background-color: rgba(71, 195, 243, 0.2);
+    border-radius: 3px;
+}
 
 nav {
     display: flex;
@@ -73,7 +79,7 @@ nav {
 .sidebar nav a.active {
     background-color: var(--link-active-bg);
     color: var(--sidebar-text-hover);
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .sidebar nav a::before {
@@ -211,7 +217,7 @@ nav {
     border: 1px solid #eee;
     border-radius: 50%;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     flex-direction: column;
     justify-content: space-around;
     padding: 12px 10px;
@@ -233,9 +239,11 @@ nav {
 .hamburger.is-active .line:nth-child(1) {
     transform: translateY(10px) rotate(45deg);
 }
+
 .hamburger.is-active .line:nth-child(2) {
     opacity: 0;
 }
+
 .hamburger.is-active .line:nth-child(3) {
     transform: translateY(-10px) rotate(-45deg);
 }
@@ -244,31 +252,36 @@ nav {
     .hamburger {
         display: flex;
     }
+
     .sidebar {
         transform: translateX(-100%);
-        box-shadow: 4px 0 25px rgba(0,0,0,0.3);
+        box-shadow: 4px 0 25px rgba(0, 0, 0, 0.3);
     }
+
     .sidebar.open {
 
         transform: translateX(0);
     }
 }
- @media (max-width: 768px) {
+
+@media (max-width: 768px) {
     .main-content {
-      margin-top: 60px;
-      margin-left: 0;
-      padding: 10px; 
+        margin-top: 60px;
+        margin-left: 0;
+        padding: 10px;
     }
+
     .sidebar {
         width: 100%;
         height: auto;
         transform: translateX(-100%);
         box-shadow: none;
         height: 100%;
-        
+
     }
+
     .hamburger.is-active {
-        display:none;
+        display: none;
     }
-    
-  }
+
+}

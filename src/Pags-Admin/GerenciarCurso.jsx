@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { apiFetch } from '../Services/api'; 
+import { apiFetch } from '../Services/api';
 import { BsPencilSquare, BsTrashFill } from 'react-icons/bs';
 import '../Styles/Css-Admin/GerenciarCursos.css';
 
@@ -71,8 +71,8 @@ const GerenciarCursos = () => {
         setVideoEmEdicao(prev => ({ ...prev, [name]: value }));
     };
 
-    if (loading) return <div className="gerenciar-container"><h1>Gestão de Cursos</h1><p>A carregar...</p></div>;
-    if (error) return <div className="gerenciar-container"><h1>Gestão de Cursos</h1><p>Erro: {error}</p></div>;
+    if (loading) return <div className="gerenciar-container"><h1>Gestão de Capacitações</h1><p>A carregar...</p></div>;
+    if (error) return <div className="gerenciar-container"><h1>Gestão de Capacitações</h1><p>Erro: {error}</p></div>;
 
     return (
         <div className="gerenciar-container">
