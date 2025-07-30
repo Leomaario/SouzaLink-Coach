@@ -69,7 +69,34 @@ function PainelAdmin() {
                         <p>{stats.totalRelatorios} gerados</p>
                     </div>
                 </div>
+                <div className="visao-card">
+                    <BsBookFill className="visao-icon" />
+                    <div>
+                        <h3>Certificados</h3>
+                        <p>{stats.totalCertificados} emitidos</p>
+                    </div>
+                </div>
+                <div className="visao-card">
+                    <BsBookFill className="visao-icon" />
+                    <div>
+                        <h3>Capacitações</h3>
+                        <p>{stats.totalCapacitacoes} concluídas</p>
+                    </div>
+                    <div className="visao-card">
+                        <BsBookFill className="visao-icon" />
+                        <div>
+                            <h3>Catálogos</h3>
+                            <p>{stats.totalCatalogos} disponíveis</p>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+
+
+
+
+
             <div className="admin-cards-container">
                 <div className="admin-card" onClick={() => navigate('/CursosAdmin')}>
                     <i className="bi bi-plus-square-fill icon"></i>

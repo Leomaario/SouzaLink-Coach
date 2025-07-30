@@ -10,6 +10,8 @@ export const apiFetch = async (endpoint, options = {}) => {
 
   const isLoginEndpoint = endpoint === '/api/auth/login';
 
+  console.log(decodedToken);
+
   const headers = {
 
     'Content-Type': 'application/json',
