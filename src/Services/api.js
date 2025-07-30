@@ -4,7 +4,6 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
     ? 'https://api-e-learning-gjnd.onrender.com'
     : 'http://localhost:8080');
 
-console.log('API_BASE_URL:', API_BASE_URL);
 
 export const apiFetch = async (endpoint, options = {}) => {
   const token = localStorage.getItem('token');
@@ -37,17 +36,6 @@ export const apiFetch = async (endpoint, options = {}) => {
     console.error("Erro de conexão:", err);
     throw new Error('Erro de conexão com o servidor. Tente novamente mais tarde.');
   }
-  console.log('Requisição:', {
-    url,
-    method: config.method || 'GET',
-    headers: config.headers,
-    body: config.body ? JSON.parse(config.body) : null,
-  });
-  console.log('Resposta:', {
-    status: response.status,
-    statusText: response.statusText,
-  });
-
 
   if (response.status === 401 || response.status === 403) {
     let errorMsg = 'Não autorizado';
