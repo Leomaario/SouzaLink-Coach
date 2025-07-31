@@ -1,3 +1,8 @@
+/* ================================================================== */
+/* PAINEL DE CONTROLE DE CORES (MODO CLARO E ESCURO)         */
+/* ================================================================== */
+
+/* Variáveis de Cor - Modo Claro (Padrão) */
 :root {
   --bg-color: #f0f4f8;
   --sidebar-bg: #ffffff;
@@ -12,23 +17,28 @@
   --hover-bg: #e6f0ff;
 }
 
-/* Variáveis de Cor - Modo Escuro (AJUSTADO) */
+/* Variáveis de Cor - Modo Escuro (PALETA SUAVE CORRIGIDA) */
 body.dark-mode {
-  --bg-color: #000000;
-  /* Fundo preto puro */
-  --sidebar-bg: #1e1e1e;
-  --main-content-bg: #000000;
-  /* Fundo preto puro */
-  --card-bg: #1c1c1c;
-  /* Cards em cinza bem escuro */
+  --bg-color: #20242c;
+  /* Fundo cinza-azulado escuro */
+  --sidebar-bg: #282e3a;
+  /* Sidebar/Cards um pouco mais claros */
+  --main-content-bg: #20242c;
+  /* Fundo principal igual ao body */
+  --card-bg: #282e3a;
+  /* Cards da mesma cor da sidebar para consistência */
   --text-color: #000000;
-  /* Texto branco puro */
-  --text-secondary: #adb5bd;
+  /* CORRIGIDO: Texto branco suave */
+  --text-secondary: #a0aec0;
   /* Cinza claro para texto secundário */
-  --primary-color: #3a9dff;
-  --border-color: #444;
-  --shadow-color: rgba(0, 0, 0, 0.2);
-  --hover-bg: #3a3a3a;
+  --primary-color: #4299e1;
+  /* Um azul mais vibrante para o modo escuro */
+  --border-color: #4a5568;
+  /* Borda sutil */
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  /* Sombra um pouco mais forte para dar profundidade */
+  --hover-bg: #3c4454;
+  /* Fundo do hover um pouco mais claro */
 }
 
 /* Aplicando as variáveis globais */
@@ -36,8 +46,6 @@ body {
   background-color: var(--bg-color);
   color: var(--text-color);
   transition: background-color 0.3s, color 0.3s;
-
-
 }
 
 /* ================================================================== */
