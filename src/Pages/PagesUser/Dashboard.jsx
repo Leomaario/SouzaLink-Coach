@@ -4,6 +4,23 @@ import { Link, useNavigate } from 'react-router-dom';
 import { apiFetch } from '../../Services/api';
 import { Book, CheckCircleFill, ClockHistory, Award, ArrowRight } from 'react-bootstrap-icons';
 
+
+
+function getYouTubeThumbnail(youtubeUrl) {
+    if (!youtubeUrl) return null;
+    try {
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        const match = youtubeUrl.match(regExp);
+        if (match && match[2].length === 11) {
+            const videoId = match[2];
+            return `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
+        }
+    } catch (error) {
+        console.error("Erro ao processar a URL do YouTube:", youtubeUrl, error);
+        return null;
+    }
+    return null;
+}
 export default function Dashboard() {
     const navigate = useNavigate();
     const [dashboardData, setDashboardData] = useState({
@@ -93,12 +110,11 @@ export default function Dashboard() {
                     {dashboardData.cursoEmDestaque ? (
                         <div className="card curso-destaque">
                             <img
-                                src={dashboardData.cursoEmDestaque.caminhoThumbnail
-                                    ? `http://localhost:8080/media/${dashboardData.cursoEmDestaque.caminhoThumbnail}`
-                                    : `https://placehold.co/600x340/03339c/FFFFFF?text=${encodeURIComponent(dashboardData.cursoEmDestaque.titulo)}`}
+                                src={getYouTubeThumbnail(dashboardData.cursoEmDestaque.urlDoVideo)}
                                 alt={dashboardData.cursoEmDestaque.titulo}
-                                className="destaque-img"
+                                className="curso-thumbnail"
                             />
+
                             <div className="destaque-info">
                                 <h3>Curso em Destaque</h3>
                                 <h2>{dashboardData.cursoEmDestaque.titulo}</h2>
@@ -115,6 +131,13 @@ export default function Dashboard() {
                         <h2><Award /> Certificados Recentes</h2>
                         <p>Os seus certificados aparecerão aqui assim que concluir os catálogos.</p>
                         <button onClick={() => navigate('/MeusCertificados')} className="botao-ver-todos">Ver todos</button>
+                    </div>
+                    <div className="card dicas">
+                        <h2>Dicas e Truques</h2>
+                        <ul>
+                            <li>Complete as capacitações para desbloquear certificados.</li>
+                        </ul>
+                        <button onClick={() => navigate('/Catalogo')} className="botao-ver-todos">Ver todos</button>
                     </div>
                 </div>
             </div>

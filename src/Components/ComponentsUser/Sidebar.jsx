@@ -79,6 +79,7 @@ function Sidebar() {
                         <Link to="/Catalogo" onClick={handleLinkClick}><FunnelFill /><span>Catálogo</span></Link>
                         <Link to="/MeusCertificados" onClick={handleLinkClick}><EnvelopeCheck /><span>Certificados</span></Link>
 
+
                         {isAdmin && (
                             <>
                                 <div className="admin-divider"></div>
