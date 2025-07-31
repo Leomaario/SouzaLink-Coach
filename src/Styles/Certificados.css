@@ -7,22 +7,26 @@
     margin: 0 auto;
     max-height: calc(100vh - 100px);
     overflow-y: auto;
+    min-height: 100vh;
 }
+
 .certificado-topo {
     position: relative;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     max-width: 900px;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 2.5rem;
 }
+
 .modelo-certificado {
     display: block;
     width: 100%;
     height: auto;
 }
+
 .botao-visualizar {
     position: absolute;
     bottom: 1.5rem;
@@ -31,7 +35,7 @@
     padding: 12px 25px;
     background-color: rgba(255, 255, 255, 0.9);
     color: #1e293b;
-    border: 1px solid rgba(0,0,0,0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     font-size: 1rem;
     font-weight: 600;
@@ -39,28 +43,34 @@
     backdrop-filter: blur(5px);
     transition: all 0.3s ease;
 }
+
 .botao-visualizar:hover {
     transform: translateX(-50%) scale(1.05);
     background-color: #fff;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
+
 .titulo-certificados {
     font-size: 2.2rem;
     font-weight: 700;
     color: #1e293b;
     margin: 0;
 }
+
 .subtitulo-certificados {
     font-size: 1.1rem;
     color: #64748b;
     margin: 8px 0 2rem 0;
 }
+
 .filtros {
     display: flex;
     gap: 1rem;
     margin-bottom: 2.5rem;
 }
-.filtros input[type="text"], .filtros select {
+
+.filtros input[type="text"],
+.filtros select {
     padding: 12px 15px;
     border: 1px solid #d1d5db;
     border-radius: 8px;
@@ -68,56 +78,66 @@
     font-family: 'Inter', sans-serif;
     background-color: #fff;
 }
+
 .filtros input[type="text"] {
     flex-grow: 1;
 }
+
 .lista-certificados {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 2rem;
 }
+
 .card-certificado {
     background-color: #ffffff;
     border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
     overflow: hidden;
     display: flex;
     flex-direction: column;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
 .card-certificado:hover {
     transform: translateY(-8px);
-    box-shadow: 0 12px 25px rgba(0,0,0,0.12);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
 }
+
 .card-certificado img {
     width: 100%;
     aspect-ratio: 16 / 9;
     object-fit: cover;
     background-color: #e9ecef;
 }
+
 .card-certificado .card-info {
     padding: 1.25rem;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
 }
+
 .card-certificado h3 {
     font-size: 1.2rem;
     font-weight: 600;
     color: #1e293b;
     margin: 0 0 0.5rem 0;
 }
+
 .card-certificado p {
     font-size: 0.9rem;
     color: #64748b;
     margin: 0 0 1.25rem 0;
 }
+
 .acoes {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0.75rem;
     margin-top: auto;
 }
+
 .acoes button {
     display: flex;
     align-items: center;
@@ -132,68 +152,88 @@
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
+
 .acoes button:hover {
     background-color: #f3f4f6;
 }
+
 .acoes button.primary-action {
     grid-column: 1 / -1;
     background-color: #03a5b7;
     color: white;
     border-color: #03a5b7;
 }
+
 .acoes button.primary-action:hover {
     background-color: #028a9a;
 }
+
 @media (max-width: 768px) {
     .certificados-container {
         padding: 1.5rem;
     }
+
     .titulo-certificados {
         font-size: 1.8rem;
     }
+
     .subtitulo-certificados {
         font-size: 1rem;
     }
+
     .filtros {
         flex-direction: column;
         gap: 0.5rem;
     }
-    .filtros input[type="text"], .filtros select {
+
+    .filtros input[type="text"],
+    .filtros select {
         width: 100%;
     }
+
     .lista-certificados {
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     }
+
     .card-certificado {
         flex-direction: column;
     }
+
     .card-certificado img {
         aspect-ratio: 16 / 10;
     }
+
     .card-certificado .card-info {
         padding: 1rem;
     }
+
     .card-certificado h3 {
         font-size: 1.1rem;
     }
+
     .card-certificado p {
         font-size: 0.9rem;
     }
+
     .acoes {
         grid-template-columns: 1fr;
         gap: 0.5rem;
     }
+
     .acoes button {
         width: 100%;
         font-size: 0.9rem;
     }
+
     .acoes button.primary-action {
         grid-column: 1;
     }
+
     .botao-visualizar {
         padding: 10px 20px;
         font-size: 0.9rem;
     }
+
     .certificado-topo {
         margin: 0 auto;
         max-width: 100%;
@@ -202,6 +242,7 @@
         border-radius: 0;
         overflow: visible;
     }
+
     .botao-visualizar {
         position: static;
         margin-top: 1rem;
@@ -210,6 +251,7 @@
         width: 100%;
         text-align: center;
     }
+
     .botao-visualizar:hover {
         transform: none;
         box-shadow: none;

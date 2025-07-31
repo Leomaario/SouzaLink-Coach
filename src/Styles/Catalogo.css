@@ -4,6 +4,7 @@
     font-family: 'Inter', sans-serif;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     border-radius: 15px;
+    min-height: 100vh;
 }
 
 .catalogo-header {
@@ -55,10 +56,24 @@
     scrollbar-width: thin;
     scrollbar-color: #adb5bd #e9ecef;
 }
-.cursos-row::-webkit-scrollbar { height: 10px; }
-.cursos-row::-webkit-scrollbar-track { background: #e9ecef; border-radius: 5px; }
-.cursos-row::-webkit-scrollbar-thumb { background-color: #adb5bd; border-radius: 5px; }
-.cursos-row::-webkit-scrollbar-thumb:hover { background-color: #6c757d; }
+
+.cursos-row::-webkit-scrollbar {
+    height: 10px;
+}
+
+.cursos-row::-webkit-scrollbar-track {
+    background: #e9ecef;
+    border-radius: 5px;
+}
+
+.cursos-row::-webkit-scrollbar-thumb {
+    background-color: #adb5bd;
+    border-radius: 5px;
+}
+
+.cursos-row::-webkit-scrollbar-thumb:hover {
+    background-color: #6c757d;
+}
 
 .curso-card {
     flex: 0 0 290px;
@@ -92,6 +107,7 @@
     object-fit: cover;
     transition: transform 0.35s ease;
 }
+
 .curso-card:hover .card-thumbnail img {
     transform: scale(1.1);
 }
@@ -137,23 +153,29 @@
     .catalogo-container {
         padding: 2rem 1.5rem;
     }
+
     .catalogo-header h1 {
         font-size: 2.2rem;
     }
+
     .categoria-title {
         font-size: 1.4rem;
     }
+
     .curso-card {
         flex-shrink: 0;
         flex-basis: 250px;
         width: 250px;
     }
+
     .cursos-row {
         gap: 1rem;
     }
+
     .card-thumbnail {
         aspect-ratio: 16 / 10;
     }
+
     .cursos-row {
         display: flex;
         overflow-x: auto;
@@ -166,9 +188,11 @@
         padding-top: 1rem;
         padding-bottom: 1rem;
     }
+
     .cursos-row::-webkit-scrollbar {
         height: 8px;
     }
+
     .cursos-row::-webkit-scrollbar-track {
         background: #f0f2f5;
         border-radius: 10px;
@@ -179,17 +203,21 @@
     .catalogo-container {
         padding: 1.5rem 1rem;
     }
+
     .catalogo-header h1 {
         font-size: 1.8rem;
     }
+
     .catalogo-header p {
         font-size: 1rem;
     }
+
     .categoria-title {
         font-size: 1.2rem;
         margin-bottom: 1rem;
         padding-bottom: 0.75rem;
     }
+
     .cursos-row {
         display: grid;
         grid-template-columns: 1fr;
@@ -197,6 +225,7 @@
         padding-bottom: 0;
         gap: 1.5rem;
     }
+
     .curso-card {
         width: 100%;
     }

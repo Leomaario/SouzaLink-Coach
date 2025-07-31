@@ -95,6 +95,7 @@ export default function Dashboard() {
                                     <span className="stat-label">Média de Conclusão</span>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                     <div className="card lembretes">

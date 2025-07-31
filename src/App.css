@@ -1,30 +1,85 @@
+:root {
+  --bg-color: #f0f4f8;
+  --sidebar-bg: #ffffff;
+  --main-content-bg: #f0f4f8;
+  --card-bg: #ffffff;
+  --text-color: #212529;
+  /* Um preto um pouco mais suave que o puro */
+  --text-secondary: #6c757d;
+  --primary-color: #007bff;
+  --border-color: #e0e0e0;
+  --shadow-color: rgba(0, 115, 230, 0.1);
+  --hover-bg: #e6f0ff;
+}
+
+/* Variáveis de Cor - Modo Escuro (AJUSTADO) */
+body.dark-mode {
+  --bg-color: #000000;
+  /* Fundo preto puro */
+  --sidebar-bg: #1e1e1e;
+  --main-content-bg: #000000;
+  /* Fundo preto puro */
+  --card-bg: #1c1c1c;
+  /* Cards em cinza bem escuro */
+  --text-color: #000000;
+  /* Texto branco puro */
+  --text-secondary: #adb5bd;
+  /* Cinza claro para texto secundário */
+  --primary-color: #3a9dff;
+  --border-color: #444;
+  --shadow-color: rgba(0, 0, 0, 0.2);
+  --hover-bg: #3a3a3a;
+}
+
+/* Aplicando as variáveis globais */
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s;
+
+
+}
+
+/* ================================================================== */
+/* ESTILOS DE LAYOUT DA SUA APLICAÇÃO                */
+/* ================================================================== */
+
 .app-container {
   display: flex;
 }
+
 .main-content {
-  flex-grow: 2; 
+  flex-grow: 1;
   padding: 3rem;
-  margin-left: 290px;
+  margin-left: 280px;
+  background-color: var(--main-content-bg);
+  transition: background-color 0.3s;
 }
+
+@media (max-width: 1024px) {
+  .main-content {
+    margin-left: 0;
+  }
+}
+
 @media (max-width: 768px) {
   .main-content {
-    max-width: 100%; 
-    margin-left: 0; 
-    padding: 0; 
-    margin: 0 auto;
+    max-width: 100%;
+    margin-left: 0;
+    padding: 1rem;
+    margin-top: 60px;
   }
+
   .app-container {
-    flex-direction: column; 
+    flex-direction: column;
   }
-  .main-content {
+
+  .sidebar {
+    width: 100%;
+    position: relative;
+  }
+
+  .sidebar-header {
     padding: 1rem;
   }
-  .sidebar {
-    width: 100%; 
-    position: relative; 
-  }
-  .sidebar-header {
-    padding: 1rem; 
-  }
-  
 }

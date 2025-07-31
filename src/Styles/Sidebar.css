@@ -1,9 +1,10 @@
 :root {
+    /* MANTENDO SUAS VARIÁVEIS ORIGINAIS */
     --sidebar-bg: linear-gradient(180deg, #0d1a3c 0%, #03A5B7 150%);
     --sidebar-width: 280px;
     --sidebar-text-color: #a7b3ce;
     --sidebar-text-hover: #ffffff;
-    --link-active-bg: rgba(71, 195, 243, 0.1);
+    --link-active-bg: rgb(225, 255, 0);
     --link-hover-bg: rgba(71, 195, 243, 0.05);
     --accent-color: #47c3f3;
     --logout-hover-bg: rgba(229, 9, 20, 0.8);
@@ -19,6 +20,7 @@
     height: 100vh;
     width: var(--sidebar-width);
     background: var(--sidebar-bg);
+    /* O modo escuro não vai afetar o gradiente */
     z-index: 1000;
     transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
@@ -135,14 +137,16 @@ nav {
     padding: 1rem 1.25rem;
     border-top: 1px solid var(--separator-color);
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; FOI REMOVIDO PARA MELHOR ALINHAMENTO */
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+    /* Adicionado um gap menor */
     flex-shrink: 0;
 }
 
 .user-profile-link {
     flex-grow: 1;
+    /* Faz o perfil do usuário ocupar o espaço restante */
     display: flex;
     align-items: center;
     gap: 12px;
@@ -205,6 +209,30 @@ nav {
     color: var(--sidebar-text-hover);
 }
 
+/* --- ESTILO PARA O BOTÃO DE TEMA ADICIONADO AQUI --- */
+.theme-toggle-button {
+    background: none;
+    border: none;
+    color: var(--sidebar-text-color);
+    cursor: pointer;
+    font-size: 1.4rem;
+    /* Tamanho do ícone */
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.theme-toggle-button:hover {
+    background-color: var(--link-hover-bg);
+    color: var(--link-active-bg);
+}
+
+/* --- FIM DO ESTILO DO BOTÃO --- */
+
+
 .hamburger {
     display: none;
     position: fixed;
@@ -259,7 +287,6 @@ nav {
     }
 
     .sidebar.open {
-
         transform: translateX(0);
     }
 }
@@ -277,11 +304,9 @@ nav {
         transform: translateX(-100%);
         box-shadow: none;
         height: 100%;
-
     }
 
     .hamburger.is-active {
         display: none;
     }
-
 }
