@@ -4,7 +4,7 @@
     --sidebar-width: 280px;
     --sidebar-text-color: #a7b3ce;
     --sidebar-text-hover: #ffffff;
-    --link-active-bg: rgb(225, 255, 0);
+    --link-active-bg: rgba(71, 195, 243, 0.1);
     --link-hover-bg: rgba(71, 195, 243, 0.05);
     --accent-color: #47c3f3;
     --logout-hover-bg: rgba(229, 9, 20, 0.8);
@@ -227,7 +227,7 @@ nav {
 
 .theme-toggle-button:hover {
     background-color: var(--link-hover-bg);
-    color: var(--link-active-bg);
+    color: var(--accent-color);
 }
 
 /* --- FIM DO ESTILO DO BOTÃO --- */
