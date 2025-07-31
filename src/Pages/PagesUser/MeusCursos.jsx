@@ -3,14 +3,35 @@ import '@styles/MeusCursos.css';
 import { Link } from 'react-router-dom';
 import { apiFetch } from '../../Services/api';
 
+function getYouTubeThumbnail(youtubeUrl) {
+    if (!youtubeUrl) {
+        return null;
+    }
+    try {
+
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        const match = youtubeUrl.match(regExp);
+
+
+        if (match && match[2].length === 11) {
+            const videoId = match[2];
+            return `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
+        }
+    } catch (error) {
+        console.error("Erro ao processar a URL do YouTube:", youtubeUrl, error);
+        return null;
+    }
+
+    return null;
+}
+
+
 const CursoCard = ({ curso }) => (
     <div className='curso-card'>
         <Link to={`/curso/${curso.id}`} className="curso-link">
             <img
-                src={curso.caminhoThumbnail
-                    ? `http://localhost:8080/media/${curso.caminhoThumbnail}`
-                    : `https://placehold.co/400x170/007bff/FFFFFF/png?text=${encodeURIComponent(curso.titulo)}`}
-                alt={`Capa do curso ${curso.titulo}`}
+                src={getYouTubeThumbnail(curso.urlDoVideo) || `https://placehold.co/300x170/03339c/FFFFFF/png?text=${encodeURIComponent(curso.titulo)}`}
+                alt={curso.titulo}
                 className='curso-thumbnail'
             />
             <div className='curso-info'>
