@@ -1,97 +1,115 @@
-# SouzaLink Coach - Plataforma de E-Learning
+﻿# SouzaLink Coach - Frontend (React)
 
-![Dashboard](https://i.imgur.com/Qk2w4gV.png)
-
+----
+----
+----
+----
 ## 🚀 Sobre o Projeto
-
-O SouzaLink Coach é uma plataforma de e-learning completa e robusta, desenhada para gestão e distribuição de conteúdo de capacitação interna. A aplicação permite que administradores organizem cursos em catálogos, façam upload de vídeos, e que os utilizadores assistam ao conteúdo, acompanhem o seu progresso e emitam certificados.
-
-Este projeto foi construído do zero como um sistema full-stack moderno, utilizando Java com Spring Boot no backend e React com Vite no frontend.
-
----
-
-## 🛠️ Tecnologias Utilizadas
-
-O projeto é dividido em duas partes principais:
-
-### **Backend (API RESTful)**
-* **Linguagem:** Java 17
-* **Framework:** Spring Boot 3.3.1
-* **Segurança:** Spring Security com autenticação baseada em Token JWT.
-* **Base de Dados:** Spring Data JPA / Hibernate com PostgreSQL.
-* **Gestão de Dependências:** Maven
-* **Servidor:** Docker para a base de dados PostgreSQL.
-
-### **Frontend (Single Page Application)**
-* **Framework:** React 18 com Vite.
-* **Roteamento:** React Router DOM.
-* **Estilização:** CSS puro com foco em layouts modernos (Flexbox e Grid) e responsividade.
-* **UI/UX:** Componentes interativos, design "clean" e animações subtis para uma melhor experiência do utilizador.
-* **Ícones:** React Bootstrap Icons.
-
----
+Interface de usuário desenvolvida para a plataforma de E-Learning **SouzaLink Coach**. Construída com React e Vite, esta Single Page Application (SPA) é responsável por toda a interação do usuário, consumindo a API RESTful do backend para exibir dados, gerenciar conteúdo e autenticar usuários.
 
 ## ✨ Funcionalidades Principais
 
-O sistema possui dois lados: a visão do utilizador comum e a área de gestão do administrador.
+- ✅ Interface de Login e Autenticação Segura
+- 👤 Painel do Usuário e Edição de Perfil
+- 📚 Catálogo de Cursos e Player de Vídeo Interativo
+- 📊 Dashboard do Usuário com Progresso
+- 📜 Emissão e Visualização de Certificados
+- 🔐 Painéis de Gestão para Administradores (Usuários, Cursos, Catálogos)
+- 📱 Design Totalmente Responsivo
 
-### **Para Todos os Utilizadores:**
-* **Login Seguro:** Autenticação com utilizador/senha e validação por token JWT.
-* **Dashboard Personalizado:** Exibe estatísticas de progresso, cursos em destaque e certificados recentes.
-* **Catálogo de Cursos:** Navegação por catálogos que agrupam os vídeos por tema.
-* **Player de Vídeo:** Streaming de vídeo seguro e autenticado, com playlist de vídeos do catálogo.
-* **Sistema de Progresso:** Funcionalidade de "Marcar como Concluído" para cada vídeo.
-* **Página de Certificados:** Galeria para visualizar os certificados conquistados.
-* **Design Responsivo:** A experiência adapta-se a qualquer tamanho de tela, do desktop ao telemóvel.
+## 🛠️ Tecnologias Utilizadas
 
-### **Para Administradores:**
-* **Painel de Admin:** Dashboard com estatísticas gerais da plataforma (total de cursos, utilizadores) e uma lista dos últimos utilizadores registados.
-* **Gestão de Utilizadores:** Uma página dedicada para listar, editar e apagar utilizadores.
-* **Gestão de Catálogos:** Interface para criar, editar e apagar catálogos de cursos.
-* **Gestão de Cursos (Vídeos):** Ferramentas para fazer upload de novos vídeos (com thumbnail opcional), editar os seus detalhes e apagá-los.
-* **Controlo de Acesso Baseado em Permissões (RBAC):** Rotas do backend e links/botões do frontend são protegidos, aparecendo apenas para utilizadores com a permissão correta (`ADMIN`, `LIDER`, `USER`).
+- **Framework**: React 18 + Vite
+- **Roteamento**: React Router DOM v6
+- **Estilização**: CSS Puro com Flexbox/Grid
+- **Comunicação API**: Fetch API
+- **Ícones**: React Bootstrap Icons
+- **Player de Vídeo**: React Player
+
+### Dependências Principais
+```json
+{
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-player": "^2.16.0",
+    "react-router-dom": "^6.23.1",
+    "react-bootstrap-icons": "^1.11.4"
+  },
+  "devDependencies": {
+    "vite": "^5.2.0",
+    "@vitejs/plugin-react": "^4.2.1"
+  }
+}
+```
+
+## 🏗️ Estrutura do Projeto
+```
+src/
+├── assets/         # Imagens, fontes e outros recursos estáticos
+├── components/     # Componentes reutilizáveis (Layout, Admin, Comuns)
+├── pages/          # Componentes de página (Dashboard, Login, etc.)
+├── services/       # Lógica de comunicação com a API
+├── styles/         # Estilos globais e de reset
+├── App.jsx         # Componente raiz e configuração de rotas
+└── main.jsx        # Ponto de entrada da aplicação
+```
+
+## ⚙️ Configuração do Ambiente
+
+### Pré-requisitos
+- Node.js v18+
+- npm ou yarn
+- Uma instância do backend do SouzaLink Coach a correr.
+
+### Variáveis de Ambiente
+Crie um ficheiro `.env` na raiz da pasta `/frontend` e adicione a URL da API:
+```properties
+VITE_API_BASE_URL=http://localhost:8080/api
+```
+
+### Passos para Execução
+1. Clone o repositório
+```shell
+git clone https://seu-repositorio.git
+cd seu-repositorio/frontend
+```
+
+2. Instale as dependências
+```shell
+npm install
+```
+
+3. Execute o projeto
+```shell
+npm run dev
+```
+
+4. Aceda `http://localhost:5173` no seu navegador.
+
+## 🎯 Status do Projeto
+- [x] Autenticação e Roteamento de Páginas
+- [x] Dashboards de Usuário e Admin
+- [x] CRUD de Usuários (UI)
+- [x] CRUD de Cursos e Catálogos (UI)
+- [x] Player de Vídeo e Acompanhamento de Progresso
+- [ ] Sistema de Notificações em Tempo Real (UI)
+- [ ] Sistema de Avaliação de Cursos (UI)
+
+## 🤝 Contribuição
+1. Faça um Fork do projeto
+2. Crie sua Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a Branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request
+
+## 📄 Licença
+Este projeto está sob a licença MIT.
+
+## 📞 Contato
+- **LinkedIn**: [Seu LinkedIn]
+- **Email**: [Seu Email]
 
 ---
+⌨️ com ❤️ por [Seu Nome] 😊
 
-## ⚙️ Como Executar o Projeto Localmente
-
-Para rodar este projeto na sua máquina, você vai precisar de:
-* Java (JDK 17 ou superior)
-* Maven 3.8+
-* Node.js 18+ (com npm)
-* Docker e Docker Compose
-
-### **Passos:**
-
-1.  **Clonar o Repositório:**
-    ```sh
-    git clone [https://github.com/seu-usuario/seu-repositorio.git](https://github.com/seu-usuario/seu-repositorio.git)
-    cd seu-repositorio
-    ```
-
-2.  **Configurar o Backend:**
-    * Navegue para a pasta `backend`.
-    * No ficheiro `application.properties`, ajuste as credenciais do banco de dados se necessário.
-    * Rode `mvn clean install` para compilar o projeto.
-
-3.  **Configurar o Frontend:**
-    * Navegue para a pasta `frontend`.
-    * Rode `npm install` para instalar as dependências.
-
-4.  **Iniciar o Ambiente com Docker:**
-    * Na pasta raiz do projeto (onde está o `docker-compose.yml`), rode:
-        ```sh
-        docker-compose up
-        ```
-    * Isto irá iniciar o banco de dados PostgreSQL.
-
-5.  **Iniciar os Servidores:**
-    * Num terminal, na pasta `backend`, inicie a aplicação Spring: `mvn spring-boot:run` ou execute a classe principal na sua IDE.
-    * Noutro terminal, na pasta `frontend`, inicie o servidor de desenvolvimento: `npm run dev`.
-
-6.  **Aceder à Aplicação:**
-    * Abra o seu navegador e vá para `http://localhost:5173`.
-
----
-
-Feito, meu parça! Este `README` dá uma visão geral completa e profissional do projeto que a gente construiu.
