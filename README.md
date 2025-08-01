@@ -106,10 +106,6 @@ npm run dev
 ## 📄 Licença
 Este projeto está sob a licença MIT.
 
-## 📞 Contato
-- **LinkedIn**: [Seu LinkedIn]
-- **Email**: [Seu Email]
 
----
-⌨️ com ❤️ por [Seu Nome] 😊
+
 
